@@ -1,0 +1,1112 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Sección 3: Revisión del Estado del Arte &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_marco_teorico';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sección 4 — Implementación de Modelos Benchmark" href="04_benchmark_models.html" />
+    <link rel="prev" title="02 – Análisis Exploratorio de Datos (EDA)" href="02_EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 - Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 – Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sección 3: Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">Sección 4 — Implementación de Modelos Benchmark</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03_marco_teorico.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03_marco_teorico.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sección 3: Revisión del Estado del Arte</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-de-busqueda">3.1 Estrategia de Búsqueda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-del-top-de-modelos">3.2 Identificación del Top de Modelos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-detallado-por-modelo">3.3 Análisis Detallado por Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deeplabv3-para-clasificacion-de-terreno-marciano">3.3.1 DeepLabV3+ para Clasificación de Terreno Marciano</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#marsseg-segmentacion-de-superficie-marciana-con-extractor-y-conector-multi-nivel">3.3.2 MarsSeg: Segmentación de Superficie Marciana con Extractor y Conector Multi-nivel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terseg-red-de-segmentacion-semantica-dual-branch-para-terreno-marciano-y-planificacion-de-rutas">3.3.3 TerSeg: Red de Segmentación Semántica Dual-Branch para Terreno Marciano y Planificación de Rutas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depthformer-red-transformer-depth-enhanced-para-segmentacion-semantica-de-la-superficie-marciana">3.3.4 DepthFormer: Red Transformer Depth-Enhanced para Segmentación Semántica de la Superficie Marciana</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#segformer-para-segmentacion-de-terreno-marciano-adaptacion-ai4mars">3.3.5 SegFormer para Segmentación de Terreno Marciano (Adaptación AI4MARS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica">3.4 Comparación Crítica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-desempeno">3.4.1 Tabla Comparativa de Desempeño</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">3.4.2 Tendencias Identificadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez-y-escalabilidad">3.4.3 Robustez y Escalabilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps-identificados-en-la-literatura">3.4.4 Gaps Identificados en la Literatura</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seccion-3-revision-del-estado-del-arte">
+<h1>Sección 3: Revisión del Estado del Arte<a class="headerlink" href="#seccion-3-revision-del-estado-del-arte" title="Permalink to this heading">#</a></h1>
+<section id="estrategia-de-busqueda">
+<h2>3.1 Estrategia de Búsqueda<a class="headerlink" href="#estrategia-de-busqueda" title="Permalink to this heading">#</a></h2>
+<p>Se realizaron búsquedas exhaustivas en bases de datos académicas Q1 (Scopus, Science Direct, Web of Science, IEEE Xplore, arXiv) durante los últimos 8 años (2018–2026), priorizando publicaciones con alto impacto en segmentación semántica para navegación de rovers marcianos. Palabras clave utilizadas: <code class="docutils literal notranslate"><span class="pre">&quot;semantic</span> <span class="pre">segmentation</span> <span class="pre">Mars</span> <span class="pre">rover</span> <span class="pre">terrain</span> <span class="pre">AI4MARS&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;deep</span> <span class="pre">learning</span> <span class="pre">Mars</span> <span class="pre">rover</span> <span class="pre">navigation&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Vision</span> <span class="pre">Transformer</span> <span class="pre">planetary</span> <span class="pre">rover</span> <span class="pre">segmentation&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SegFormer</span> <span class="pre">Mars</span> <span class="pre">terrain&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;DeepLabV3+</span> <span class="pre">AI4MARS&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;U-Net</span> <span class="pre">Mars</span> <span class="pre">rover&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;DepthFormer</span> <span class="pre">Mars</span> <span class="pre">segmentation&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;MarsSeg</span> <span class="pre">semantic</span> <span class="pre">segmentation&quot;</span></code>.</p>
+<p>Criterios de <strong>inclusión</strong>: uso explícito de Deep Learning (CNN, Transformers), evaluación en AI4MARS o datasets similares (Mars-Seg, S⁵mars), métricas reportadas (mIoU, IoU, Accuracy), reproducibilidad. Criterios de <strong>exclusión</strong>: enfoques no-DL, datasets terrestres sin adaptación marciana, publicaciones pre-2018 o sin métricas cuantitativas.</p>
+</section>
+<hr class="docutils" />
+<section id="identificacion-del-top-de-modelos">
+<h2>3.2 Identificación del Top de Modelos<a class="headerlink" href="#identificacion-del-top-de-modelos" title="Permalink to this heading">#</a></h2>
+<p>Se identificaron 8 modelos relevantes, priorizados por citas (&gt;100 en Scopus), rendimiento en AI4MARS (mIoU &gt;70%), recencia y escalabilidad computacional. Todos son aplicables a la segmentación de clases (suelo, roca, arena, rocas grandes) en imágenes de rovers (Curiosity, Opportunity, Spirit, Perseverance).</p>
+<ol class="arabic simple">
+<li><p><strong>DeepLabV3+ (2018, adaptado 2024)</strong>: Atrous convoluciones + decoder-encoder para contexto multi-escala. En AI4MARS: mIoU 87%, Acc 99%; fortalezas: eficiente en clases raras con GAN augmentation (+2% mIoU).</p></li>
+<li><p><strong>U-Net (2015 baseline, adaptado MarsNet 2022)</strong>: Encoder-decoder con skip connections. En AI4MARS: mIoU ~72–85%; fortalezas: bajo costo computacional (~10M params), rápida inferencia para rovers.</p></li>
+<li><p><strong>MarsNet (2022)</strong>: U-Net + convoluciones dilatadas + Transformers. En TWMARS: precisión espacial superior; ~15M params, ideal para rocas sueltas.</p></li>
+<li><p><strong>MarsSeg (2024, arXiv)</strong>: Encoder-decoder con Mini-ASPP, PSA y SPPM; focal-dice loss para desbalance. En AI4MARS: maneja sombras y variaciones de escala; mIoU &gt;80%.</p></li>
+<li><p><strong>TerSeg (2025)</strong>: Dual-branch CNN + Swin Transformer con fusión ponderada. Captura información local/global; orientado a path planning autónomo en terreno marciano.</p></li>
+<li><p><strong>DepthFormer (2025)</strong>: Transformer depth-enhanced para segmentación superficial marciana. Integra profundidad estimada como cuarta banda; alto rendimiento en escenas rocosas y con sombras.</p></li>
+<li><p><strong>SegFormer (2022, adaptado AI4MARS)</strong>: Hierarchical Transformer encoder + lightweight decoder. En AI4MARS: mIoU 83.55%, Acc 90.86%; eficiente (variante B2).</p></li>
+<li><p><strong>Novel DNN for Mars Visual Navigation (2018)</strong>: Arquitectura CNN híbrida global/local para navegación end-to-end. Reduce tiempos de entrenamiento un 45.8%; adaptable a segmentación.</p></li>
+</ol>
+<p>Estos modelos representan tendencias clave: CNNs clásicos (1–2) vs. híbridos/Transformers (3–8), con brechas identificadas en inferencia en tiempo real bajo distorsión de HazCam y en clases minoritarias (arena ~4%, big rocks ~2%).</p>
+</section>
+<hr class="docutils" />
+<section id="analisis-detallado-por-modelo">
+<h2>3.3 Análisis Detallado por Modelo<a class="headerlink" href="#analisis-detallado-por-modelo" title="Permalink to this heading">#</a></h2>
+<p>A continuación se presenta el análisis detallado de los <strong>5 modelos benchmark seleccionados</strong>, que corresponden a aquellos con papers peer-reviewed o preprints de acceso verificado: DeepLabV3+, MarsSeg, TerSeg, DepthFormer y SegFormer. Los modelos U-Net/MarsNet (GitHub sin publicación verificada) y Novel DNN (2018, sin evaluación AI4MARS) se excluyen del benchmark experimental.</p>
+<hr class="docutils" />
+<section id="deeplabv3-para-clasificacion-de-terreno-marciano">
+<h3>3.3.1 DeepLabV3+ para Clasificación de Terreno Marciano<a class="headerlink" href="#deeplabv3-para-clasificacion-de-terreno-marciano" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa:</strong></p>
+<blockquote>
+<div><p>Mohammad, F., Gao, Y., Kay, S., Field, R., De Benedetti, M., &amp; Ntagiou, E. V. (2024). <em>Deep Learning based Semantic Segmentation for Mars Rover Terrain Classification</em>. 2024 International Conference on Space Robotics (iSpaRo), June 24–27, 2024, Luxembourg. IEEE. DOI: 10.1109/iSpaRo60631.2024.10687827</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> CNN encoder-decoder (DeepLabV3+) con GAN de aumento de datos (SemanticStyleGAN).</p>
+<p><strong>Descripción técnica:</strong></p>
+<p>DeepLabV3+ es el modelo más reciente de la familia DeepLab (DeepLabV1 → V2 → V3 → V3+). Adopta una arquitectura encoder-decoder donde el encoder usa convoluciones atrous/dilatadas con diferentes <em>dilation rates</em>, efectivamente expandiendo el campo receptivo sin aumentar el número de parámetros. El decoder procesa las características mediante una cabeza de 1×1 Conv para reducir canales, seguido de upsampling bilinear ×4 y concatenación con características de bajo nivel del encoder, finalizando con una convolución 3×3 y upsampling ×4 final.</p>
+<p>En este trabajo se evalúan dos backbones: <strong>ResNet-50</strong> y <strong>ResNet-101</strong> (preentrenados en ImageNet), y dos resoluciones de entrada: 256×256 y 512×512. La contribución principal es la integración de <strong>SemanticStyleGAN</strong> para generar imágenes sintéticas condicionadas en máscaras semánticas de las clases raras (Big Rock / Float Rock), duplicando el conjunto de entrenamiento para esas clases. Se excluye la clase background (ignore=255) del entrenamiento y evaluación.</p>
+<ul class="simple">
+<li><p><strong>Componentes principales:</strong> Encoder DCNN con atrous convolutions (rates: 6, 12, 18), ASPP (Atrous Spatial Pyramid Pooling), Image Pooling, decoder con skip connections de bajo nivel.</p></li>
+<li><p><strong>Flujo de datos:</strong> Imagen entrada → Encoder ResNet → ASPP module → 1×1 Conv → Upsampling ×4 → Concat con low-level features → 3×3 Conv → Upsampling ×4 → Máscara de salida.</p></li>
+<li><p><strong>Innovación:</strong> Integración de GAN (SemanticStyleGAN + GauGAN) para data augmentation específica de clases raras en el dominio marciano. También se investiga el uso de early stopping para regularización.</p></li>
+<li><p><strong>Función de pérdida:</strong> Cross-entropy (CE). Optimizador: SGD con polynomial LR decay (lr=0.001). Batch sizes optimizados según memoria GPU (RTX 4000, 8GB).</p></li>
+</ul>
+<p><strong>Tipo de problema:</strong> Segmentación semántica multi-clase (4 clases: Soil, Bedrock, Sand, Big Rock).</p>
+<p><strong>Datasets utilizados:</strong> AI4MARS (35,000 imágenes, splits 90/10 para train/val+test) y LabelMars (ESA, 5,000 imágenes, splits 80/10/10). En AI4MARS se usan los 3 test sets de referencia: M1, M2, M3 (255 imágenes c/u, validadas por especialistas).</p>
+<p><strong>Métricas reportadas (AI4MARS, mejor configuración):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuración</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Acc</p></th>
+<th class="head"><p>mIoU</p></th>
+<th class="head"><p>IoU Soil</p></th>
+<th class="head"><p>IoU Bedrock</p></th>
+<th class="head"><p>IoU Sand</p></th>
+<th class="head"><p>IoU Big Rock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepLabV3+ ResNet101 (512, 4)</p></td>
+<td><p>M3</p></td>
+<td><p>0.99</p></td>
+<td><p><strong>0.87</strong></p></td>
+<td><p>0.99</p></td>
+<td><p>0.94</p></td>
+<td><p>0.97</p></td>
+<td><p>0.59</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepLabV3+ ResNet101 + GAN (512, 4)</p></td>
+<td><p>M3</p></td>
+<td><p>0.99</p></td>
+<td><p><strong>0.88</strong></p></td>
+<td><p>0.99</p></td>
+<td><p>0.95</p></td>
+<td><p>0.97</p></td>
+<td><p><strong>0.61</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>U-Net ResNet101 (512, 4) — Baseline</p></td>
+<td><p>M3</p></td>
+<td><p>0.99</p></td>
+<td><p>0.84</p></td>
+<td><p>0.98</p></td>
+<td><p>0.95</p></td>
+<td><p>0.97</p></td>
+<td><p>0.44</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Fortalezas:</strong> Mejor modelo en AI4MARS del paper (+5% mIoU vs. U-Net en M3); el GAN augmentation mejora hasta 2% en clases raras; el early stopping reduce drásticamente el tiempo de entrenamiento (promedio: 26 epochs en AI4MARS); ResNet-50 como backbone es preferible (igual rendimiento que ResNet-101 con menos parámetros y mayor velocidad).</p>
+<p><strong>Limitaciones:</strong> La clase Big Rock sigue siendo la más difícil (IoU ≤0.61 incluso con GAN); el rendimiento cae significativamente en M1 y M2 respecto a M3, indicando dependencia del nivel de consenso en etiquetado; el aumento sintético con GAN añade complejidad al pipeline de entrenamiento.</p>
+<p><strong>Complejidad computacional:</strong> Backbone ResNet-50: ~25M params; ResNet-101: ~45M params. No se reporta FLOP count explícito. Hardware de entrenamiento: Quadro RTX 4000 (8GB); el tiempo de convergencia promedió 26 epochs con early stopping.</p>
+</section>
+<hr class="docutils" />
+<section id="marsseg-segmentacion-de-superficie-marciana-con-extractor-y-conector-multi-nivel">
+<h3>3.3.2 MarsSeg: Segmentación de Superficie Marciana con Extractor y Conector Multi-nivel<a class="headerlink" href="#marsseg-segmentacion-de-superficie-marciana-con-extractor-y-conector-multi-nivel" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa:</strong></p>
+<blockquote>
+<div><p>Li, J., Chen, K., Tian, G., Li, L., &amp; Shi, Z. (2024). <em>MarsSeg: Mars Surface Semantic Segmentation with Multi-level Extractor and Connector</em>. arXiv preprint arXiv:2404.04155v1. Beihang University.</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> CNN encoder-decoder con módulos de mejora de características en múltiples escalas (Mini-ASPP, PSA, SPPM).</p>
+<p><strong>Descripción técnica:</strong></p>
+<p>MarsSeg es una red encoder-decoder diseñada específicamente para las características del terreno marciano: variaciones de escala extremas, diferencias mínimas inter-clase (el terreno marciano carece de fauna, flora y agua, con escasa diversidad visual), y severo desbalance de clases (Big Rock ~2% en AI4MARS). La arquitectura reduce el número de capas de downsampling respecto a arquitecturas estándar para preservar detalles locales de grano fino.</p>
+<p>La innovación central es la <strong>capa de conexión de mejora de características</strong> (Feature Enhancement Connection Layer) situada entre el encoder y el decoder, que funciona como un puente multi-escala compuesto por dos tipos de conectores:</p>
+<ul class="simple">
+<li><p><strong>Shadow Feature Connector</strong> (conector de características de sombra): apila módulos Mini-ASPP y PSA para capturar detalles locales y características de sombra/textura a escalas pequeñas.</p></li>
+<li><p><strong>Deep Feature Connector</strong> (SPPM): captura características semánticas de alto nivel relacionadas con la categoría del terreno.</p></li>
+</ul>
+<p>Los tres módulos clave:</p>
+<ol class="arabic simple">
+<li><p><strong>Mini-ASPP (Mini Atrous Spatial Pyramid Pooling):</strong> Versión compacta del ASPP estándar. Aplica convoluciones dilatadas en paralelo con múltiples tasas para capturar contexto multi-escala sin overhead computacional excesivo. Orientado a expresar detalles locales y objetos pequeños.</p></li>
+<li><p><strong>PSA (Polarized Self-Attention):</strong> Módulo de auto-atención polarizada que opera en canales y dimensiones espaciales. Usa atención tipo softmax para la dimensión canal y sigmoid para la dimensión espacial, adaptado para la extracción de características de sombra en terreno marciano.</p></li>
+<li><p><strong>SPPM (Strip Pyramid Pooling Module):</strong> Pooling piramidal en forma de franja para captura de contexto global a nivel semántico profundo, extrayendo características relacionadas con la categoría de terreno a alta escala.</p></li>
+</ol>
+<p><strong>Función de pérdida:</strong> Focal-Dice combinada con pesos adaptativos, diseñada para el desbalance de clases marciano. <strong>Optimizador:</strong> SGD (lr=0.001, momentum=0.9, weight decay=0.0001). <strong>Augmentación:</strong> Random crop, flip y random scaling para Mars-Seg; augmentación enfocada en Big Rock para AI4MARS.</p>
+<p><strong>Flujo de datos:</strong> Imagen → Encoder (CNN con ↓ limitado) → Feature Enhancement Layer (Mini-ASPP + PSA + SPPM) → Decoder → Máscara de segmentación.</p>
+<p><strong>Tipo de problema:</strong> Segmentación semántica multi-clase (4 clases en AI4MARS; 9 clases en Mars-Seg).</p>
+<p><strong>Datasets utilizados:</strong> Mars-Seg (MSL-Seg: 4,155 imágenes RGB 560×500; MER-Seg: 1,024 imágenes grayscale 1024×1024), split 8:2. AI4MARS MSL subset (16,064 entrenamiento, 322 test).</p>
+<p><strong>Métricas reportadas:</strong></p>
+<p>En <strong>Mars-Seg (MSL-Seg)</strong>, frente a DeepLabV3+ y SegFormer:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Método</p></th>
+<th class="head"><p>mIoU</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepLabV3+</p></td>
+<td><p>52.33</p></td>
+</tr>
+<tr class="row-odd"><td><p>SegFormer</p></td>
+<td><p>58.07</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MarsSeg (Ours)</strong></p></td>
+<td><p><strong>65.69</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>En <strong>AI4MARS (Big Rock, clase crítica):</strong> MarsSeg alcanza IoU de Big Rock = <strong>80.89</strong>, el más alto reportado en este subset, superando SegFormer, Seaformer y Lawin.</p>
+<p><strong>Fortalezas:</strong> Mejor generalización inter-dataset (Mars-Seg y AI4MARS) con una sola arquitectura; el SPPM mejora significativamente las clases de alta semántica; la combinación focal-dice loss resuelve el desbalance severo; rendimiento superior a SegFormer en escenas con low-feature distinguishability (imágenes en escala de grises del MER-Seg: mIoU 52.48 vs. SegFormer 50.36).</p>
+<p><strong>Limitaciones:</strong> Rendimiento en la clase Big Rock en grayscale (MER-Seg) permanece bajo (26.30 IoU) dada la ausencia de información de color; las variaciones de escala extremas entre MSL y MER complican la generalización; el número exacto de parámetros no se reporta explícitamente. Hardware: NVIDIA RTX 3090, batch 8.</p>
+<p><strong>Complejidad computacional:</strong> No reportado explícitamente en el paper. Implementación en PyTorch. Entrenamiento en RTX 3090 (24GB).</p>
+</section>
+<hr class="docutils" />
+<section id="terseg-red-de-segmentacion-semantica-dual-branch-para-terreno-marciano-y-planificacion-de-rutas">
+<h3>3.3.3 TerSeg: Red de Segmentación Semántica Dual-Branch para Terreno Marciano y Planificación de Rutas<a class="headerlink" href="#terseg-red-de-segmentacion-semantica-dual-branch-para-terreno-marciano-y-planificacion-de-rutas" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa:</strong></p>
+<blockquote>
+<div><p>Fan, L., Yuan, J., &amp; Zha, K. (2025). <em>TerSeg: A dual-branch semantic segmentation network for Mars terrain and autonomous path planning</em>. Expert Systems with Applications, 270, 126397. Elsevier. DOI: 10.1016/j.eswa.2025.126397. (Received 7 Feb 2024; Accepted 2 Jan 2025; Available online 15 Jan 2025).</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> Híbrida CNN + Vision Transformer (dual-branch), con módulos FL, FG y FLGA para fusión multi-escala de características locales y globales.</p>
+<p><strong>Descripción técnica:</strong></p>
+<p>TerSeg propone una arquitectura de red de fusión de dos ramas (<em>dual-branch fusion network</em>) que combina explícitamente las fortalezas complementarias de CNNs (captura de características locales, texturas, bordes) y Transformers (captura de contexto global de largo alcance):</p>
+<ul class="simple">
+<li><p><strong>Branch_T (Transformer Branch):</strong> Utiliza <strong>Swin Transformer</strong> como backbone para extracción de características globales. Consta de 4 etapas con 2, 2, 6 y 2 módulos SwinTB respectivamente. Las feature maps de salida tienen escalas: H/4×W/4×C₁, H/8×W/8×2C₁, H/16×W/16×4C₁, H/32×W/32×8C₁. Las características <code class="docutils literal notranslate"><span class="pre">T_n</span> <span class="pre">=</span> <span class="pre">{t₁,</span> <span class="pre">t₂,</span> <span class="pre">t₃,</span> <span class="pre">t₄}</span></code>.</p></li>
+<li><p><strong>Branch_C (CNN Branch):</strong> Utiliza <strong>ResNet-34</strong> como backbone para extracción de características locales. Compuesto por 1 bloque convolucional inicial y 4 Residual Blocks (RBs). Las características <code class="docutils literal notranslate"><span class="pre">R_n</span> <span class="pre">=</span> <span class="pre">{r₁,</span> <span class="pre">r₂,</span> <span class="pre">r₃,</span> <span class="pre">r₄}</span></code>.</p></li>
+</ul>
+<p><strong>Módulos de fusión:</strong></p>
+<ul class="simple">
+<li><p><strong>FL (Focus on Local):</strong> Fusiona características de bajo nivel donde la rama CNN domina (estadíos tempranos). Aplica combinación ponderada priorizando r_i sobre t_i.</p></li>
+<li><p><strong>FG (Focus on Global):</strong> Fusiona características en estadíos tardíos donde el Transformer domina. Prioriza t_i sobre r_i para captura semántica global.</p></li>
+<li><p><strong>FLGA (Focus on Local and Global Feature Aggregation):</strong> Módulo de agregación final 3×3 Conv que funde las feature maps de múltiples escalas m_s = {m₁, m₂, m₃, m₄} para restaurar la resolución de la máscara de predicción.</p></li>
+</ul>
+<p>La configuración óptima encontrada es <strong>TC_S</strong>: dimensiones CNN branch <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">=</span> <span class="pre">(24,</span> <span class="pre">48,</span> <span class="pre">96,</span> <span class="pre">192)</span></code> y Transformer branch <code class="docutils literal notranslate"><span class="pre">td</span> <span class="pre">=</span> <span class="pre">(24,</span> <span class="pre">48,</span> <span class="pre">96,</span> <span class="pre">192)</span></code>, con ~<strong>22M parámetros</strong> y <strong>26G FLOPs</strong>.</p>
+<p>Adicionalmente, el paper propone el algoritmo <strong>TA*</strong> (Terrain-Aware A*) que utiliza la máscara de segmentación de TerSeg, lógica difusa para evaluar la atravesabilidad, y mapas de peligro/seguridad para planificación de rutas autónoma.</p>
+<p><strong>Función de pérdida:</strong> Focal Loss + Adam-Reduce optimizer (combinación de Adam con reducción adaptativa del LR).</p>
+<p><strong>Tipo de problema:</strong> Segmentación semántica de terreno espacial para path planning autónomo.</p>
+<p><strong>Datasets utilizados:</strong> S⁵mars (10 categorías de terreno marciano: Sky, Ridge, Soil, Sand, Bedrock, Rock, Rover, Trace, Hold, etc.) y AI4MARS (4 categorías). Nota: Los resultados principales del paper se reportan en <strong>S⁵mars</strong>, no en AI4MARS directamente con mIoU equivalente al benchmark estándar.</p>
+<p><strong>Métricas reportadas (S⁵mars, comparación vs. estado del arte):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Método</p></th>
+<th class="head"><p>PA(%)</p></th>
+<th class="head"><p>Precision(%)</p></th>
+<th class="head"><p>MIoU(%)</p></th>
+<th class="head"><p>FWIoU(%)</p></th>
+<th class="head"><p>Fscore(%)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepLabV3+</p></td>
+<td><p>86.95</p></td>
+<td><p>99.36</p></td>
+<td><p>70.50</p></td>
+<td><p>79.04</p></td>
+<td><p>81.17</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNet</p></td>
+<td><p>86.40</p></td>
+<td><p>74.90</p></td>
+<td><p>66.27</p></td>
+<td><p>76.93</p></td>
+<td><p>79.31</p></td>
+</tr>
+<tr class="row-even"><td><p>SegFormer</p></td>
+<td><p>84.83</p></td>
+<td><p>58.15</p></td>
+<td><p>50.23</p></td>
+<td><p>75.04</p></td>
+<td><p>59.74</p></td>
+</tr>
+<tr class="row-odd"><td><p>CGGLNet</p></td>
+<td><p>90.96</p></td>
+<td><p>71.35</p></td>
+<td><p>66.00</p></td>
+<td><p>84.25</p></td>
+<td><p>72.91</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TerSeg (Ours)</strong></p></td>
+<td><p><strong>89.90</strong></p></td>
+<td><p><strong>80.48</strong></p></td>
+<td><p><strong>71.96</strong></p></td>
+<td><p><strong>82.33</strong></p></td>
+<td><p><strong>81.63</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Recall por clase en S⁵mars: TerSeg logra <strong>99.83%</strong> en Ridge y <strong>89.02%</strong> en Rock, superando a todos los métodos comparados en precisión y recall balanceado.</p>
+<p><strong>Fortalezas:</strong> Eficiencia computacional destacada (22M params, 26G FLOPs) con rendimiento superior al de arquitecturas más pesadas; el balance local-global mejora 3% mIoU vs. DeepLabV3+ y ~5% vs. U-Net; la integración con TA* lo convierte en el único sistema end-to-end de segmentación + planificación de rutas; robusto en clases de baja frecuencia (Trace, Hold).</p>
+<p><strong>Limitaciones:</strong> Los resultados principales son en S⁵mars, no directamente comparables en mIoU con los benchmarks AI4MARS estándar; SegFormer en este dataset rinde significativamente por debajo (MIoU 50.23%), sugiriendo que los Transformers puros sufren con la complejidad de las 10 clases en escenas marcianas; el método TA* requiere post-procesamiento adicional.</p>
+<p><strong>Complejidad computacional:</strong> ~22M parámetros, ~26G FLOPs (configuración TC_S). Hardware de entrenamiento no especificado explícitamente.</p>
+</section>
+<hr class="docutils" />
+<section id="depthformer-red-transformer-depth-enhanced-para-segmentacion-semantica-de-la-superficie-marciana">
+<h3>3.3.4 DepthFormer: Red Transformer Depth-Enhanced para Segmentación Semántica de la Superficie Marciana<a class="headerlink" href="#depthformer-red-transformer-depth-enhanced-para-segmentacion-semantica-de-la-superficie-marciana" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa:</strong></p>
+<blockquote>
+<div><p>Ma, Y., Li, Z., Wu, B., &amp; Duan, R. (2025). <em>DepthFormer: Depth-Enhanced Transformer Network for Semantic Segmentation of the Martian Surface From Rover Images</em>. Earth and Space Science, 12, e2024EA003812. AGU/Wiley. DOI: 10.1029/2024EA003812. (Received: 15 Oct 2024; Accepted: 25 May 2025).</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> Transformer encoder (Swin Transformer) con entrada multimodal 4-banda (RGB + profundidad), Pyramid Pooling Module (PPM) como cuello de botella, y decoder multi-escala con fusión por suma elemento a elemento.</p>
+<p><strong>Descripción técnica:</strong></p>
+<p>DepthFormer es la primera arquitectura de deep learning que incorpora información de <strong>profundidad estimada</strong> como cuarta banda de entrada para la segmentación semántica del terreno marciano. La profundidad se obtiene a partir de imágenes estéreo del rover Zhurong mediante fotogrametría (pipeline SfM + MVS: Structure from Motion + Multi-View Stereo). La idea central es que la profundidad resuelve ambigüedades de textura y apariencia comunes en el terreno marciano (por ejemplo, distinguir cráteres planos de suelo liso).</p>
+<p><strong>Arquitectura detallada:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Patch Partition:</strong> El tensor de entrada de 2048×2048×4 (RGB + profundidad) se particiona en patches, convirtiéndose en un tensor 512×512×64 mediante un <em>Linear Embedding</em>.</p></li>
+<li><p><strong>Encoding (Swin Transformer, 4 etapas):</strong></p>
+<ul class="simple">
+<li><p>Etapa 1: 512×512×96 (×2 SwinTB)</p></li>
+<li><p>Etapa 2: 256×256×192 (×2 SwinTB)</p></li>
+<li><p>Etapa 3: 128×128×384 (×6 SwinTB)</p></li>
+<li><p>Etapa 4: 64×64×768 (×2 SwinTB)</p></li>
+<li><p>Cada bloque Swin usa W-MSA (Window Multi-head Self-Attention) y SW-MSA (Shifted Window MSA) para capturar dependencias locales y de largo alcance con coste computacional reducido respecto a la atención global.</p></li>
+</ul>
+</li>
+<li><p><strong>PPM (Pyramid Pooling Module):</strong> Cuello de botella entre encoder y decoder. Captura contexto a múltiples escalas mediante pooling paralelo con diferentes tamaños de ventana.</p></li>
+<li><p><strong>Decoding:</strong> Feature maps fusionadas mediante sumas elemento a elemento (element-wise addition) con upsample bilinear sucesivo (×2 → ×4 → ×8 → ×16). Convoluciones 1×1 y 3×3 para alineación de canales. Decode Head final.</p></li>
+</ol>
+<p><strong>Dataset propio (DepthMars):</strong> 623 imágenes del rover Zhurong (2048×2048 px), con 403 train / 110 val / 110 test. Clases: Soil (45.01%), Rock (1.23%), Sand (12.67%), Craters (0.01%), Others (41.97%). Preentrenamiento: ade20k (tiny version, window size 7).</p>
+<p><strong>Función de pérdida:</strong> Weighted Cross-Entropy (WCE) con pesos manuales adaptados al desbalance de clases: Others=0.1, Soil=0.3, Rock=8, Sand=3, Craters=5. <strong>Optimizador:</strong> AdamW con LR policy “poly” (lr inicial = 1×10⁻⁶). <strong>Entrenamiento:</strong> NVIDIA RTX 2080Ti, batch 16, 160K iteraciones, crop 512×512.</p>
+<p><strong>Métricas reportadas (DepthMars dataset):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Método</p></th>
+<th class="head"><p>Soil IoU</p></th>
+<th class="head"><p>Rock IoU</p></th>
+<th class="head"><p>Sand IoU</p></th>
+<th class="head"><p>Craters IoU</p></th>
+<th class="head"><p>Others IoU</p></th>
+<th class="head"><p>aAcc</p></th>
+<th class="head"><p>mIoU</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DeepLabV3</p></td>
+<td><p>74.81</p></td>
+<td><p><strong>99.00</strong></p></td>
+<td><p>69.20</p></td>
+<td><p>17.85</p></td>
+<td><p><strong>98.82</strong></p></td>
+<td><p>95.17</p></td>
+<td><p>71.94</p></td>
+</tr>
+<tr class="row-odd"><td><p>SegFormer</p></td>
+<td><p>96.31</p></td>
+<td><p>42.96</p></td>
+<td><p>93.26</p></td>
+<td><p>3.86</p></td>
+<td><p>98.55</p></td>
+<td><p>97.91</p></td>
+<td><p>66.99</p></td>
+</tr>
+<tr class="row-even"><td><p>Mask2Former</p></td>
+<td><p>96.17</p></td>
+<td><p>57.21</p></td>
+<td><p>92.46</p></td>
+<td><p>34.75</p></td>
+<td><p>98.59</p></td>
+<td><p>97.87</p></td>
+<td><p>75.84</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swin Transformer</p></td>
+<td><p>92.67</p></td>
+<td><p>54.09</p></td>
+<td><p>91.47</p></td>
+<td><p>34.52</p></td>
+<td><p>95.14</p></td>
+<td><p>95.85</p></td>
+<td><p>73.58</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>DepthFormer</strong></p></td>
+<td><p>93.82</p></td>
+<td><p>60.25</p></td>
+<td><p><strong>92.66</strong></p></td>
+<td><p><strong>38.45</strong></p></td>
+<td><p>94.78</p></td>
+<td><p><strong>98.28</strong></p></td>
+<td><p><strong>75.99</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El uso de WCE mejora mIoU de 71.31 a <strong>75.99</strong> (sin WCE → con WCE), con mejora significativa en Rock (+20 pts IoU) a expensas de una ligera reducción en Soil y Others.</p>
+<p><strong>Fortalezas:</strong> Primera integración de profundidad estéreo para segmentación semántica marciana; la cuarta banda de profundidad aporta información de relieve que resuelve ambigüedades de apariencia (cráteres vs. suelo plano); WCE mejora sustancialmente clases minoritarias; Swin Transformer como backbone ofrece escalabilidad con localidad-globalidad balanceada; mIoU más alto en su dataset propio (75.99%).</p>
+<p><strong>Limitaciones:</strong> El dataset DepthMars (623 imágenes del rover Zhurong) es significativamente más pequeño que AI4MARS, lo que limita la comparabilidad directa con otros modelos; la generación del mapa de profundidad requiere imágenes estéreo (disponibles en Zhurong pero no universalmente en todos los rovers de la NASA); el benchmark DepthMars no ha sido replicado por terceros; los cráteres (0.01% del dataset) siguen siendo la clase más difícil (IoU 38.45%).</p>
+<p><strong>Complejidad computacional:</strong> Swin Transformer preentrenado (ade20k, tiny). ~28M parámetros estimados (Swin-T base). Hardware: NVIDIA RTX 2080Ti (11GB), batch 16.</p>
+</section>
+<hr class="docutils" />
+<section id="segformer-para-segmentacion-de-terreno-marciano-adaptacion-ai4mars">
+<h3>3.3.5 SegFormer para Segmentación de Terreno Marciano (Adaptación AI4MARS)<a class="headerlink" href="#segformer-para-segmentacion-de-terreno-marciano-adaptacion-ai4mars" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia base de la arquitectura:</strong></p>
+<blockquote>
+<div><p>Xie, E., Wang, W., Yu, Z., Anandkumar, A., Alvarez, J. M., &amp; Luo, P. (2021). <em>SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers</em>. Advances in Neural Information Processing Systems (NeurIPS), 34, 12077–12090.</p>
+</div></blockquote>
+<p><strong>Adaptación al dominio marciano:</strong></p>
+<blockquote>
+<div><p>Evaluación en AI4MARS reportada en: Mohammad et al. (2024) [iSpaRo]; Fan et al. (2025) [TerSeg]; Li et al. (2024) [MarsSeg]. Repositorio de referencia: <code class="docutils literal notranslate"><span class="pre">github.com/Ankithac45/Semantic-Segmentation-on-Martian-Terrain</span></code>.</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> Transformer encoder jerárquico (Mix Transformer, MiT) + decoder MLP lightweight (All-MLP Decoder).</p>
+<p><strong>Descripción técnica:</strong></p>
+<p>SegFormer combina un encoder Transformer jerárquico con un decoder MLP ultra-ligero, lo que lo hace significativamente más eficiente que arquitecturas basadas en ViT puro. Su diseño evita la interpolación posicional, haciéndolo robusto a cambios de resolución en inferencia.</p>
+<p><strong>Encoder MiT (Mix Transformer):</strong></p>
+<ul class="simple">
+<li><p>Encoder jerárquico con 4 etapas de extracción de features multi-resolución (similar a una pirámide de características en CNNs).</p></li>
+<li><p>Cada etapa aplica <em>Overlapped Patch Merging</em> para generar patches con solapamiento (mayor continuidad espacial respecto al patch merging sin solape de ViT).</p></li>
+<li><p>Bloques con <strong>Efficient Self-Attention</strong> (reducción de la secuencia K/V mediante <em>Sequence Reduction</em> con ratio R∈{64,16,4,1} por etapa) para reducir la complejidad de O(N²) a O(N²/R).</p></li>
+<li><p><strong>Mix-FFN</strong> (Feed-Forward Network con 3×3 depthwise conv) que combina información local y posicional, eliminando la necesidad de positional encoding explícito.</p></li>
+<li><p>Variantes: <strong>MiT-B0</strong> (más ligero) a <strong>MiT-B5</strong> (más pesado). Para AI4MARS se usa típicamente <strong>MiT-B2</strong> (~25M params).</p></li>
+</ul>
+<p><strong>Decoder All-MLP:</strong></p>
+<ul class="simple">
+<li><p>Recibe feature maps de las 4 etapas del encoder (C₁, C₂, C₃, C₄).</p></li>
+<li><p>Aplica una capa MLP individual a cada escala para unificar dimensiones de canal.</p></li>
+<li><p>Concatena y aplica una MLP de fusión + Conv 1×1 para la predicción final.</p></li>
+<li><p>La ausencia de convoluciones complejas en el decoder lo hace computacionalmente trivial comparado con el ASPP de DeepLabV3+.</p></li>
+</ul>
+<p><strong>Función de pérdida:</strong> Cross-entropy estándar. Preentrenamiento: ImageNet-1K (MiT-B2). Fine-tuning en AI4MARS.</p>
+<p><strong>Tipo de problema:</strong> Segmentación semántica de terreno (4 clases: Soil, Bedrock, Sand, Big Rock).</p>
+<p><strong>Datasets utilizados en evaluaciones reportadas:</strong></p>
+<ul class="simple">
+<li><p>AI4MARS (MSL subset): mIoU <strong>83.55%</strong>, Acc <strong>90.86%</strong> (reportado en adaptación AI4MARS).</p></li>
+<li><p>Mars-Seg (MSL-Seg): mIoU 58.07 (reportado en MarsSeg paper, Tabla I).</p></li>
+<li><p>S⁵mars: mIoU 50.23%, PA 84.83% (reportado en TerSeg paper, Tabla 6) — performance notablemente inferior en datasets más complejos.</p></li>
+<li><p>DepthMars: mIoU 66.99, aAcc 97.91 (reportado en DepthFormer paper, Tabla 3).</p></li>
+</ul>
+<p><strong>Métricas consolidadas en AI4MARS:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dataset</p></th>
+<th class="head"><p>mIoU</p></th>
+<th class="head"><p>Acc</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AI4MARS (ref. adaptación)</p></td>
+<td><p>83.55%</p></td>
+<td><p>90.86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mars-Seg MSL-Seg</p></td>
+<td><p>58.07</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p>S⁵mars</p></td>
+<td><p>50.23</p></td>
+<td><p>84.83</p></td>
+</tr>
+<tr class="row-odd"><td><p>DepthMars</p></td>
+<td><p>66.99</p></td>
+<td><p>97.91</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Fortalezas:</strong> Encoder jerárquico multi-escala sin positional encoding → robusto a variación de resolución en imágenes de rovers; decoder MLP extremadamente ligero; buena generalización en AI4MARS estándar (83.55%); diseño modular (B0–B5) permite ajuste de capacidad según hardware del rover.</p>
+<p><strong>Limitaciones:</strong> En datasets con mayor complejidad (10 clases en S⁵mars) el rendimiento cae dramáticamente (50.23% MIoU) respecto a arquitecturas híbridas como TerSeg; el MiT-B2 requiere preentrenamiento en ImageNet para competir con CNNs especializados; en el paper de TerSeg es el peor modelo entre los comparados en S⁵mars, sugiriendo que la atención global pura no captura bien los detalles locales de rocas pequeñas en escenas marcianas complejas.</p>
+<p><strong>Complejidad computacional:</strong> MiT-B2: ~25M parámetros, ~62G FLOPs. Decoder MLP: &lt; 1M params adicionales. Total SegFormer-B2: ~25M params, eficiente para inferencia.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="comparacion-critica">
+<h2>3.4 Comparación Crítica<a class="headerlink" href="#comparacion-critica" title="Permalink to this heading">#</a></h2>
+<section id="tabla-comparativa-de-desempeno">
+<h3>3.4.1 Tabla Comparativa de Desempeño<a class="headerlink" href="#tabla-comparativa-de-desempeno" title="Permalink to this heading">#</a></h3>
+<p>La comparación directa es parcialmente limitada por el uso de distintos datasets en cada paper (AI4MARS, Mars-Seg, S⁵mars, DepthMars). Se consolida a continuación con las métricas disponibles en los datasets compartidos:</p>
+<p><strong>Sobre AI4MARS (dataset del proyecto):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>mIoU (M3)</p></th>
+<th class="head"><p>Acc</p></th>
+<th class="head"><p>IoU Big Rock</p></th>
+<th class="head"><p>Parámetros</p></th>
+<th class="head"><p>Año</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>DeepLabV3+ + GAN</strong></p></td>
+<td><p><strong>88%</strong></p></td>
+<td><p><strong>99%</strong></p></td>
+<td><p>61%</p></td>
+<td><p>~45M (R101)</p></td>
+<td><p>2024</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepLabV3+ (sin GAN)</p></td>
+<td><p>87%</p></td>
+<td><p>99%</p></td>
+<td><p>59%</p></td>
+<td><p>~25–45M</p></td>
+<td><p>2024</p></td>
+</tr>
+<tr class="row-even"><td><p>SegFormer-B2</p></td>
+<td><p>83.55%</p></td>
+<td><p>90.86%</p></td>
+<td><p>—</p></td>
+<td><p>~25M</p></td>
+<td><p>2022/2024</p></td>
+</tr>
+<tr class="row-odd"><td><p>MarsSeg</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p><strong>80.89%</strong></p></td>
+<td><p>N/R</p></td>
+<td><p>2024</p></td>
+</tr>
+<tr class="row-even"><td><p>U-Net ResNet101</p></td>
+<td><p>84%</p></td>
+<td><p>99%</p></td>
+<td><p>44%</p></td>
+<td><p>~45M</p></td>
+<td><p>2024</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sobre Mars-Seg (MSL-Seg):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>mIoU</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>MarsSeg</strong></p></td>
+<td><p><strong>65.69</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>SegFormer</p></td>
+<td><p>58.07</p></td>
+</tr>
+<tr class="row-even"><td><p>DeepLabV3+</p></td>
+<td><p>52.33</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sobre S⁵mars:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>MIoU (%)</p></th>
+<th class="head"><p>Params</p></th>
+<th class="head"><p>FLOPs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>TerSeg</strong></p></td>
+<td><p><strong>71.96</strong></p></td>
+<td><p><strong>22M</strong></p></td>
+<td><p><strong>26G</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepLabV3+</p></td>
+<td><p>70.50</p></td>
+<td><p>~25–45M</p></td>
+<td><p>~177G</p></td>
+</tr>
+<tr class="row-even"><td><p>UNet</p></td>
+<td><p>66.27</p></td>
+<td><p>~31M</p></td>
+<td><p>~55G</p></td>
+</tr>
+<tr class="row-odd"><td><p>CGGLNet</p></td>
+<td><p>66.00</p></td>
+<td><p>&gt;45M</p></td>
+<td><p>Alto</p></td>
+</tr>
+<tr class="row-even"><td><p>SegFormer</p></td>
+<td><p>50.23</p></td>
+<td><p>~25M</p></td>
+<td><p>~62G</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sobre DepthMars:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>mIoU</p></th>
+<th class="head"><p>aAcc</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>DepthFormer</strong></p></td>
+<td><p><strong>75.99</strong></p></td>
+<td><p><strong>98.28</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Mask2Former</p></td>
+<td><p>75.84</p></td>
+<td><p>97.87</p></td>
+</tr>
+<tr class="row-even"><td><p>Swin Transformer</p></td>
+<td><p>73.58</p></td>
+<td><p>95.85</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepLabV3</p></td>
+<td><p>71.94</p></td>
+<td><p>95.17</p></td>
+</tr>
+<tr class="row-even"><td><p>SegFormer</p></td>
+<td><p>66.99</p></td>
+<td><p>97.91</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="tendencias-identificadas">
+<h3>3.4.2 Tendencias Identificadas<a class="headerlink" href="#tendencias-identificadas" title="Permalink to this heading">#</a></h3>
+<p><strong>CNN clásicos vs. Transformers vs. Híbridos:</strong></p>
+<ul class="simple">
+<li><p>Los CNNs especializados (DeepLabV3+) dominan en <strong>AI4MARS estándar</strong> gracias a sus atrous convolutions y data augmentation con GAN, alcanzando hasta 88% mIoU.</p></li>
+<li><p>Los Transformers puros (SegFormer) ofrecen buen rendimiento en AI4MARS pero degradan significativamente en datasets multi-clase más complejos (50.23% en S⁵mars), sugiriendo que la atención global sin inductive bias local sufre con texturas sutiles y clases poco representadas.</p></li>
+<li><p>Los modelos <strong>híbridos CNN+Transformer</strong> (TerSeg, DepthFormer) representan el estado del arte más robusto: TerSeg logra el mejor balance eficiencia/rendimiento (22M params, 71.96% mIoU en S⁵mars), mientras DepthFormer introduce la modalidad de profundidad como ventaja diferencial en terrenos con relieve (cráteres, rocas).</p></li>
+<li><p><strong>MarsSeg</strong> destaca como el mejor modelo para la clase crítica Big Rock en AI4MARS (IoU 80.89%), gracias a su focal-dice loss y arquitectura orientada a objetos pequeños.</p></li>
+</ul>
+<p><strong>Modelos híbridos (CNN + Transformer):</strong>
+La tendencia clara de 2024–2025 es la arquitectura dual-branch donde Branch_C (CNN) captura detalles de textura local y Branch_T (Transformer) captura contexto semántico global. Esto supera tanto a los CNNs puros (sin contexto global suficiente) como a los Transformers puros (sin sensibilidad local).</p>
+</section>
+<section id="robustez-y-escalabilidad">
+<h3>3.4.3 Robustez y Escalabilidad<a class="headerlink" href="#robustez-y-escalabilidad" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Robustez a desbalance de clases:</strong> MarsSeg (focal-dice loss) &gt; DeepLabV3+ (CE + GAN augmentation) &gt; DepthFormer (WCE) &gt; SegFormer (CE). La clase Big Rock (~2%) y los Craters (&lt;1%) son las más sensibles a la estrategia de pérdida.</p></li>
+<li><p><strong>Escalabilidad computacional:</strong> TerSeg (22M, 26G FLOPs) &gt; SegFormer-B2 (25M, 62G FLOPs) &gt; MarsSeg (N/R) &gt; DeepLabV3+-R50 (~25M, ~177G FLOPs) &gt; DeepLabV3+-R101 (~45M, ~200G+ FLOPs) &gt; DepthFormer (~28M, resolución 2048×2048 → alto coste).</p></li>
+<li><p><strong>Viabilidad en hardware embarcado de rovers:</strong> TerSeg es el más viable (26G FLOPs, 22M params); DepthFormer requiere cómputo estéreo previo, limitando su aplicabilidad en tiempo real.</p></li>
+</ul>
+</section>
+<section id="gaps-identificados-en-la-literatura">
+<h3>3.4.4 Gaps Identificados en la Literatura<a class="headerlink" href="#gaps-identificados-en-la-literatura" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Falta de benchmark unificado:</strong> Cada paper reporta resultados en datasets distintos o subsets distintos de AI4MARS (M1/M2/M3 con diferentes criterios de aceptación), dificultando la comparación objetiva.</p></li>
+<li><p><strong>Clase Big Rock y arena como cuello de botella:</strong> Ningún modelo resuelve completamente la segmentación de clases raras (&lt;5%) de manera robusta. TerSeg y MarsSeg avanzan en esta dirección pero en distintos datasets.</p></li>
+<li><p><strong>Ausencia de métricas de inferencia en tiempo real:</strong> Solo TerSeg reporta FLOPs explícitos; ningún paper reporta latencia real en hardware de rover simulado.</p></li>
+<li><p><strong>Dominio de imágenes NavCam/HazCam:</strong> La mayoría de modelos se entrenan en imágenes NavCam (MSL). Las imágenes HazCam (mayor distorsión radial, gran angular) están subrepresentadas, siendo precisamente las usadas en la navegación de proximidad.</p></li>
+<li><p><strong>Generalización entre misiones:</strong> Ningún trabajo evalúa explícitamente la transferencia de MSL (Curiosity) a M2020 (Perseverance), a pesar de que las condiciones geológicas de Jezero Crater difieren notablemente de Gale Crater.</p></li>
+<li><p><strong>Integración de modalidades adicionales:</strong> DepthFormer es el único que incorpora profundidad. La temperatura de superficie, datos de espectrómetros o mapas de elevación orbital podrían mejorar la segmentación pero no han sido explorados.</p></li>
+</ol>
+<hr class="docutils" />
+<p><em>Nota sobre la selección del Top 5 benchmark:</em> Se seleccionaron DeepLabV3+ (Mohammad et al., 2024), MarsSeg (Li et al., 2024), TerSeg (Fan et al., 2025), DepthFormer (Ma et al., 2025) y SegFormer (Xie et al., 2021 / adaptación 2024) por su respaldo en literatura peer-reviewed Q1, disponibilidad de implementaciones reproducibles, y cobertura representativa del espectro CNN–Transformer–Híbrido relevante para el problema de segmentación de terreno marciano sobre AI4MARS.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_EDA.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">02 – Análisis Exploratorio de Datos (EDA)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_benchmark_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sección 4 — Implementación de Modelos Benchmark</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-de-busqueda">3.1 Estrategia de Búsqueda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-del-top-de-modelos">3.2 Identificación del Top de Modelos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-detallado-por-modelo">3.3 Análisis Detallado por Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deeplabv3-para-clasificacion-de-terreno-marciano">3.3.1 DeepLabV3+ para Clasificación de Terreno Marciano</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#marsseg-segmentacion-de-superficie-marciana-con-extractor-y-conector-multi-nivel">3.3.2 MarsSeg: Segmentación de Superficie Marciana con Extractor y Conector Multi-nivel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terseg-red-de-segmentacion-semantica-dual-branch-para-terreno-marciano-y-planificacion-de-rutas">3.3.3 TerSeg: Red de Segmentación Semántica Dual-Branch para Terreno Marciano y Planificación de Rutas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depthformer-red-transformer-depth-enhanced-para-segmentacion-semantica-de-la-superficie-marciana">3.3.4 DepthFormer: Red Transformer Depth-Enhanced para Segmentación Semántica de la Superficie Marciana</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#segformer-para-segmentacion-de-terreno-marciano-adaptacion-ai4mars">3.3.5 SegFormer para Segmentación de Terreno Marciano (Adaptación AI4MARS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica">3.4 Comparación Crítica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-desempeno">3.4.1 Tabla Comparativa de Desempeño</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">3.4.2 Tendencias Identificadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez-y-escalabilidad">3.4.3 Robustez y Escalabilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps-identificados-en-la-literatura">3.4.4 Gaps Identificados en la Literatura</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

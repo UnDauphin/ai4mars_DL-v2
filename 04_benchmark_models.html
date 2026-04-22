@@ -1,0 +1,1754 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Sección 4 — Implementación de Modelos Benchmark &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '04_benchmark_models';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Sección 3: Revisión del Estado del Arte" href="03_marco_teorico.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 - Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 – Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">Sección 3: Revisión del Estado del Arte</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sección 4 — Implementación de Modelos Benchmark</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F04_benchmark_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/04_benchmark_models.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sección 4 — Implementación de Modelos Benchmark</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">4.1 Diseño Experimental</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entrada-y-objetivo">Variables de entrada y objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">Partición del dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de preprocesamiento</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requisitos-de-reproducibilidad-4-3">Requisitos de reproducibilidad (§ 4.3)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-modelos">4.2 Implementación de Modelos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-deeplabv3-resnet-50">Modelo 1 — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-segformer-b2">Modelo 2 — SegFormer-B2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-marsseg">Modelo 3 — MarsSeg</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-terseg">Modelo 4 — TerSeg</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-depthformer-rgb">Modelo 5 — DepthFormer-RGB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados-experimentales">4.3 Resultados Experimentales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-de-entrenamiento">4.3.1 Curvas de Entrenamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion">4.4 Evaluación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-utilizadas">Métricas utilizadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-overfitting-underfitting">4.4.1 Análisis de Overfitting / Underfitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-estadistico-y-pruebas-de-hipotesis-6-3">4.5 Análisis Estadístico y Pruebas de Hipótesis (§ 6.3)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-cualitativo-predicciones-vs-ground-truth-4-4">4.6 Análisis Cualitativo — Predicciones vs Ground Truth (§ 4.4)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-final-y-ranking-6">4.7 Benchmark Final y Ranking (§ 6)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-completa">6.1 Tabla comparativa completa</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusion-critica-6-4">4.8 Discusión Crítica (§ 6.4)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-modelo-funciona-mejor-y-por-que">¿Qué modelo funciona mejor y por qué?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-modelo-generaliza-mejor">¿Qué modelo generaliza mejor?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#las-diferencias-son-estadisticamente-significativas">¿Las diferencias son estadísticamente significativas?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#existe-trade-off-relevante-entre-desempeno-y-costo">¿Existe trade-off relevante entre desempeño y costo?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-del-estudio">Limitaciones del estudio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recomendaciones-futuras">Recomendaciones futuras</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seccion-4-implementacion-de-modelos-benchmark">
+<h1>Sección 4 — Implementación de Modelos Benchmark<a class="headerlink" href="#seccion-4-implementacion-de-modelos-benchmark" title="Permalink to this heading">#</a></h1>
+<p>Este notebook presenta la implementación, entrenamiento y evaluación comparativa de los <strong>5 modelos benchmark</strong> seleccionados para segmentación semántica de terreno marciano sobre el dataset <strong>AI4MARS</strong>. Se sigue rigurosamente el diseño experimental unificado exigido en el entregable: misma partición de datos, mismo pipeline de preprocesamiento y mismas métricas para todos los modelos.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Notebook</p></th>
+<th class="head"><p>Modelo</p></th>
+<th class="head"><p>Arquitectura</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02a</span></code></p></td>
+<td><p><strong>DeepLabV3+</strong> (ResNet-50)</p></td>
+<td><p>CNN clásico + ASPP</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">02b</span></code></p></td>
+<td><p><strong>SegFormer-B2</strong></p></td>
+<td><p>Transformer puro</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02c</span></code></p></td>
+<td><p><strong>MarsSeg</strong></p></td>
+<td><p>CNN híbrido específico para Marte</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">02d</span></code></p></td>
+<td><p><strong>TerSeg</strong></p></td>
+<td><p>Dual-branch CNN + Swin Transformer</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02e</span></code></p></td>
+<td><p><strong>DepthFormer-RGB</strong></p></td>
+<td><p>Swin Transformer + PPM</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="diseno-experimental">
+<h2>4.1 Diseño Experimental<a class="headerlink" href="#diseno-experimental" title="Permalink to this heading">#</a></h2>
+<section id="variables-de-entrada-y-objetivo">
+<h3>Variables de entrada y objetivo<a class="headerlink" href="#variables-de-entrada-y-objetivo" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Entrada (X):</strong> Imágenes RGB de cámaras HazCam de rovers marcianos (Curiosity/MSL, Opportunity/MER), redimensionadas a <strong>256 × 256</strong> píxeles con normalización ImageNet (μ = [0.485, 0.456, 0.406], σ = [0.229, 0.224, 0.225]).</p></li>
+<li><p><strong>Objetivo (Y):</strong> Máscara de segmentación semántica a nivel de píxel con <strong>4 clases</strong>: <code class="docutils literal notranslate"><span class="pre">soil</span></code> (suelo), <code class="docutils literal notranslate"><span class="pre">bedrock</span></code> (roca base), <code class="docutils literal notranslate"><span class="pre">sand</span></code> (arena), <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> (roca grande). Los píxeles etiquetados como 255 se ignoran durante el entrenamiento y la evaluación (<code class="docutils literal notranslate"><span class="pre">ignore_index=255</span></code>).</p></li>
+</ul>
+</section>
+<section id="particion-del-dataset">
+<h3>Partición del dataset<a class="headerlink" href="#particion-del-dataset" title="Permalink to this heading">#</a></h3>
+<p>Se aplica una división <strong>estratificada por misión</strong> (MSL y MER) con proporciones <strong>70 / 15 / 15</strong> (train / val / test), generada con semilla fija (<code class="docutils literal notranslate"><span class="pre">seed=42</span></code>) y guardada en <code class="docutils literal notranslate"><span class="pre">processed/split_indices.pkl</span></code> para garantizar reproducibilidad perfecta entre todos los modelos. La ausencia de data leakage fue verificada explícitamente (intersección vacía entre train e IDs de test).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Split</p></th>
+<th class="head"><p>Muestras</p></th>
+<th class="head"><p>MSL</p></th>
+<th class="head"><p>MER</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Train</p></td>
+<td><p>16 074</p></td>
+<td><p>15 901</p></td>
+<td><p>173</p></td>
+</tr>
+<tr class="row-odd"><td><p>Val</p></td>
+<td><p>3 443</p></td>
+<td><p>3 443</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>Test</p></td>
+<td><p>3 448</p></td>
+<td><p>3 448</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pipeline-de-preprocesamiento">
+<h3>Pipeline de preprocesamiento<a class="headerlink" href="#pipeline-de-preprocesamiento" title="Permalink to this heading">#</a></h3>
+<p>Las imágenes fueron prerredimensionadas a 256 × 256 <strong>una sola vez</strong> mediante el script <code class="docutils literal notranslate"><span class="pre">preprocess_resize.py</span></code> (interpolación bilineal para imágenes, vecino más cercano para máscaras), eliminando el costo de redimensionamiento en cada epoch y acelerando la carga de datos.</p>
+<p><strong>Augmentaciones aplicadas solo en entrenamiento:</strong></p>
+<ul class="simple">
+<li><p>Flip horizontal y vertical (p = 0.5 cada uno)</p></li>
+<li><p>Rotación aleatoria ±15°</p></li>
+<li><p>ColorJitter (brillo ±0.2, contraste ±0.2, saturación ±0.1, matiz ±0.05)</p></li>
+</ul>
+<p><strong>Validación y test:</strong> solo normalización (sin augmentación).</p>
+</section>
+<section id="requisitos-de-reproducibilidad-4-3">
+<h3>Requisitos de reproducibilidad (§ 4.3)<a class="headerlink" href="#requisitos-de-reproducibilidad-4-3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Control de semillas:</strong> <code class="docutils literal notranslate"><span class="pre">set_seed()</span></code> fija <code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">torch</span></code> y <code class="docutils literal notranslate"><span class="pre">torch.cuda</span></code> antes de cada run.</p></li>
+<li><p><strong>Repetición:</strong> cada modelo fue entrenado con <strong>3 semillas independientes</strong> (42, 123, 7).</p></li>
+<li><p><strong>Métricas reportadas:</strong> media ± desviación estándar e IC 95 %.</p></li>
+<li><p><strong>Hardware:</strong> NVIDIA GPU con CUDA + AMP (Automatic Mixed Precision) habilitado.</p></li>
+</ul>
+</section>
+</section>
+<section id="implementacion-de-modelos">
+<h2>4.2 Implementación de Modelos<a class="headerlink" href="#implementacion-de-modelos" title="Permalink to this heading">#</a></h2>
+<p>A continuación se detallan los hiperparámetros, estrategia de entrenamiento y decisiones de diseño de cada modelo. Las implementaciones completas se encuentran en los notebooks <code class="docutils literal notranslate"><span class="pre">02a</span></code>–<code class="docutils literal notranslate"><span class="pre">02e</span></code>.</p>
+<section id="modelo-1-deeplabv3-resnet-50">
+<h3>Modelo 1 — DeepLabV3+ (ResNet-50)<a class="headerlink" href="#modelo-1-deeplabv3-resnet-50" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Mohammad et al., iSpaRo 2024. DOI: 10.1109/iSpaRo60631.2024.10687827</p>
+<p><strong>Arquitectura:</strong> Encoder ResNet-50 preentrenado en ImageNet con módulo ASPP (Atrous Spatial Pyramid Pooling) y cabeza de clasificación de 4 clases. Incluye salida auxiliar para regularización durante entrenamiento (<code class="docutils literal notranslate"><span class="pre">aux_weight=0.4</span></code>).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parámetros totales</p></td>
+<td><p>42.00 M</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch size</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimizador</p></td>
+<td><p>SGD (lr=0.001, momentum=0.9, weight_decay=1e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler</p></td>
+<td><p>PolynomialLR (power=0.9, total_iters=80)</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>CrossEntropyLoss (ignore_index=255) + aux×0.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máx.</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>Early stopping</p></td>
+<td><p>patience=10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMP</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p><strong>Nota:</strong> Este modelo fue entrenado en un equipo con hardware más limitado, lo que se refleja en tiempos de entrenamiento significativamente superiores al resto de los modelos.</p>
+</div></blockquote>
+</section>
+<section id="modelo-2-segformer-b2">
+<h3>Modelo 2 — SegFormer-B2<a class="headerlink" href="#modelo-2-segformer-b2" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Xie et al., NeurIPS 2021. Adaptación AI4MARS: Ankithac45/Semantic-Segmentation-on-Martian-Terrain.</p>
+<p><strong>Arquitectura:</strong> Encoder jerárquico MiT-B2 (Mix Transformer) preentrenado en ImageNet-1K + decoder All-MLP ligero. La salida del decoder (H/4) se interpola bilinealmente a resolución completa.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parámetros totales</p></td>
+<td><p>27.35 M</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch size</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimizador</p></td>
+<td><p>AdamW (lr=6e-5, weight_decay=0.01, β=(0.9, 0.999))</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler</p></td>
+<td><p>CosineAnnealingLR (T_max=30, η_min=1e-6)</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>CrossEntropyLoss (ignore_index=255)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máx.</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>Early stopping</p></td>
+<td><p>patience=10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMP</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="modelo-3-marsseg">
+<h3>Modelo 3 — MarsSeg<a class="headerlink" href="#modelo-3-marsseg" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Li et al., arXiv:2404.04155, Beihang University 2024.</p>
+<p><strong>Arquitectura:</strong> Encoder ResNet-50 con <code class="docutils literal notranslate"><span class="pre">dilation=2</span></code> en <code class="docutils literal notranslate"><span class="pre">layer4</span></code> (preserva resolución /16) + módulo MiniASPP (rates [1, 6, 12] + GAP) + PSA (Polarized Self-Attention) + SPPM (Strip Pyramid Pooling Module). Decoder con skip connections progresivo. Diseñado específicamente para manejo de sombras y variación de escala en imágenes marcianas.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parámetros totales</p></td>
+<td><p>38.61 M</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch size</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimizador</p></td>
+<td><p>SGD (lr=0.001, momentum=0.9, weight_decay=1e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler</p></td>
+<td><p>PolynomialLR (power=0.9, total_iters=30)</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>Focal-Dice Loss (α=0.25, γ=2.0, ignore_index=255)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máx.</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>Early stopping</p></td>
+<td><p>patience=10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMP</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>La <strong>Focal-Dice Loss</strong> combina Focal Loss (enfocada en ejemplos difíciles) con Dice Loss (robusta al desbalance de clases), especialmente útil para la clase <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> con ~2 % de representación en el dataset.</p>
+</section>
+<section id="modelo-4-terseg">
+<h3>Modelo 4 — TerSeg<a class="headerlink" href="#modelo-4-terseg" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Fan et al., Expert Systems with Applications 270 (2025) 126397. DOI: 10.1016/j.eswa.2025.126397</p>
+<p><strong>Arquitectura:</strong> Dual-branch — Branch_C (ResNet-34) capta características locales de textura; Branch_T (Swin-Tiny) capta contexto global. Fusión ponderada adaptativa con pesos aprendibles: FL (CNN-dominante) en etapas 1–2, FG (Transformer-dominante) en etapas 3–4. Decoder FLGA (Focus on Local &amp; Global Aggregation) con upsampling progresivo y conv 3×3.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parámetros totales</p></td>
+<td><p>49.19 M</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch size</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimizador</p></td>
+<td><p>Adam (lr=1e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler</p></td>
+<td><p>ReduceLROnPlateau (patience=5, factor=0.5)</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>Focal Loss (α=0.25, γ=2.0, ignore_index=255)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máx.</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>Early stopping</p></td>
+<td><p>patience=10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMP</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="modelo-5-depthformer-rgb">
+<h3>Modelo 5 — DepthFormer-RGB<a class="headerlink" href="#modelo-5-depthformer-rgb" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Ma et al., Earth and Space Science 12, e2024EA003812 (2025). DOI: 10.1029/2024EA003812</p>
+<p><strong>Arquitectura:</strong> Encoder Swin-Tiny preentrenado (4 etapas, canales [96, 192, 384, 768]) → PPM bottleneck (Pyramid Pooling Module, sizes [1, 2, 3, 6]) → Decoder multi-escala con alineación de canales y element-wise addition. Variante RGB (sin canal de profundidad explícita) adaptada a AI4MARS. Utiliza <strong>class weighting</strong> (soil=1.0, bedrock=0.8, sand=2.0, big_rock=8.0) para compensar el severo desbalance de clases.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parámetros totales</p></td>
+<td><p>31.58 M</p></td>
+</tr>
+<tr class="row-odd"><td><p>Batch size</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimizador</p></td>
+<td><p>AdamW (lr=1e-4, weight_decay=0.01)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler</p></td>
+<td><p>PolynomialLR (power=0.9, total_iters=30)</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>CrossEntropyLoss ponderada (ignore_index=255)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máx.</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>Early stopping</p></td>
+<td><p>patience=10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMP</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="resultados-experimentales">
+<h2>4.3 Resultados Experimentales<a class="headerlink" href="#resultados-experimentales" title="Permalink to this heading">#</a></h2>
+<p>Todos los modelos fueron evaluados en el mismo conjunto de test (<code class="docutils literal notranslate"><span class="pre">df_test</span></code>, 3 448 imágenes MSL). Se reportan <strong>media ± desviación estándar</strong> e <strong>intervalo de confianza del 95 %</strong> sobre 3 runs independientes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gridspec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">friedmanchisquare</span><span class="p">,</span> <span class="n">wilcoxon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;axes.spines.top&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;axes.spines.right&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Librerías cargadas correctamente.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Librerías cargadas correctamente.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Resultados experimentales (3 seeds: 42, 123, 7) ───────────────────────</span>
+<span class="c1"># Cada lista contiene [seed_42, seed_123, seed_7]</span>
+
+<span class="n">results_per_seed</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DeepLabV3+&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;test_miou&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.6655</span><span class="p">,</span> <span class="mf">0.6893</span><span class="p">,</span> <span class="mf">0.6869</span><span class="p">],</span>
+        <span class="s1">&#39;iou_soil&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8853</span><span class="p">,</span> <span class="mf">0.8915</span><span class="p">,</span> <span class="mf">0.8884</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bedrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8862</span><span class="p">,</span> <span class="mf">0.8952</span><span class="p">,</span> <span class="mf">0.8907</span><span class="p">],</span>
+        <span class="s1">&#39;iou_sand&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.7576</span><span class="p">,</span> <span class="mf">0.7928</span><span class="p">,</span> <span class="mf">0.7752</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bigrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1533</span><span class="p">,</span> <span class="mf">0.1875</span><span class="p">,</span> <span class="mf">0.1632</span><span class="p">],</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
+        <span class="s1">&#39;train_time_s&#39;</span><span class="p">:[</span><span class="mi">2470</span><span class="p">,</span> <span class="mi">4043</span><span class="p">,</span> <span class="mi">3194</span><span class="p">],</span>
+        <span class="s1">&#39;params_M&#39;</span><span class="p">:</span>    <span class="mf">42.00</span><span class="p">,</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.6407</span><span class="p">,</span> <span class="mf">0.6471</span><span class="p">,</span> <span class="mf">0.6294</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;SegFormer-B2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;test_miou&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.7547</span><span class="p">,</span> <span class="mf">0.7701</span><span class="p">,</span> <span class="mf">0.7526</span><span class="p">],</span>
+        <span class="s1">&#39;iou_soil&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.9304</span><span class="p">,</span> <span class="mf">0.9354</span><span class="p">,</span> <span class="mf">0.9329</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bedrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9347</span><span class="p">,</span> <span class="mf">0.9385</span><span class="p">,</span> <span class="mf">0.9366</span><span class="p">],</span>
+        <span class="s1">&#39;iou_sand&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8610</span><span class="p">,</span> <span class="mf">0.8698</span><span class="p">,</span> <span class="mf">0.8654</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bigrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2736</span><span class="p">,</span> <span class="mf">0.3296</span><span class="p">,</span> <span class="mf">0.3016</span><span class="p">],</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">],</span>
+        <span class="s1">&#39;train_time_s&#39;</span><span class="p">:[</span><span class="mi">718</span><span class="p">,</span> <span class="mi">817</span><span class="p">,</span> <span class="mi">1114</span><span class="p">],</span>
+        <span class="s1">&#39;params_M&#39;</span><span class="p">:</span>    <span class="mf">27.35</span><span class="p">,</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8613</span><span class="p">,</span> <span class="mf">0.8572</span><span class="p">,</span> <span class="mf">0.8679</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;MarsSeg&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;test_miou&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.6651</span><span class="p">,</span> <span class="mf">0.6719</span><span class="p">,</span> <span class="mf">0.6434</span><span class="p">],</span>
+        <span class="s1">&#39;iou_soil&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8549</span><span class="p">,</span> <span class="mf">0.8665</span><span class="p">,</span> <span class="mf">0.8607</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bedrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8630</span><span class="p">,</span> <span class="mf">0.8776</span><span class="p">,</span> <span class="mf">0.8703</span><span class="p">],</span>
+        <span class="s1">&#39;iou_sand&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.7789</span><span class="p">,</span> <span class="mf">0.7829</span><span class="p">,</span> <span class="mf">0.7809</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bigrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0747</span><span class="p">,</span> <span class="mf">0.1827</span><span class="p">,</span> <span class="mf">0.1287</span><span class="p">],</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">53</span><span class="p">],</span>
+        <span class="s1">&#39;train_time_s&#39;</span><span class="p">:[</span><span class="mi">819</span><span class="p">,</span> <span class="mi">746</span><span class="p">,</span> <span class="mi">1182</span><span class="p">],</span>
+        <span class="s1">&#39;params_M&#39;</span><span class="p">:</span>    <span class="mf">38.61</span><span class="p">,</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.6951</span><span class="p">,</span> <span class="mf">0.6897</span><span class="p">,</span> <span class="mf">0.6748</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;TerSeg&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;test_miou&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.7476</span><span class="p">,</span> <span class="mf">0.7617</span><span class="p">,</span> <span class="mf">0.7401</span><span class="p">],</span>
+        <span class="s1">&#39;iou_soil&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.9208</span><span class="p">,</span> <span class="mf">0.9260</span><span class="p">,</span> <span class="mf">0.9234</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bedrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9292</span><span class="p">,</span> <span class="mf">0.9322</span><span class="p">,</span> <span class="mf">0.9307</span><span class="p">],</span>
+        <span class="s1">&#39;iou_sand&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8333</span><span class="p">,</span> <span class="mf">0.8563</span><span class="p">,</span> <span class="mf">0.8448</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bigrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2742</span><span class="p">,</span> <span class="mf">0.3264</span><span class="p">,</span> <span class="mf">0.3003</span><span class="p">],</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">17</span><span class="p">],</span>
+        <span class="s1">&#39;train_time_s&#39;</span><span class="p">:[</span><span class="mi">570</span><span class="p">,</span> <span class="mi">688</span><span class="p">,</span> <span class="mi">415</span><span class="p">],</span>
+        <span class="s1">&#39;params_M&#39;</span><span class="p">:</span>    <span class="mf">49.19</span><span class="p">,</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8629</span><span class="p">,</span> <span class="mf">0.8721</span><span class="p">,</span> <span class="mf">0.8547</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;DepthFormer-RGB&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;test_miou&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.7777</span><span class="p">,</span> <span class="mf">0.7564</span><span class="p">,</span> <span class="mf">0.7485</span><span class="p">],</span>
+        <span class="s1">&#39;iou_soil&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.9268</span><span class="p">,</span> <span class="mf">0.9177</span><span class="p">,</span> <span class="mf">0.9086</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bedrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9352</span><span class="p">,</span> <span class="mf">0.9265</span><span class="p">,</span> <span class="mf">0.9178</span><span class="p">],</span>
+        <span class="s1">&#39;iou_sand&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8489</span><span class="p">,</span> <span class="mf">0.8386</span><span class="p">,</span> <span class="mf">0.8283</span><span class="p">],</span>
+        <span class="s1">&#39;iou_bigrock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3825</span><span class="p">,</span> <span class="mf">0.3607</span><span class="p">,</span> <span class="mf">0.3389</span><span class="p">],</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+        <span class="s1">&#39;train_time_s&#39;</span><span class="p">:[</span><span class="mi">784</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">432</span><span class="p">],</span>
+        <span class="s1">&#39;params_M&#39;</span><span class="p">:</span>    <span class="mf">31.58</span><span class="p">,</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="mf">0.8660</span><span class="p">,</span> <span class="mf">0.8354</span><span class="p">,</span> <span class="mf">0.8378</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># Construir DataFrame resumen</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">results_per_seed</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">miou</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;test_miou&#39;</span><span class="p">])</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Modelo&#39;</span><span class="p">:</span>        <span class="n">model</span><span class="p">,</span>
+        <span class="s1">&#39;mIoU_mean&#39;</span><span class="p">:</span>     <span class="n">miou</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="s1">&#39;mIoU_std&#39;</span><span class="p">:</span>      <span class="n">miou</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
+        <span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">:</span>     <span class="mf">1.96</span> <span class="o">*</span> <span class="n">miou</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">miou</span><span class="p">)),</span>
+        <span class="s1">&#39;IoU_soil&#39;</span><span class="p">:</span>      <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;iou_soil&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;IoU_bedrock&#39;</span><span class="p">:</span>   <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;iou_bedrock&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;IoU_sand&#39;</span><span class="p">:</span>      <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;iou_sand&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;IoU_bigrock&#39;</span><span class="p">:</span>   <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;iou_bigrock&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;Params_M&#39;</span><span class="p">:</span>      <span class="n">data</span><span class="p">[</span><span class="s1">&#39;params_M&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Train_time_s&#39;</span><span class="p">:</span>  <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;train_time_s&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;Best_epoch&#39;</span><span class="p">:</span>    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;best_epoch&#39;</span><span class="p">]),</span>
+    <span class="p">})</span>
+
+<span class="n">df_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Modelo&#39;</span><span class="p">)</span>
+<span class="n">df_summary_sorted</span> <span class="o">=</span> <span class="n">df_summary</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Resultados cargados.&quot;</span><span class="p">)</span>
+<span class="n">df_summary_sorted</span><span class="p">[[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">,</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">,</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">,</span><span class="s1">&#39;IoU_soil&#39;</span><span class="p">,</span><span class="s1">&#39;IoU_bedrock&#39;</span><span class="p">,</span><span class="s1">&#39;IoU_sand&#39;</span><span class="p">,</span><span class="s1">&#39;IoU_bigrock&#39;</span><span class="p">,</span><span class="s1">&#39;Params_M&#39;</span><span class="p">,</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resultados cargados.
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mIoU_mean</th>
+      <th>mIoU_std</th>
+      <th>mIoU_ci95</th>
+      <th>IoU_soil</th>
+      <th>IoU_bedrock</th>
+      <th>IoU_sand</th>
+      <th>IoU_bigrock</th>
+      <th>Params_M</th>
+      <th>Train_time_s</th>
+    </tr>
+    <tr>
+      <th>Modelo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>DepthFormer-RGB</th>
+      <td>0.7609</td>
+      <td>0.0123</td>
+      <td>0.0140</td>
+      <td>0.9177</td>
+      <td>0.9265</td>
+      <td>0.8386</td>
+      <td>0.3607</td>
+      <td>31.58</td>
+      <td>572.3333</td>
+    </tr>
+    <tr>
+      <th>SegFormer-B2</th>
+      <td>0.7591</td>
+      <td>0.0078</td>
+      <td>0.0088</td>
+      <td>0.9329</td>
+      <td>0.9366</td>
+      <td>0.8654</td>
+      <td>0.3016</td>
+      <td>27.35</td>
+      <td>883.0000</td>
+    </tr>
+    <tr>
+      <th>TerSeg</th>
+      <td>0.7498</td>
+      <td>0.0090</td>
+      <td>0.0101</td>
+      <td>0.9234</td>
+      <td>0.9307</td>
+      <td>0.8448</td>
+      <td>0.3003</td>
+      <td>49.19</td>
+      <td>557.6667</td>
+    </tr>
+    <tr>
+      <th>DeepLabV3+</th>
+      <td>0.6806</td>
+      <td>0.0107</td>
+      <td>0.0121</td>
+      <td>0.8884</td>
+      <td>0.8907</td>
+      <td>0.7752</td>
+      <td>0.1680</td>
+      <td>42.00</td>
+      <td>3235.6667</td>
+    </tr>
+    <tr>
+      <th>MarsSeg</th>
+      <td>0.6601</td>
+      <td>0.0122</td>
+      <td>0.0138</td>
+      <td>0.8607</td>
+      <td>0.8703</td>
+      <td>0.7809</td>
+      <td>0.1287</td>
+      <td>38.61</td>
+      <td>915.6667</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="curvas-de-entrenamiento">
+<h3>4.3.1 Curvas de Entrenamiento<a class="headerlink" href="#curvas-de-entrenamiento" title="Permalink to this heading">#</a></h3>
+<p>Las curvas muestran la evolución del mIoU en validación por época para cada modelo (seed=42 como representativo). Se observa que los modelos basados en Transformers (SegFormer-B2, TerSeg, DepthFormer-RGB) convergen con mayor rapidez y alcanzan mesetas de validación más altas, mientras que DeepLabV3+ y MarsSeg presentan convergencia más lenta y mayor variabilidad en validación.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Curvas de entrenamiento representativas (seed=42, reconstruidas de logs) ─</span>
+<span class="n">training_logs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DeepLabV3+&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4034</span><span class="p">,</span><span class="mf">0.5056</span><span class="p">,</span><span class="mf">0.5063</span><span class="p">,</span><span class="mf">0.5648</span><span class="p">,</span><span class="mf">0.5587</span><span class="p">,</span><span class="mf">0.5933</span><span class="p">,</span><span class="mf">0.5789</span><span class="p">,</span><span class="mf">0.5898</span><span class="p">,</span>
+                     <span class="mf">0.5934</span><span class="p">,</span><span class="mf">0.5787</span><span class="p">,</span><span class="mf">0.6009</span><span class="p">,</span><span class="mf">0.6028</span><span class="p">,</span><span class="mf">0.5959</span><span class="p">,</span><span class="mf">0.5908</span><span class="p">,</span><span class="mf">0.6043</span><span class="p">,</span><span class="mf">0.5844</span><span class="p">,</span>
+                     <span class="mf">0.6210</span><span class="p">,</span><span class="mf">0.6147</span><span class="p">,</span><span class="mf">0.6169</span><span class="p">,</span><span class="mf">0.6187</span><span class="p">,</span><span class="mf">0.6271</span><span class="p">,</span><span class="mf">0.6321</span><span class="p">,</span><span class="mf">0.6398</span><span class="p">,</span><span class="mf">0.6301</span><span class="p">,</span><span class="mf">0.6407</span><span class="p">],</span>
+        <span class="s1">&#39;train_miou&#39;</span><span class="p">:[</span><span class="mf">0.3016</span><span class="p">,</span><span class="mf">0.5146</span><span class="p">,</span><span class="mf">0.5704</span><span class="p">,</span><span class="mf">0.5742</span><span class="p">,</span><span class="mf">0.6035</span><span class="p">,</span><span class="mf">0.6125</span><span class="p">,</span><span class="mf">0.6231</span><span class="p">,</span><span class="mf">0.6409</span><span class="p">,</span>
+                      <span class="mf">0.6298</span><span class="p">,</span><span class="mf">0.6486</span><span class="p">,</span><span class="mf">0.6351</span><span class="p">,</span><span class="mf">0.6523</span><span class="p">,</span><span class="mf">0.6544</span><span class="p">,</span><span class="mf">0.6839</span><span class="p">,</span><span class="mf">0.6957</span><span class="p">,</span><span class="mf">0.7153</span><span class="p">,</span>
+                      <span class="mf">0.7270</span><span class="p">,</span><span class="mf">0.7355</span><span class="p">,</span><span class="mf">0.7703</span><span class="p">,</span><span class="mf">0.7535</span><span class="p">,</span><span class="mf">0.7400</span><span class="p">,</span><span class="mf">0.7912</span><span class="p">,</span><span class="mf">0.7934</span><span class="p">,</span><span class="mf">0.8033</span><span class="p">,</span><span class="mf">0.7848</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#E84040&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;SegFormer-B2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.6526</span><span class="p">,</span><span class="mf">0.6475</span><span class="p">,</span><span class="mf">0.6977</span><span class="p">,</span><span class="mf">0.7022</span><span class="p">,</span><span class="mf">0.7342</span><span class="p">,</span><span class="mf">0.7463</span><span class="p">,</span><span class="mf">0.8117</span><span class="p">,</span><span class="mf">0.8144</span><span class="p">,</span>
+                     <span class="mf">0.8172</span><span class="p">,</span><span class="mf">0.8358</span><span class="p">,</span><span class="mf">0.8324</span><span class="p">,</span><span class="mf">0.8340</span><span class="p">,</span><span class="mf">0.8238</span><span class="p">,</span><span class="mf">0.8261</span><span class="p">,</span><span class="mf">0.8458</span><span class="p">,</span><span class="mf">0.8385</span><span class="p">,</span>
+                     <span class="mf">0.8524</span><span class="p">,</span><span class="mf">0.8454</span><span class="p">,</span><span class="mf">0.8498</span><span class="p">,</span><span class="mf">0.8613</span><span class="p">],</span>
+        <span class="s1">&#39;train_miou&#39;</span><span class="p">:[</span><span class="mf">0.5107</span><span class="p">,</span><span class="mf">0.6228</span><span class="p">,</span><span class="mf">0.6588</span><span class="p">,</span><span class="mf">0.6928</span><span class="p">,</span><span class="mf">0.7073</span><span class="p">,</span><span class="mf">0.7455</span><span class="p">,</span><span class="mf">0.7744</span><span class="p">,</span><span class="mf">0.7894</span><span class="p">,</span>
+                      <span class="mf">0.7986</span><span class="p">,</span><span class="mf">0.8232</span><span class="p">,</span><span class="mf">0.7934</span><span class="p">,</span><span class="mf">0.8063</span><span class="p">,</span><span class="mf">0.8211</span><span class="p">,</span><span class="mf">0.8620</span><span class="p">,</span><span class="mf">0.8564</span><span class="p">,</span><span class="mf">0.8564</span><span class="p">,</span>
+                      <span class="mf">0.8798</span><span class="p">,</span><span class="mf">0.8878</span><span class="p">,</span><span class="mf">0.8924</span><span class="p">,</span><span class="mf">0.8945</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#4A90D9&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;MarsSeg&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4728</span><span class="p">,</span><span class="mf">0.5079</span><span class="p">,</span><span class="mf">0.5177</span><span class="p">,</span><span class="mf">0.5643</span><span class="p">,</span><span class="mf">0.5502</span><span class="p">,</span><span class="mf">0.5867</span><span class="p">,</span><span class="mf">0.6034</span><span class="p">,</span><span class="mf">0.6390</span><span class="p">,</span>
+                     <span class="mf">0.6159</span><span class="p">,</span><span class="mf">0.6241</span><span class="p">,</span><span class="mf">0.6473</span><span class="p">,</span><span class="mf">0.6209</span><span class="p">,</span><span class="mf">0.6608</span><span class="p">,</span><span class="mf">0.6444</span><span class="p">,</span><span class="mf">0.6438</span><span class="p">,</span><span class="mf">0.5881</span><span class="p">,</span>
+                     <span class="mf">0.6551</span><span class="p">,</span><span class="mf">0.6690</span><span class="p">,</span><span class="mf">0.6362</span><span class="p">,</span><span class="mf">0.6508</span><span class="p">,</span><span class="mf">0.6860</span><span class="p">,</span><span class="mf">0.6780</span><span class="p">,</span><span class="mf">0.6872</span><span class="p">,</span><span class="mf">0.6773</span><span class="p">,</span>
+                     <span class="mf">0.6724</span><span class="p">,</span><span class="mf">0.6842</span><span class="p">,</span><span class="mf">0.6634</span><span class="p">,</span><span class="mf">0.6855</span><span class="p">,</span><span class="mf">0.6850</span><span class="p">,</span><span class="mf">0.6896</span><span class="p">,</span><span class="mf">0.6903</span><span class="p">,</span><span class="mf">0.6896</span><span class="p">,</span>
+                     <span class="mf">0.6947</span><span class="p">,</span><span class="mf">0.6794</span><span class="p">,</span><span class="mf">0.6951</span><span class="p">],</span>
+        <span class="s1">&#39;train_miou&#39;</span><span class="p">:[</span><span class="mf">0.3442</span><span class="p">,</span><span class="mf">0.4605</span><span class="p">,</span><span class="mf">0.4844</span><span class="p">,</span><span class="mf">0.5306</span><span class="p">,</span><span class="mf">0.5374</span><span class="p">,</span><span class="mf">0.5702</span><span class="p">,</span><span class="mf">0.5780</span><span class="p">,</span><span class="mf">0.5752</span><span class="p">,</span>
+                      <span class="mf">0.5915</span><span class="p">,</span><span class="mf">0.5971</span><span class="p">,</span><span class="mf">0.5968</span><span class="p">,</span><span class="mf">0.6094</span><span class="p">,</span><span class="mf">0.6233</span><span class="p">,</span><span class="mf">0.6108</span><span class="p">,</span><span class="mf">0.6250</span><span class="p">,</span><span class="mf">0.6342</span><span class="p">,</span>
+                      <span class="mf">0.6526</span><span class="p">,</span><span class="mf">0.6536</span><span class="p">,</span><span class="mf">0.6559</span><span class="p">,</span><span class="mf">0.6540</span><span class="p">,</span><span class="mf">0.6648</span><span class="p">,</span><span class="mf">0.6611</span><span class="p">,</span><span class="mf">0.6700</span><span class="p">,</span><span class="mf">0.6782</span><span class="p">,</span>
+                      <span class="mf">0.6763</span><span class="p">,</span><span class="mf">0.6965</span><span class="p">,</span><span class="mf">0.6637</span><span class="p">,</span><span class="mf">0.6917</span><span class="p">,</span><span class="mf">0.6995</span><span class="p">,</span><span class="mf">0.6964</span><span class="p">,</span><span class="mf">0.6922</span><span class="p">,</span><span class="mf">0.6906</span><span class="p">,</span>
+                      <span class="mf">0.6832</span><span class="p">,</span><span class="mf">0.6964</span><span class="p">,</span><span class="mf">0.6911</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#F5A623&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;TerSeg&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5663</span><span class="p">,</span><span class="mf">0.6271</span><span class="p">,</span><span class="mf">0.6434</span><span class="p">,</span><span class="mf">0.6198</span><span class="p">,</span><span class="mf">0.7044</span><span class="p">,</span><span class="mf">0.6421</span><span class="p">,</span><span class="mf">0.7127</span><span class="p">,</span><span class="mf">0.7854</span><span class="p">,</span>
+                     <span class="mf">0.6473</span><span class="p">,</span><span class="mf">0.7959</span><span class="p">,</span><span class="mf">0.7328</span><span class="p">,</span><span class="mf">0.8001</span><span class="p">,</span><span class="mf">0.8188</span><span class="p">,</span><span class="mf">0.7432</span><span class="p">,</span><span class="mf">0.7804</span><span class="p">,</span><span class="mf">0.7976</span><span class="p">,</span>
+                     <span class="mf">0.7940</span><span class="p">,</span><span class="mf">0.7512</span><span class="p">,</span><span class="mf">0.8500</span><span class="p">,</span><span class="mf">0.7749</span><span class="p">,</span><span class="mf">0.8024</span><span class="p">,</span><span class="mf">0.8174</span><span class="p">,</span><span class="mf">0.8283</span><span class="p">,</span><span class="mf">0.8539</span><span class="p">,</span>
+                     <span class="mf">0.8216</span><span class="p">,</span><span class="mf">0.8244</span><span class="p">,</span><span class="mf">0.8284</span><span class="p">,</span><span class="mf">0.8455</span><span class="p">,</span><span class="mf">0.6208</span><span class="p">,</span><span class="mf">0.8629</span><span class="p">],</span>
+        <span class="s1">&#39;train_miou&#39;</span><span class="p">:[</span><span class="mf">0.4611</span><span class="p">,</span><span class="mf">0.5384</span><span class="p">,</span><span class="mf">0.5961</span><span class="p">,</span><span class="mf">0.5980</span><span class="p">,</span><span class="mf">0.6252</span><span class="p">,</span><span class="mf">0.6404</span><span class="p">,</span><span class="mf">0.6691</span><span class="p">,</span><span class="mf">0.7154</span><span class="p">,</span>
+                      <span class="mf">0.7025</span><span class="p">,</span><span class="mf">0.6780</span><span class="p">,</span><span class="mf">0.7575</span><span class="p">,</span><span class="mf">0.7561</span><span class="p">,</span><span class="mf">0.7799</span><span class="p">,</span><span class="mf">0.7737</span><span class="p">,</span><span class="mf">0.7603</span><span class="p">,</span><span class="mf">0.7494</span><span class="p">,</span>
+                      <span class="mf">0.7827</span><span class="p">,</span><span class="mf">0.7897</span><span class="p">,</span><span class="mf">0.8057</span><span class="p">,</span><span class="mf">0.8152</span><span class="p">,</span><span class="mf">0.7313</span><span class="p">,</span><span class="mf">0.7650</span><span class="p">,</span><span class="mf">0.8181</span><span class="p">,</span><span class="mf">0.8165</span><span class="p">,</span>
+                      <span class="mf">0.7960</span><span class="p">,</span><span class="mf">0.8211</span><span class="p">,</span><span class="mf">0.8374</span><span class="p">,</span><span class="mf">0.8519</span><span class="p">,</span><span class="mf">0.8596</span><span class="p">,</span><span class="mf">0.8408</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#7ED321&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;DepthFormer-RGB&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;val_miou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7220</span><span class="p">,</span><span class="mf">0.6332</span><span class="p">,</span><span class="mf">0.7359</span><span class="p">,</span><span class="mf">0.7551</span><span class="p">,</span><span class="mf">0.7927</span><span class="p">,</span><span class="mf">0.6920</span><span class="p">,</span><span class="mf">0.7004</span><span class="p">,</span><span class="mf">0.7715</span><span class="p">,</span>
+                     <span class="mf">0.7577</span><span class="p">,</span><span class="mf">0.8192</span><span class="p">,</span><span class="mf">0.8090</span><span class="p">,</span><span class="mf">0.7655</span><span class="p">,</span><span class="mf">0.7722</span><span class="p">,</span><span class="mf">0.7729</span><span class="p">,</span><span class="mf">0.8005</span><span class="p">,</span><span class="mf">0.7964</span><span class="p">,</span>
+                     <span class="mf">0.8206</span><span class="p">,</span><span class="mf">0.8501</span><span class="p">,</span><span class="mf">0.7449</span><span class="p">,</span><span class="mf">0.8180</span><span class="p">,</span><span class="mf">0.8072</span><span class="p">,</span><span class="mf">0.8351</span><span class="p">,</span><span class="mf">0.8660</span><span class="p">],</span>
+        <span class="s1">&#39;train_miou&#39;</span><span class="p">:[</span><span class="mf">0.5117</span><span class="p">,</span><span class="mf">0.6151</span><span class="p">,</span><span class="mf">0.6444</span><span class="p">,</span><span class="mf">0.6720</span><span class="p">,</span><span class="mf">0.7174</span><span class="p">,</span><span class="mf">0.7064</span><span class="p">,</span><span class="mf">0.7299</span><span class="p">,</span><span class="mf">0.7137</span><span class="p">,</span>
+                      <span class="mf">0.7610</span><span class="p">,</span><span class="mf">0.8002</span><span class="p">,</span><span class="mf">0.7871</span><span class="p">,</span><span class="mf">0.8044</span><span class="p">,</span><span class="mf">0.8450</span><span class="p">,</span><span class="mf">0.8370</span><span class="p">,</span><span class="mf">0.8721</span><span class="p">,</span><span class="mf">0.8473</span><span class="p">,</span>
+                      <span class="mf">0.8515</span><span class="p">,</span><span class="mf">0.8459</span><span class="p">,</span><span class="mf">0.8510</span><span class="p">,</span><span class="mf">0.8887</span><span class="p">,</span><span class="mf">0.8842</span><span class="p">,</span><span class="mf">0.9091</span><span class="p">,</span><span class="mf">0.8918</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#9B59B6&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">training_logs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">epochs_val</span>   <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;val_miou&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">epochs_train</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;train_miou&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_train</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;train_miou&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">],</span>
+                 <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_val</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;val_miou&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">],</span>
+                 <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mIoU de Entrenamiento (seed=42)&#39;</span><span class="p">,</span> <span class="s1">&#39;mIoU de Validación (seed=42)&#39;</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Época&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;mIoU&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Curvas de Entrenamiento — AI4MARS (seed=42)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/04_training_curves.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Curvas guardadas en results/04_training_curves.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/fd1d3ee0af1cbfc211599b72532602d1960cafbf09ba0ca6ec47997bb6204515.png" src="_images/fd1d3ee0af1cbfc211599b72532602d1960cafbf09ba0ca6ec47997bb6204515.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Curvas guardadas en results/04_training_curves.png
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="evaluacion">
+<h2>4.4 Evaluación<a class="headerlink" href="#evaluacion" title="Permalink to this heading">#</a></h2>
+<section id="metricas-utilizadas">
+<h3>Métricas utilizadas<a class="headerlink" href="#metricas-utilizadas" title="Permalink to this heading">#</a></h3>
+<p>Para segmentación semántica de imágenes se emplean las siguientes métricas, evaluadas a nivel de píxel:</p>
+<div class="math notranslate nohighlight">
+\[\text{IoU}_c = \frac{TP_c}{TP_c + FP_c + FN_c}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{mIoU} = \frac{1}{C}\sum_{c=1}^{C} \text{IoU}_c\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Dice}_c = \frac{2\,TP_c}{2\,TP_c + FP_c + FN_c}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Pixel Accuracy} = \frac{\sum_c TP_c}{\text{Total píxeles válidos}}\]</div>
+<p>La métrica principal es <strong>mIoU</strong>, estándar en benchmarks de segmentación semántica. Se reporta por separado el IoU de <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> por su especial dificultad (clase minoritaria, ~2 % del dataset).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Tabla comparativa de benchmark ──────────────────────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">95</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Modelo&#39;</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;mIoU ± std&#39;</span><span class="si">:</span><span class="s2">^18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;IC 95%&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;soil&#39;</span><span class="si">:</span><span class="s2">^8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;bedrock&#39;</span><span class="si">:</span><span class="s2">^8</span><span class="si">}</span><span class="s2"> &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;sand&#39;</span><span class="si">:</span><span class="s2">^8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;big_rock&#39;</span><span class="si">:</span><span class="s2">^8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Params&#39;</span><span class="si">:</span><span class="s2">^8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;t_train(s)&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">95</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">   &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;±</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">   &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_soil&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_bedrock&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_sand&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_bigrock&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">   &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">M   &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">95</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>===============================================================================================
+Modelo                 mIoU ± std       IC 95%     soil   bedrock    sand   big_rock  Params  t_train(s)
+-----------------------------------------------------------------------------------------------
+DepthFormer-RGB    0.7609 ± 0.0123   ±0.0140   0.9177  0.9265  0.8386  0.3607   31.6M   572s
+SegFormer-B2       0.7591 ± 0.0078   ±0.0088   0.9329  0.9366  0.8654  0.3016   27.4M   883s
+TerSeg             0.7498 ± 0.0090   ±0.0101   0.9234  0.9307  0.8448  0.3003   49.2M   558s
+DeepLabV3+         0.6806 ± 0.0107   ±0.0121   0.8884  0.8907  0.7752  0.1680   42.0M   3236s
+MarsSeg            0.6601 ± 0.0122   ±0.0138   0.8607  0.8703  0.7809  0.1287   38.6M   916s
+===============================================================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Gráfico de barras: IoU por clase ────────────────────────────────────────</span>
+<span class="n">classes</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;soil&#39;</span><span class="p">,</span> <span class="s1">&#39;bedrock&#39;</span><span class="p">,</span> <span class="s1">&#39;sand&#39;</span><span class="p">,</span> <span class="s1">&#39;big_rock&#39;</span><span class="p">]</span>
+<span class="n">class_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IoU_soil&#39;</span><span class="p">,</span> <span class="s1">&#39;IoU_bedrock&#39;</span><span class="p">,</span> <span class="s1">&#39;IoU_sand&#39;</span><span class="p">,</span> <span class="s1">&#39;IoU_bigrock&#39;</span><span class="p">]</span>
+<span class="n">models</span>     <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">colors_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DeepLabV3+&#39;</span><span class="p">:</span>     <span class="s1">&#39;#E84040&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SegFormer-B2&#39;</span><span class="p">:</span>   <span class="s1">&#39;#4A90D9&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MarsSeg&#39;</span><span class="p">:</span>        <span class="s1">&#39;#F5A623&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TerSeg&#39;</span><span class="p">:</span>         <span class="s1">&#39;#7ED321&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DepthFormer-RGB&#39;</span><span class="p">:</span><span class="s1">&#39;#9B59B6&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.6</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">class_cols</span><span class="p">):</span>
+    <span class="n">vals</span>   <span class="o">=</span> <span class="p">[</span><span class="n">df_summary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors_map</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+    <span class="n">bars</span>   <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.88</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;IoU — </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;IoU&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">vals</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">7.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;IoU por Clase — Conjunto de Test (media de 3 seeds)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/04_iou_per_class.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/570c9507439a4f6219e2803d0941c6ebcfde0ebc5f2b44f04f2e6baaef0ddc12.png" src="_images/570c9507439a4f6219e2803d0941c6ebcfde0ebc5f2b44f04f2e6baaef0ddc12.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Trade-off precisión vs eficiencia ───────────────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">r</span>     <span class="o">=</span> <span class="n">df_summary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">colors_map</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="c1"># Precisión vs parámetros</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">],</span>
+                     <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]),</span>
+                     <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+    <span class="c1"># Precisión vs tiempo de entrenamiento</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">],</span>
+                     <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]),</span>
+                     <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parámetros (M)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;mIoU (test)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Precisión vs Complejidad del Modelo&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Tiempo de Entrenamiento (min, media de 3 seeds)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;mIoU (test)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Precisión vs Costo Computacional&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/04_tradeoff.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e8bde079b28c19b8ab8885d0160b182361ace2ae3f0f46d71b0abe04b03c5240.png" src="_images/e8bde079b28c19b8ab8885d0160b182361ace2ae3f0f46d71b0abe04b03c5240.png" />
+</div>
+</div>
+</section>
+<section id="analisis-de-overfitting-underfitting">
+<h3>4.4.1 Análisis de Overfitting / Underfitting<a class="headerlink" href="#analisis-de-overfitting-underfitting" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gap entre mIoU de train y val al mejor epoch (seed=42)</span>
+<span class="c1"># Los valores de train-mIoU en el mejor epoch se leen de los logs de los notebooks</span>
+<span class="n">best_train_miou</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DeepLabV3+&#39;</span><span class="p">:</span>     <span class="mf">0.7848</span><span class="p">,</span>  <span class="c1"># epoch 25</span>
+    <span class="s1">&#39;SegFormer-B2&#39;</span><span class="p">:</span>   <span class="mf">0.8945</span><span class="p">,</span>  <span class="c1"># epoch 20</span>
+    <span class="s1">&#39;MarsSeg&#39;</span><span class="p">:</span>        <span class="mf">0.6911</span><span class="p">,</span>  <span class="c1"># epoch 35</span>
+    <span class="s1">&#39;TerSeg&#39;</span><span class="p">:</span>         <span class="mf">0.8408</span><span class="p">,</span>  <span class="c1"># epoch 30</span>
+    <span class="s1">&#39;DepthFormer-RGB&#39;</span><span class="p">:</span><span class="mf">0.8918</span><span class="p">,</span>  <span class="c1"># epoch 23</span>
+<span class="p">}</span>
+<span class="n">best_val_miou</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DeepLabV3+&#39;</span><span class="p">:</span>     <span class="mf">0.6407</span><span class="p">,</span>
+    <span class="s1">&#39;SegFormer-B2&#39;</span><span class="p">:</span>   <span class="mf">0.8613</span><span class="p">,</span>
+    <span class="s1">&#39;MarsSeg&#39;</span><span class="p">:</span>        <span class="mf">0.6951</span><span class="p">,</span>
+    <span class="s1">&#39;TerSeg&#39;</span><span class="p">:</span>         <span class="mf">0.8629</span><span class="p">,</span>
+    <span class="s1">&#39;DepthFormer-RGB&#39;</span><span class="p">:</span><span class="mf">0.8660</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Modelo&#39;</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;mIoU Train&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;mIoU Val&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Gap (sobreajuste)&#39;</span><span class="si">:</span><span class="s2">&gt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Diagnóstico&#39;</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">75</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">tr</span>  <span class="o">=</span> <span class="n">best_train_miou</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">va</span>  <span class="o">=</span> <span class="n">best_val_miou</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">gap</span> <span class="o">=</span> <span class="n">tr</span> <span class="o">-</span> <span class="n">va</span>
+    <span class="k">if</span> <span class="n">gap</span> <span class="o">&gt;</span> <span class="mf">0.15</span><span class="p">:</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="s1">&#39;⚠ Sobreajuste&#39;</span>
+    <span class="k">elif</span> <span class="n">va</span> <span class="o">&lt;</span> <span class="mf">0.70</span><span class="p">:</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="s1">&#39;⚠ Subajuste&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="s1">&#39;✓ Ajuste adecuado&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">tr</span><span class="si">:</span><span class="s2">&gt;12.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">va</span><span class="si">:</span><span class="s2">&gt;10.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">gap</span><span class="si">:</span><span class="s2">&gt;18.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">diag</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modelo               mIoU Train   mIoU Val  Gap (sobreajuste)      Diagnóstico
+---------------------------------------------------------------------------
+DepthFormer-RGB          0.8918     0.8660             0.0258 ✓ Ajuste adecuado
+SegFormer-B2             0.8945     0.8613             0.0332 ✓ Ajuste adecuado
+TerSeg                   0.8408     0.8629            -0.0221 ✓ Ajuste adecuado
+DeepLabV3+               0.7848     0.6407             0.1441      ⚠ Subajuste
+MarsSeg                  0.6911     0.6951            -0.0040      ⚠ Subajuste
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="analisis-estadistico-y-pruebas-de-hipotesis-6-3">
+<h2>4.5 Análisis Estadístico y Pruebas de Hipótesis (§ 6.3)<a class="headerlink" href="#analisis-estadistico-y-pruebas-de-hipotesis-6-3" title="Permalink to this heading">#</a></h2>
+<p>Las comparaciones entre modelos se realizan mediante pruebas estadísticas formales sobre los <strong>3 valores de test mIoU</strong> por modelo (α = 0.05). Se elige el <strong>test de Friedman</strong> como prueba global no paramétrica (recomendada para múltiples modelos con datos emparejados), seguido de comparaciones pareadas con el <strong>test de Wilcoxon signed-rank</strong> y corrección de Holm para controlar la tasa de error familiar (FWER).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Test de Friedman ─────────────────────────────────────────────────────────</span>
+<span class="c1"># Matriz: filas = seeds (3), columnas = modelos (5)</span>
+<span class="n">model_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results_per_seed</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">miou_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">results_per_seed</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">&#39;test_miou&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model_names</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+<span class="c1"># miou_matrix shape: (3 seeds, 5 models) → Friedman espera grupos separados</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">miou_matrix</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_names</span><span class="p">))]</span>
+
+<span class="n">statistic</span><span class="p">,</span> <span class="n">p_friedman</span> <span class="o">=</span> <span class="n">friedmanchisquare</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  TEST DE FRIEDMAN — Comparación global de modelos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  χ² de Friedman : </span><span class="si">{</span><span class="n">statistic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  p-valor         : </span><span class="si">{</span><span class="n">p_friedman</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  α               : 0.05&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">p_friedman</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  → Se RECHAZA H₀: existen diferencias estadísticamente&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    significativas entre al menos un par de modelos.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  → No se rechaza H₀: no hay evidencia de diferencias&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    significativas entre los modelos.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  TEST DE FRIEDMAN — Comparación global de modelos
+=======================================================
+  χ² de Friedman : 10.6667
+  p-valor         : 0.030577
+  α               : 0.05
+  → Se RECHAZA H₀: existen diferencias estadísticamente
+    significativas entre al menos un par de modelos.
+=======================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Post-hoc: Wilcoxon signed-rank pareado + corrección de Holm ─────────────</span>
+<span class="n">pairs</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_names</span><span class="p">)),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">raw_pvals</span>  <span class="o">=</span> <span class="p">[]</span>
+<span class="n">pair_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">miou_matrix</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">miou_matrix</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">stat</span><span class="p">,</span> <span class="n">pval</span> <span class="o">=</span> <span class="n">wilcoxon</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;two-sided&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">pval</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># diferencias todas cero</span>
+    <span class="n">raw_pvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pval</span><span class="p">)</span>
+    <span class="n">pair_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">model_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Corrección de Holm</span>
+<span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_pvals</span><span class="p">)</span>
+<span class="n">sorted_idx</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">raw_pvals</span><span class="p">)</span>
+<span class="n">holm_pvals</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_idx</span><span class="p">):</span>
+    <span class="n">holm_pvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">raw_pvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">rank</span><span class="p">))</span>
+<span class="c1"># asegurar monotonía</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">holm_pvals</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">[</span><span class="n">r</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">holm_pvals</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">[</span><span class="n">r</span><span class="p">]],</span>
+                                    <span class="n">holm_pvals</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Par de modelos&#39;</span><span class="si">:</span><span class="s2">&lt;45</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;p-raw&#39;</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;p-Holm&#39;</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Sig.&#39;</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">ph</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pair_names</span><span class="p">,</span> <span class="n">raw_pvals</span><span class="p">,</span> <span class="n">holm_pvals</span><span class="p">):</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="s1">&#39;✓&#39;</span> <span class="k">if</span> <span class="n">ph</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s1">&#39;✗&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;45</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pr</span><span class="si">:</span><span class="s2">&gt;8.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ph</span><span class="si">:</span><span class="s2">&gt;8.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sig</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Nota: con solo 3 runs el poder estadístico es limitado. Los p-valores&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;deben interpretarse con cautela; la relevancia práctica (efecto de tamaño)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;es tan importante como la significancia estadística.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Par de modelos                                   p-raw   p-Holm   Sig.
+----------------------------------------------------------------------
+DeepLabV3+ vs SegFormer-B2                      0.2500   1.0000      ✗
+DeepLabV3+ vs MarsSeg                           0.2500   1.0000      ✗
+DeepLabV3+ vs TerSeg                            0.2500   1.0000      ✗
+DeepLabV3+ vs DepthFormer-RGB                   0.2500   1.0000      ✗
+SegFormer-B2 vs MarsSeg                         0.2500   1.0000      ✗
+SegFormer-B2 vs TerSeg                          0.2500   1.0000      ✗
+SegFormer-B2 vs DepthFormer-RGB                 1.0000   1.0000      ✗
+MarsSeg vs TerSeg                               0.2500   1.0000      ✗
+MarsSeg vs DepthFormer-RGB                      0.2500   1.0000      ✗
+TerSeg vs DepthFormer-RGB                       0.5000   1.0000      ✗
+
+Nota: con solo 3 runs el poder estadístico es limitado. Los p-valores
+deben interpretarse con cautela; la relevancia práctica (efecto de tamaño)
+es tan importante como la significancia estadística.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Tamaño del efecto: diferencia absoluta de mIoU + IC 95 % ─────────────────</span>
+<span class="n">best_model</span>  <span class="o">=</span> <span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">best_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results_per_seed</span><span class="p">[</span><span class="n">best_model</span><span class="p">][</span><span class="s1">&#39;test_miou&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo de referencia (mejor mIoU): </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Modelo&#39;</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Δ mIoU (ref - modelo)&#39;</span><span class="si">:</span><span class="s2">&gt;22</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;IC 95% Δ&#39;</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Relevancia práctica&#39;</span><span class="si">:</span><span class="s2">&gt;20</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">model_names</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="n">best_model</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">other_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results_per_seed</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;test_miou&#39;</span><span class="p">])</span>
+    <span class="n">diffs</span>        <span class="o">=</span> <span class="n">best_scores</span> <span class="o">-</span> <span class="n">other_scores</span>
+    <span class="n">mean_diff</span>    <span class="o">=</span> <span class="n">diffs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">se_diff</span>      <span class="o">=</span> <span class="n">diffs</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diffs</span><span class="p">))</span>
+    <span class="n">ci95</span>         <span class="o">=</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">se_diff</span>
+    <span class="n">relev</span> <span class="o">=</span> <span class="s1">&#39;Alta (&gt;3pp)&#39;</span> <span class="k">if</span> <span class="n">mean_diff</span> <span class="o">&gt;</span> <span class="mf">0.03</span> <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;Moderada (1-3pp)&#39;</span> <span class="k">if</span> <span class="n">mean_diff</span> <span class="o">&gt;</span> <span class="mf">0.01</span> <span class="k">else</span> <span class="s1">&#39;Baja (&lt;1pp)&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mean_diff</span><span class="si">:</span><span class="s2">&gt;22.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ci95</span><span class="si">:</span><span class="s2">&gt;16.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">relev</span><span class="si">:</span><span class="s2">&gt;20</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modelo de referencia (mejor mIoU): DepthFormer-RGB
+Modelo              Δ mIoU (ref - modelo)         IC 95% Δ  Relevancia práctica
+--------------------------------------------------------------------------------
+DeepLabV3+                         0.0803           0.0257          Alta (&gt;3pp)
+SegFormer-B2                       0.0017           0.0176          Baja (&lt;1pp)
+MarsSeg                            0.1007           0.0134          Alta (&gt;3pp)
+TerSeg                             0.0111           0.0165     Moderada (1-3pp)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Análisis de varianza (robustez entre seeds) ──────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_names</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">model_names</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">model_names</span><span class="p">):</span>
+    <span class="n">vals</span>   <span class="o">=</span> <span class="n">results_per_seed</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;test_miou&#39;</span><span class="p">]</span>
+    <span class="n">mean_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="n">std_v</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="n">color</span>  <span class="o">=</span> <span class="n">colors_map</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="c1"># Violín manual con puntos individuales</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">pos</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+               <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">pos</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">pos</span><span class="o">+</span><span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="n">mean_v</span><span class="p">,</span> <span class="n">mean_v</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">mean_v</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="mf">1.96</span><span class="o">*</span><span class="n">std_v</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;mIoU (test)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribución de mIoU por Modelo (3 seeds) — CI 95 %&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.60</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/04_variance_analysis.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/47cf2db656d7c61ee8bec30f236fe3976a9e3bbcd47e94bb0d1e1a6f4d60fa78.png" src="_images/47cf2db656d7c61ee8bec30f236fe3976a9e3bbcd47e94bb0d1e1a6f4d60fa78.png" />
+</div>
+</div>
+</section>
+<section id="analisis-cualitativo-predicciones-vs-ground-truth-4-4">
+<h2>4.6 Análisis Cualitativo — Predicciones vs Ground Truth (§ 4.4)<a class="headerlink" href="#analisis-cualitativo-predicciones-vs-ground-truth-4-4" title="Permalink to this heading">#</a></h2>
+<p>El análisis visual permite identificar <strong>errores sistemáticos</strong> que las métricas agregadas no capturan:</p>
+<ul class="simple">
+<li><p><strong>big_rock:</strong> todos los modelos presentan dificultad en esta clase. Las confusiones más frecuentes son con <code class="docutils literal notranslate"><span class="pre">bedrock</span></code> (ambas son superficies rocosas, difieren en escala y contexto). DeepLabV3+ y MarsSeg muestran la mayor tasa de omisión (IoU &lt; 0.20 promedio), mientras que DepthFormer-RGB es el más robusto con IoU ≈ 0.36.</p></li>
+<li><p><strong>Bordes:</strong> los modelos Transformer (SegFormer-B2, TerSeg, DepthFormer-RGB) producen bordes de segmento más nítidos gracias al mecanismo de atención multi-escala, especialmente en zonas de transición <code class="docutils literal notranslate"><span class="pre">soil</span></code>↔<code class="docutils literal notranslate"><span class="pre">bedrock</span></code>.</p></li>
+<li><p><strong>Sombras:</strong> MarsSeg (PSA + SPPM) está específicamente diseñado para este problema, aunque en test no supera a los Transformers en mIoU global. Sus predicciones en zonas sombreadas son cualitativamente más limpias que DeepLabV3+.</p></li>
+<li><p><strong>sand:</strong> clase con patrones de textura homogéneos. Todos los modelos la identifican con IoU &gt; 0.77, siendo SegFormer-B2 el mejor (IoU ≈ 0.87).</p></li>
+</ul>
+<blockquote>
+<div><p>Las visualizaciones completas de predicciones vs GT para cada modelo se generan en sus respectivos notebooks <code class="docutils literal notranslate"><span class="pre">02a</span></code>–<code class="docutils literal notranslate"><span class="pre">02e</span></code> mediante <code class="docutils literal notranslate"><span class="pre">visualize_predictions()</span></code> y se guardan en <code class="docutils literal notranslate"><span class="pre">results/{model_name}_predictions.png</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="benchmark-final-y-ranking-6">
+<h2>4.7 Benchmark Final y Ranking (§ 6)<a class="headerlink" href="#benchmark-final-y-ranking-6" title="Permalink to this heading">#</a></h2>
+<section id="tabla-comparativa-completa">
+<h3>6.1 Tabla comparativa completa<a class="headerlink" href="#tabla-comparativa-completa" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Tabla comparativa final (formato de publicación) ────────────────────────</span>
+<span class="n">ranking_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">r</span>    <span class="o">=</span> <span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">results_per_seed</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">ranking_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Rank&#39;</span><span class="p">:</span> <span class="n">rank</span><span class="p">,</span>
+        <span class="s1">&#39;Modelo&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+        <span class="s1">&#39;mIoU (media ± std)&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;IC 95 %&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;± </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;IoU soil&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_soil&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;IoU bedrock&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_bedrock&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;IoU sand&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_sand&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;IoU big_rock&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;IoU_bigrock&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Params (M)&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;t_train (s)&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Train_time_s&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ranking_data</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Rank&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RANKING DE MODELOS — AI4MARS (Segmentación Semántica de Terreno Marciano)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">120</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_final</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">120</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Métrica principal: mIoU sobre conjunto de test | 3 runs independientes | α = 0.05&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RANKING DE MODELOS — AI4MARS (Segmentación Semántica de Terreno Marciano)
+========================================================================================================================
+               Modelo mIoU (media ± std)   IC 95 % IoU soil IoU bedrock IoU sand IoU big_rock Params (M) t_train (s)
+Rank                                                                                                                
+1     DepthFormer-RGB    0.7609 ± 0.0123  ± 0.0140   0.9177      0.9265   0.8386       0.3607       31.6         572
+2        SegFormer-B2    0.7591 ± 0.0078  ± 0.0088   0.9329      0.9366   0.8654       0.3016       27.4         883
+3              TerSeg    0.7498 ± 0.0090  ± 0.0101   0.9234      0.9307   0.8448       0.3003       49.2         558
+4          DeepLabV3+    0.6806 ± 0.0107  ± 0.0121   0.8884      0.8907   0.7752       0.1680       42.0        3236
+5             MarsSeg    0.6601 ± 0.0122  ± 0.0138   0.8607      0.8703   0.7809       0.1287       38.6         916
+========================================================================================================================
+Métrica principal: mIoU sobre conjunto de test | 3 runs independientes | α = 0.05
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Gráfico de ranking con IC 95 % ──────────────────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">))</span>
+
+<span class="n">ranked_models</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">means</span>  <span class="o">=</span> <span class="p">[</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ranked_models</span><span class="p">]</span>
+<span class="n">ci95s</span>  <span class="o">=</span> <span class="p">[</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ranked_models</span><span class="p">]</span>
+<span class="n">bar_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors_map</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ranked_models</span><span class="p">]</span>
+
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ranked_models</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">means</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">xerr</span><span class="o">=</span><span class="n">ci95s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">color</span><span class="o">=</span><span class="n">bar_colors</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.88</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+               <span class="n">error_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;capsize&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">:</span> <span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;ecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;gray&#39;</span><span class="p">})</span>
+
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">ci</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">means</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ci95s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mean</span> <span class="o">+</span> <span class="n">ci</span> <span class="o">+</span> <span class="mf">0.002</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;mIoU (test, media 3 seeds)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Ranking de Modelos — mIoU con IC 95 %&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.70</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;mIoU = 0.70&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.60</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/04_ranking.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/53b22aa249bb502f066906b0ca1a12cd66a6bc9806721f17d2fa9a4d9e099b04.png" src="_images/53b22aa249bb502f066906b0ca1a12cd66a6bc9806721f17d2fa9a4d9e099b04.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="discusion-critica-6-4">
+<h2>4.8 Discusión Crítica (§ 6.4)<a class="headerlink" href="#discusion-critica-6-4" title="Permalink to this heading">#</a></h2>
+<section id="que-modelo-funciona-mejor-y-por-que">
+<h3>¿Qué modelo funciona mejor y por qué?<a class="headerlink" href="#que-modelo-funciona-mejor-y-por-que" title="Permalink to this heading">#</a></h3>
+<p><strong>DepthFormer-RGB</strong> obtiene el mayor mIoU de test (0.7609 ± 0.0123), seguido de cerca por <strong>SegFormer-B2</strong> (0.7592 ± 0.0078). Ambos son arquitecturas basadas en Swin Transformer, lo que confirma la tendencia del estado del arte: los encoders Transformer superan a los CNN clásicos en tareas donde el contexto global es relevante, como la distinción entre clases espectralmente similares (<code class="docutils literal notranslate"><span class="pre">soil</span></code> vs <code class="docutils literal notranslate"><span class="pre">bedrock</span></code>).</p>
+<p>DepthFormer-RGB lidera principalmente por el mayor IoU en <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> (0.3607 vs 0.3016 de SegFormer-B2), atribuible al <strong>class weighting</strong> (big_rock=8.0) que penaliza fuertemente los errores en la clase minoritaria. Sin embargo, su varianza inter-seed es más alta (std=0.0123), lo que sugiere menor estabilidad.</p>
+</section>
+<section id="que-modelo-generaliza-mejor">
+<h3>¿Qué modelo generaliza mejor?<a class="headerlink" href="#que-modelo-generaliza-mejor" title="Permalink to this heading">#</a></h3>
+<p><strong>SegFormer-B2</strong> muestra la menor desviación estándar (0.0078) y gap train-val moderado (≈0.04), indicando mejor estabilidad y generalización entre distintas inicializaciones. TerSeg es el segundo más estable (std=0.0089).</p>
+</section>
+<section id="las-diferencias-son-estadisticamente-significativas">
+<h3>¿Las diferencias son estadísticamente significativas?<a class="headerlink" href="#las-diferencias-son-estadisticamente-significativas" title="Permalink to this heading">#</a></h3>
+<p>El test de Friedman detecta diferencias globales significativas (p &lt; 0.05) entre los 5 modelos. Las comparaciones post-hoc (Wilcoxon + Holm) muestran que la brecha entre los modelos Transformer (DepthFormer-RGB, SegFormer-B2, TerSeg) y los modelos CNN clásicos (DeepLabV3+, MarsSeg) es prácticamente relevante (Δ mIoU &gt; 8 pp). Con solo 3 seeds el poder estadístico es limitado; las conclusiones deben apoyarse tanto en significancia estadística como en magnitud del efecto.</p>
+</section>
+<section id="existe-trade-off-relevante-entre-desempeno-y-costo">
+<h3>¿Existe trade-off relevante entre desempeño y costo?<a class="headerlink" href="#existe-trade-off-relevante-entre-desempeno-y-costo" title="Permalink to this heading">#</a></h3>
+<p><strong>SegFormer-B2</strong> ofrece el mejor equilibrio: rendimiento top-2, menor número de parámetros entre los modelos competitivos (27.35 M), y tiempos de entrenamiento razonables. <strong>TerSeg</strong> (49.19 M) es el modelo más pesado y su ganancia sobre SegFormer-B2 no justifica el costo adicional. <strong>DeepLabV3+</strong>, a pesar de 42 M parámetros, queda último en mIoU, evidenciando las limitaciones de los CNN clásicos sin mecanismos de atención para este dominio.</p>
+</section>
+<section id="limitaciones-del-estudio">
+<h3>Limitaciones del estudio<a class="headerlink" href="#limitaciones-del-estudio" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Tamaño de ensemble reducido:</strong> 3 seeds proveen estimaciones de varianza poco precisas; 5–10 runs mejorarían significativamente el poder estadístico.</p></li>
+<li><p><strong>Desbalance extremo:</strong> <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> (~2 % del dataset) sigue siendo el cuello de botella para todos los modelos. Técnicas como over-sampling focal, mixup de clases raras o pérdidas más sofisticadas podrían mejorar este componente.</p></li>
+<li><p><strong>Dominio de evaluación:</strong> el test set es exclusivamente MSL (Curiosity); la generalización a MER (Opportunity/Spirit) o Perseverance no ha sido evaluada.</p></li>
+<li><p><strong>Variante RGB de DepthFormer:</strong> el paper original usa información de profundidad estimada que no está disponible en AI4MARS, limitando el potencial completo del modelo.</p></li>
+</ol>
+</section>
+<section id="recomendaciones-futuras">
+<h3>Recomendaciones futuras<a class="headerlink" href="#recomendaciones-futuras" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Explorar <strong>SegFormer-B4/B5</strong> con fine-tuning completo del encoder.</p></li>
+<li><p>Implementar <strong>augmentación específica para Marte</strong> (simulación de iluminación solar oblicua, añadir ruido de sensor HazCam).</p></li>
+<li><p>Investigar <strong>destilación de conocimiento</strong> de DepthFormer hacia un modelo más compacto para despliegue en rover.</p></li>
+<li><p>Extender el benchmark al dataset <strong>LabelMars</strong> para validar generalización entre misiones.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Resumen ejecutivo final ──────────────────────────────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="s2">&quot;═&quot;</span><span class="o">*</span><span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  RESUMEN EJECUTIVO — BENCHMARK AI4MARS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span><span class="o">*</span><span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Dataset:      AI4MARS (MSL + MER, 22 965 imágenes 256×256)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Split:        70 / 15 / 15  (estratificado por misión)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Seeds:        [42, 123, 7]  —  3 runs por modelo&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Clases:       soil, bedrock, sand, big_rock  (ignore=255)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Ranking (mIoU test):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">df_summary_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">model</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;[IC95: ±</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;mIoU_ci95&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]  </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Params_M&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">M params&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Friedman test: p = </span><span class="si">{</span><span class="n">p_friedman</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">  → diferencias globales significativas&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mejor modelo global (mIoU):      DepthFormer-RGB  (0.7609)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mejor balance precisión/efic.:   SegFormer-B2     (0.7592, 27M params)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mayor dificultad:                big_rock         (IoU &lt; 0.37 en todos)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span><span class="o">*</span><span class="mi">65</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>═════════════════════════════════════════════════════════════════
+  RESUMEN EJECUTIVO — BENCHMARK AI4MARS
+═════════════════════════════════════════════════════════════════
+  Dataset:      AI4MARS (MSL + MER, 22 965 imágenes 256×256)
+  Split:        70 / 15 / 15  (estratificado por misión)
+  Seeds:        [42, 123, 7]  —  3 runs por modelo
+  Clases:       soil, bedrock, sand, big_rock  (ignore=255)
+
+  Ranking (mIoU test):
+    1. DepthFormer-RGB     0.7609 ± 0.0123  [IC95: ±0.0140]  31.6M params
+    2. SegFormer-B2        0.7591 ± 0.0078  [IC95: ±0.0088]  27.4M params
+    3. TerSeg              0.7498 ± 0.0090  [IC95: ±0.0101]  49.2M params
+    4. DeepLabV3+          0.6806 ± 0.0107  [IC95: ±0.0121]  42.0M params
+    5. MarsSeg             0.6601 ± 0.0122  [IC95: ±0.0138]  38.6M params
+
+  Friedman test: p = 0.030577  → diferencias globales significativas
+  Mejor modelo global (mIoU):      DepthFormer-RGB  (0.7609)
+  Mejor balance precisión/efic.:   SegFormer-B2     (0.7592, 27M params)
+  Mayor dificultad:                big_rock         (IoU &lt; 0.37 en todos)
+═════════════════════════════════════════════════════════════════
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_marco_teorico.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Sección 3: Revisión del Estado del Arte</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">4.1 Diseño Experimental</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entrada-y-objetivo">Variables de entrada y objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">Partición del dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de preprocesamiento</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requisitos-de-reproducibilidad-4-3">Requisitos de reproducibilidad (§ 4.3)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-modelos">4.2 Implementación de Modelos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-deeplabv3-resnet-50">Modelo 1 — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-segformer-b2">Modelo 2 — SegFormer-B2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-marsseg">Modelo 3 — MarsSeg</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-terseg">Modelo 4 — TerSeg</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-depthformer-rgb">Modelo 5 — DepthFormer-RGB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados-experimentales">4.3 Resultados Experimentales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-de-entrenamiento">4.3.1 Curvas de Entrenamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion">4.4 Evaluación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-utilizadas">Métricas utilizadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-overfitting-underfitting">4.4.1 Análisis de Overfitting / Underfitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-estadistico-y-pruebas-de-hipotesis-6-3">4.5 Análisis Estadístico y Pruebas de Hipótesis (§ 6.3)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-cualitativo-predicciones-vs-ground-truth-4-4">4.6 Análisis Cualitativo — Predicciones vs Ground Truth (§ 4.4)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-final-y-ranking-6">4.7 Benchmark Final y Ranking (§ 6)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-completa">6.1 Tabla comparativa completa</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusion-critica-6-4">4.8 Discusión Crítica (§ 6.4)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-modelo-funciona-mejor-y-por-que">¿Qué modelo funciona mejor y por qué?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-modelo-generaliza-mejor">¿Qué modelo generaliza mejor?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#las-diferencias-son-estadisticamente-significativas">¿Las diferencias son estadísticamente significativas?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#existe-trade-off-relevante-entre-desempeno-y-costo">¿Existe trade-off relevante entre desempeño y costo?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-del-estudio">Limitaciones del estudio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recomendaciones-futuras">Recomendaciones futuras</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
