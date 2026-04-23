@@ -216,5 +216,4 @@ Consistentes con el resto del proyecto:
 
 ---
 
-*Sección generada para el Entregable 2 — Deep Learning Project.*
 *Paper guía: Wen et al. (2025), Remote Sensing, 17(19), 3328.*
