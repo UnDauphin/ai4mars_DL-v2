@@ -1,0 +1,973 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>03c — MarsSeg &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03c_model_marsseg';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="03d — TerSeg (Dual-Branch CNN + Swin Transformer)" href="03d_model_terseg.html" />
+    <link rel="prev" title="03b — SegFormer-B2" href="03b_model_segformer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03a_model_deeplabv3plus.html">03a — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03b_model_segformer.html">03b — SegFormer-B2</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">03c — MarsSeg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03d_model_terseg.html">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03e_model_depthformer.html">03e — DepthFormer-RGB (Swin-Tiny + PPM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03c_model_marsseg.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03c_model_marsseg.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03c — MarsSeg</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-marsseg">2. Arquitectura MarsSeg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="c-marsseg">
+<h1>03c — MarsSeg<a class="headerlink" href="#c-marsseg" title="Permalink to this heading">#</a></h1>
+<p><strong>Paper:</strong> Li et al., arXiv:2404.04155, Beihang University 2024</p>
+<section id="configuracion">
+<h2>0. Configuración<a class="headerlink" href="#configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="p">;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mars_utils_fast</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">set_seed</span><span class="p">,</span> <span class="n">get_or_create_split</span><span class="p">,</span> <span class="n">build_dataloaders</span><span class="p">,</span>
+    <span class="n">run_multi_seed</span><span class="p">,</span> <span class="n">append_benchmark_results</span><span class="p">,</span>
+    <span class="n">visualize_predictions</span><span class="p">,</span> <span class="n">count_parameters</span><span class="p">,</span>
+    <span class="n">FocalDiceLoss</span><span class="p">,</span> <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">IGNORE_INDEX</span>
+<span class="p">)</span>
+<span class="n">set_seed</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;marsseg&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device: cuda
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset">
+<h2>1. Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;processed/manifest_256.csv&quot;</span><span class="p">)</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">get_or_create_split</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">build_dataloaders</span><span class="p">(</span>
+    <span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Split cargado desde processed\split_indices.pkl
+Train: 16074 {&#39;MSL&#39;: 15901, &#39;MER&#39;: 173}
+Val  :  3443 {&#39;MSL&#39;: 3443}
+Test :  3448 {&#39;MSL&#39;: 3448}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arquitectura-marsseg">
+<h2>2. Arquitectura MarsSeg<a class="headerlink" href="#arquitectura-marsseg" title="Permalink to this heading">#</a></h2>
+<p>Encoder ResNet-50 + MiniASPP + PSA + SPPM + Decoder con skip connections.
+Focal-Dice loss para manejo del desbalance extremo de big_rock.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tvm</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MiniASPP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mini Atrous Spatial Pyramid Pooling con rates [1,6,12] + GAP.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b0</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span><span class="n">out_ch</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span><span class="n">out_ch</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">dilation</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span><span class="n">out_ch</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">dilation</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span><span class="n">out_ch</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuse</span><span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_ch</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="n">out_ch</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">b0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">b1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">b2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">bg</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span><span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuse</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">bg</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PSA</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Polarized Self-Attention: channel + spatial attention.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch_pool</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ch</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch_fc</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="n">r</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sp_conv</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">ca</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ch_pool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">)</span>
+        <span class="n">ca</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ch_fc</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sa</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sp_conv</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">ca</span><span class="o">*</span><span class="n">sa</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SPPM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strip Pyramid Pooling Module: pooling horizontal + vertical.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ch</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hp</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="n">ch</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">ch</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">),</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span><span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">v</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">),</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span><span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">h</span><span class="o">+</span><span class="n">v</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvBnRelu</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="n">p</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">o</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MarsSeg</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encoder: ResNet-50 con dilation en layer4 (preserva resolución).</span>
+<span class="sd">    Feature Enhancement: MiniASPP + PSA (shadow) + SPPM (deep).</span>
+<span class="sd">    Decoder: upsampling progresivo con skip connections.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">tvm</span><span class="o">.</span><span class="n">ResNet50_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="c1"># Encoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer0</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">maxpool</span><span class="p">)</span>  <span class="c1"># /4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer1</span>   <span class="c1"># /4  , 256ch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer2</span>   <span class="c1"># /8  , 512ch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer3</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer3</span>   <span class="c1"># /16 , 1024ch</span>
+        <span class="c1"># layer4 con dilation=2 para mantener /16</span>
+        <span class="n">bb</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conv2</span><span class="o">.</span><span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">bb</span><span class="o">.</span><span class="n">layer4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">downsample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer4</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">)</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">kernel_size</span><span class="o">==</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">dilation</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span> <span class="n">m</span><span class="o">.</span><span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer4</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer4</span>   <span class="c1"># /16 , 2048ch</span>
+
+        <span class="c1"># Feature Enhancement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aspp</span> <span class="o">=</span> <span class="n">MiniASPP</span><span class="p">(</span><span class="mi">2048</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psa</span>  <span class="o">=</span> <span class="n">PSA</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sppm</span> <span class="o">=</span> <span class="n">SPPM</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span>  <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="mi">256</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up3</span>  <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="mi">256</span><span class="o">+</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up2</span>  <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="mi">256</span><span class="o">+</span><span class="mi">512</span><span class="p">,</span>  <span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up1</span>  <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="mi">128</span><span class="o">+</span><span class="mi">256</span><span class="p">,</span>   <span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">s0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">s1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span>   <span class="c1"># /4</span>
+        <span class="n">s2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>   <span class="c1"># /8</span>
+        <span class="n">s3</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer3</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>   <span class="c1"># /16</span>
+        <span class="n">s4</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer4</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>   <span class="c1"># /16</span>
+
+        <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aspp</span><span class="p">(</span><span class="n">s4</span><span class="p">);</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">psa</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="n">sp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sppm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">sp</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">up</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">skip</span><span class="p">,</span><span class="n">conv</span><span class="p">):</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">skip</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span><span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">conv</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">skip</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">x</span><span class="o">=</span><span class="n">up</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="n">s3</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">up3</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">up</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>  <span class="n">s2</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">up2</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">up</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>  <span class="n">s1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">up1</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">),</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span><span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_marsseg</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">MarsSeg</span><span class="p">(</span><span class="n">NUM_CLASSES</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">=</span><span class="n">build_marsseg</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">params_M</span><span class="o">=</span><span class="n">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parámetros: </span><span class="si">{</span><span class="n">params_M</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">M&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">dummy</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output: </span><span class="si">{</span><span class="n">model</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading: &quot;https://download.pytorch.org/models/resnet50-11ad3fa6.pth&quot; to C:\Users\User/.cache\torch\hub\checkpoints\resnet50-11ad3fa6.pth
+100%|██████████| 97.8M/97.8M [00:02&lt;00:00, 44.8MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parámetros: 38.61M
+Output: torch.Size([2, 4, 256, 256])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="entrenamiento-3-seeds">
+<h2>3. Entrenamiento (3 seeds)<a class="headerlink" href="#entrenamiento-3-seeds" title="Permalink to this heading">#</a></h2>
+<p>SGD + PolynomialLR, Focal-Dice loss</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">criterion_fn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">FocalDiceLoss</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="n">IGNORE_INDEX</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optimizer_fn</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scheduler_fn</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">PolynomialLR</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">total_iters</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">run_multi_seed</span><span class="p">(</span>
+    <span class="n">model_fn</span><span class="o">=</span><span class="n">build_marsseg</span><span class="p">,</span>
+    <span class="n">df_train</span><span class="o">=</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="o">=</span><span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="o">=</span><span class="n">df_test</span><span class="p">,</span>
+    <span class="n">criterion_fn</span><span class="o">=</span><span class="n">criterion_fn</span><span class="p">,</span> <span class="n">optimizer_fn</span><span class="o">=</span><span class="n">optimizer_fn</span><span class="p">,</span> <span class="n">scheduler_fn</span><span class="o">=</span><span class="n">scheduler_fn</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_per_mission</span><span class="o">=</span><span class="mi">700</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>──────────────────────────────────────────────────
+  Seed 42 | marsseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  marsseg_seed42 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.7837 mIoU=0.3442 | val=0.4728 | rock=0.0086
+Ep   2/80 | loss=0.6012 mIoU=0.4605 | val=0.5079 | rock=0.0000
+Ep   3/80 | loss=0.5507 mIoU=0.4844 | val=0.5177 | rock=0.0003
+Ep   4/80 | loss=0.4691 mIoU=0.5306 | val=0.5643 | rock=0.0007
+Ep   5/80 | loss=0.4735 mIoU=0.5374 | val=0.5502 | rock=0.0002
+Ep   6/80 | loss=0.4069 mIoU=0.5702 | val=0.5867 | rock=0.0004
+Ep   7/80 | loss=0.4041 mIoU=0.5780 | val=0.6034 | rock=0.0007
+Ep   8/80 | loss=0.3996 mIoU=0.5752 | val=0.6390 | rock=0.0006
+Ep   9/80 | loss=0.3770 mIoU=0.5915 | val=0.6159 | rock=0.0011
+Ep  10/80 | loss=0.3633 mIoU=0.5971 | val=0.6241 | rock=0.0075
+Ep  11/80 | loss=0.3619 mIoU=0.5968 | val=0.6473 | rock=0.0007
+Ep  12/80 | loss=0.3679 mIoU=0.6094 | val=0.6209 | rock=0.0045
+Ep  13/80 | loss=0.3301 mIoU=0.6233 | val=0.6608 | rock=0.0013
+Ep  14/80 | loss=0.3537 mIoU=0.6108 | val=0.6444 | rock=0.0096
+Ep  15/80 | loss=0.3270 mIoU=0.6250 | val=0.6438 | rock=0.0400
+Ep  16/80 | loss=0.3397 mIoU=0.6342 | val=0.5881 | rock=0.0284
+Ep  17/80 | loss=0.3146 mIoU=0.6526 | val=0.6551 | rock=0.0280
+Ep  18/80 | loss=0.3191 mIoU=0.6536 | val=0.6690 | rock=0.0670
+Ep  19/80 | loss=0.3336 mIoU=0.6559 | val=0.6362 | rock=0.0983
+Ep  20/80 | loss=0.3109 mIoU=0.6540 | val=0.6508 | rock=0.1118
+Ep  21/80 | loss=0.3330 mIoU=0.6648 | val=0.6860 | rock=0.1637
+Ep  22/80 | loss=0.3089 mIoU=0.6611 | val=0.6780 | rock=0.1787
+Ep  23/80 | loss=0.2849 mIoU=0.6700 | val=0.6872 | rock=0.1310
+Ep  24/80 | loss=0.2969 mIoU=0.6782 | val=0.6773 | rock=0.1461
+Ep  25/80 | loss=0.2969 mIoU=0.6763 | val=0.6724 | rock=0.1659
+Ep  26/80 | loss=0.2861 mIoU=0.6965 | val=0.6842 | rock=0.1345
+Ep  27/80 | loss=0.2904 mIoU=0.6637 | val=0.6634 | rock=0.1635
+Ep  28/80 | loss=0.2631 mIoU=0.6917 | val=0.6855 | rock=0.1942
+Ep  29/80 | loss=0.2617 mIoU=0.6995 | val=0.6850 | rock=0.1717
+Ep  30/80 | loss=0.2708 mIoU=0.6964 | val=0.6896 | rock=0.1540
+Ep  31/80 | loss=0.2927 mIoU=0.6922 | val=0.6903 | rock=0.1472
+Ep  32/80 | loss=0.2940 mIoU=0.6906 | val=0.6896 | rock=0.1974
+Ep  33/80 | loss=0.3016 mIoU=0.6832 | val=0.6947 | rock=0.1861
+Ep  34/80 | loss=0.2725 mIoU=0.6964 | val=0.6794 | rock=0.1666
+Ep  35/80 | loss=0.2822 mIoU=0.6911 | val=0.6951 | rock=0.1532
+Ep  36/80 | loss=0.2940 mIoU=0.6935 | val=0.6857 | rock=0.1599
+Ep  37/80 | loss=0.2566 mIoU=0.6996 | val=0.6886 | rock=0.1197
+Ep  38/80 | loss=0.2932 mIoU=0.6880 | val=0.6767 | rock=0.1371
+Ep  39/80 | loss=0.3150 mIoU=0.6909 | val=0.6816 | rock=0.1626
+Ep  40/80 | loss=0.2834 mIoU=0.6871 | val=0.6831 | rock=0.1491
+Ep  41/80 | loss=0.2854 mIoU=0.6907 | val=0.6874 | rock=0.1960
+Ep  42/80 | loss=0.2815 mIoU=0.6984 | val=0.6915 | rock=0.1815
+Ep  43/80 | loss=0.3076 mIoU=0.6784 | val=0.6830 | rock=0.1755
+Ep  44/80 | loss=0.3068 mIoU=0.7000 | val=0.6795 | rock=0.1375
+Ep  45/80 | loss=0.3062 mIoU=0.6980 | val=0.6866 | rock=0.1494
+  Early stopping en epoch 45
+
+  Mejor val mIoU=0.6951 (epoch 35) | 819s
+  Test mIoU=0.6651
+
+──────────────────────────────────────────────────
+  Seed 123 | marsseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  marsseg_seed123 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.8068 mIoU=0.3040 | val=0.4391 | rock=0.0152
+Ep   2/80 | loss=0.6207 mIoU=0.4384 | val=0.4915 | rock=0.0106
+Ep   3/80 | loss=0.5505 mIoU=0.4738 | val=0.5378 | rock=0.0078
+Ep   4/80 | loss=0.4947 mIoU=0.5189 | val=0.5860 | rock=0.0124
+Ep   5/80 | loss=0.4401 mIoU=0.5374 | val=0.6164 | rock=0.0052
+Ep   6/80 | loss=0.4116 mIoU=0.5636 | val=0.6193 | rock=0.0083
+Ep   7/80 | loss=0.4242 mIoU=0.5754 | val=0.6171 | rock=0.0035
+Ep   8/80 | loss=0.4318 mIoU=0.5772 | val=0.5889 | rock=0.0402
+Ep   9/80 | loss=0.3864 mIoU=0.5864 | val=0.6310 | rock=0.0365
+Ep  10/80 | loss=0.3682 mIoU=0.5984 | val=0.6378 | rock=0.0368
+Ep  11/80 | loss=0.3657 mIoU=0.6161 | val=0.6510 | rock=0.0578
+Ep  12/80 | loss=0.3801 mIoU=0.6106 | val=0.6526 | rock=0.0531
+Ep  13/80 | loss=0.3314 mIoU=0.6479 | val=0.6479 | rock=0.0628
+Ep  14/80 | loss=0.3512 mIoU=0.6306 | val=0.6475 | rock=0.0837
+Ep  15/80 | loss=0.3424 mIoU=0.6438 | val=0.6681 | rock=0.1203
+Ep  16/80 | loss=0.3351 mIoU=0.6517 | val=0.6790 | rock=0.2163
+Ep  17/80 | loss=0.3108 mIoU=0.6583 | val=0.6768 | rock=0.1512
+Ep  18/80 | loss=0.3133 mIoU=0.6767 | val=0.6722 | rock=0.1301
+Ep  19/80 | loss=0.2865 mIoU=0.6901 | val=0.6658 | rock=0.0719
+Ep  20/80 | loss=0.2998 mIoU=0.6730 | val=0.6644 | rock=0.0853
+Ep  21/80 | loss=0.3155 mIoU=0.6685 | val=0.6609 | rock=0.1037
+Ep  22/80 | loss=0.2825 mIoU=0.6910 | val=0.6780 | rock=0.1131
+Ep  23/80 | loss=0.2968 mIoU=0.6895 | val=0.6738 | rock=0.1200
+Ep  24/80 | loss=0.2978 mIoU=0.6910 | val=0.6611 | rock=0.1355
+Ep  25/80 | loss=0.2862 mIoU=0.6983 | val=0.6662 | rock=0.1502
+Ep  26/80 | loss=0.2924 mIoU=0.6904 | val=0.6817 | rock=0.1285
+Ep  27/80 | loss=0.2783 mIoU=0.6890 | val=0.6856 | rock=0.1493
+Ep  28/80 | loss=0.3067 mIoU=0.6932 | val=0.6853 | rock=0.1373
+Ep  29/80 | loss=0.2864 mIoU=0.7018 | val=0.6815 | rock=0.1230
+Ep  30/80 | loss=0.2817 mIoU=0.7072 | val=0.6821 | rock=0.1529
+Ep  31/80 | loss=0.2748 mIoU=0.6930 | val=0.6897 | rock=0.1474
+Ep  32/80 | loss=0.2774 mIoU=0.6921 | val=0.6854 | rock=0.1466
+Ep  33/80 | loss=0.2797 mIoU=0.7042 | val=0.6662 | rock=0.1446
+Ep  34/80 | loss=0.2871 mIoU=0.6976 | val=0.6724 | rock=0.1413
+Ep  35/80 | loss=0.2729 mIoU=0.7225 | val=0.6730 | rock=0.1463
+Ep  36/80 | loss=0.2829 mIoU=0.7093 | val=0.6857 | rock=0.1520
+Ep  37/80 | loss=0.2766 mIoU=0.6989 | val=0.6895 | rock=0.1520
+Ep  38/80 | loss=0.2950 mIoU=0.6967 | val=0.6556 | rock=0.1643
+Ep  39/80 | loss=0.2864 mIoU=0.7055 | val=0.6853 | rock=0.1415
+Ep  40/80 | loss=0.2627 mIoU=0.7066 | val=0.6785 | rock=0.1618
+Ep  41/80 | loss=0.2862 mIoU=0.7092 | val=0.6787 | rock=0.1422
+  Early stopping en epoch 41
+
+  Mejor val mIoU=0.6897 (epoch 31) | 746s
+  Test mIoU=0.6719
+
+──────────────────────────────────────────────────
+  Seed 7 | marsseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  marsseg_seed7 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.7744 mIoU=0.3521 | val=0.4764 | rock=0.0001
+Ep   2/80 | loss=0.6167 mIoU=0.4478 | val=0.5222 | rock=0.0000
+Ep   3/80 | loss=0.5584 mIoU=0.4800 | val=0.5701 | rock=0.0000
+Ep   4/80 | loss=0.4929 mIoU=0.5049 | val=0.5169 | rock=0.0000
+Ep   5/80 | loss=0.4320 mIoU=0.5490 | val=0.5837 | rock=0.0000
+Ep   6/80 | loss=0.4338 mIoU=0.5551 | val=0.5969 | rock=0.0000
+Ep   7/80 | loss=0.4420 mIoU=0.5531 | val=0.5958 | rock=0.0000
+Ep   8/80 | loss=0.3879 mIoU=0.5796 | val=0.6201 | rock=0.0000
+Ep   9/80 | loss=0.3743 mIoU=0.5964 | val=0.6087 | rock=0.0000
+Ep  10/80 | loss=0.3758 mIoU=0.5951 | val=0.5698 | rock=0.0000
+Ep  11/80 | loss=0.3639 mIoU=0.6027 | val=0.6119 | rock=0.0000
+Ep  12/80 | loss=0.3511 mIoU=0.6165 | val=0.6370 | rock=0.0000
+Ep  13/80 | loss=0.3493 mIoU=0.6107 | val=0.6131 | rock=0.0000
+Ep  14/80 | loss=0.3631 mIoU=0.6185 | val=0.6427 | rock=0.0000
+Ep  15/80 | loss=0.3341 mIoU=0.6314 | val=0.6489 | rock=0.0004
+Ep  16/80 | loss=0.3568 mIoU=0.6233 | val=0.6464 | rock=0.0003
+Ep  17/80 | loss=0.3186 mIoU=0.6248 | val=0.6211 | rock=0.0002
+Ep  18/80 | loss=0.3499 mIoU=0.6249 | val=0.6013 | rock=0.0068
+Ep  19/80 | loss=0.3135 mIoU=0.6368 | val=0.6427 | rock=0.0034
+Ep  20/80 | loss=0.3460 mIoU=0.6259 | val=0.6490 | rock=0.0048
+Ep  21/80 | loss=0.2920 mIoU=0.6469 | val=0.6380 | rock=0.0156
+Ep  22/80 | loss=0.2826 mIoU=0.6575 | val=0.6370 | rock=0.0103
+Ep  23/80 | loss=0.3099 mIoU=0.6509 | val=0.6347 | rock=0.0196
+Ep  24/80 | loss=0.3024 mIoU=0.6488 | val=0.6545 | rock=0.0328
+Ep  25/80 | loss=0.3010 mIoU=0.6587 | val=0.6541 | rock=0.0180
+Ep  26/80 | loss=0.3037 mIoU=0.6576 | val=0.6528 | rock=0.0217
+Ep  27/80 | loss=0.2985 mIoU=0.6648 | val=0.6452 | rock=0.0479
+Ep  28/80 | loss=0.2771 mIoU=0.6722 | val=0.6619 | rock=0.0533
+Ep  29/80 | loss=0.3015 mIoU=0.6624 | val=0.6501 | rock=0.0444
+Ep  30/80 | loss=0.3048 mIoU=0.6701 | val=0.6531 | rock=0.0497
+Ep  31/80 | loss=0.2955 mIoU=0.6550 | val=0.6515 | rock=0.0690
+Ep  32/80 | loss=0.3074 mIoU=0.6586 | val=0.6420 | rock=0.0397
+Ep  33/80 | loss=0.2867 mIoU=0.6641 | val=0.6657 | rock=0.0514
+Ep  34/80 | loss=0.3132 mIoU=0.6528 | val=0.6655 | rock=0.0436
+Ep  35/80 | loss=0.2964 mIoU=0.6671 | val=0.6523 | rock=0.0488
+Ep  36/80 | loss=0.3368 mIoU=0.6665 | val=0.6456 | rock=0.0665
+Ep  37/80 | loss=0.2789 mIoU=0.6616 | val=0.6587 | rock=0.0621
+Ep  38/80 | loss=0.2943 mIoU=0.6644 | val=0.6684 | rock=0.0668
+Ep  39/80 | loss=0.2866 mIoU=0.6760 | val=0.6472 | rock=0.0336
+Ep  40/80 | loss=0.3046 mIoU=0.6628 | val=0.6642 | rock=0.0852
+Ep  41/80 | loss=0.2963 mIoU=0.6631 | val=0.6522 | rock=0.0483
+Ep  42/80 | loss=0.3020 mIoU=0.6657 | val=0.6249 | rock=0.0580
+Ep  43/80 | loss=0.2931 mIoU=0.6666 | val=0.6457 | rock=0.0396
+Ep  44/80 | loss=0.2873 mIoU=0.6654 | val=0.6375 | rock=0.0326
+Ep  45/80 | loss=0.3077 mIoU=0.6570 | val=0.6351 | rock=0.0627
+Ep  46/80 | loss=0.3104 mIoU=0.6713 | val=0.6503 | rock=0.0580
+Ep  47/80 | loss=0.3055 mIoU=0.6693 | val=0.6720 | rock=0.0490
+Ep  48/80 | loss=0.2970 mIoU=0.6660 | val=0.6462 | rock=0.0671
+Ep  49/80 | loss=0.2932 mIoU=0.6596 | val=0.6471 | rock=0.0514
+Ep  50/80 | loss=0.2755 mIoU=0.6700 | val=0.6254 | rock=0.0438
+Ep  51/80 | loss=0.2991 mIoU=0.6701 | val=0.6499 | rock=0.0798
+Ep  52/80 | loss=0.3169 mIoU=0.6606 | val=0.6588 | rock=0.0383
+Ep  53/80 | loss=0.2971 mIoU=0.6781 | val=0.6748 | rock=0.0849
+Ep  54/80 | loss=0.3188 mIoU=0.6503 | val=0.6466 | rock=0.0538
+Ep  55/80 | loss=0.2897 mIoU=0.6647 | val=0.6528 | rock=0.0588
+Ep  56/80 | loss=0.2766 mIoU=0.6745 | val=0.6487 | rock=0.0728
+Ep  57/80 | loss=0.3304 mIoU=0.6519 | val=0.6429 | rock=0.0605
+Ep  58/80 | loss=0.2813 mIoU=0.6648 | val=0.6611 | rock=0.0732
+Ep  59/80 | loss=0.2860 mIoU=0.6614 | val=0.6620 | rock=0.0518
+Ep  60/80 | loss=0.3196 mIoU=0.6577 | val=0.6167 | rock=0.0538
+Ep  61/80 | loss=0.2884 mIoU=0.6548 | val=0.6586 | rock=0.0881
+Ep  62/80 | loss=0.3085 mIoU=0.6564 | val=0.6521 | rock=0.0507
+Ep  63/80 | loss=0.2749 mIoU=0.6720 | val=0.6737 | rock=0.0682
+  Early stopping en epoch 63
+
+  Mejor val mIoU=0.6748 (epoch 53) | 1182s
+  Test mIoU=0.6434
+
+=======================================================
+  marsseg: mIoU=0.6601±0.0122 IC95=±0.0138
+  IoU(soil)=0.8607±0.0058
+  IoU(bedrock)=0.8703±0.0073
+  IoU(sand)=0.7809±0.0020
+  IoU(big_rock)=0.1287±0.0540
+=======================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="guardado-y-visualizacion">
+<h2>4. Guardado y Visualización<a class="headerlink" href="#guardado-y-visualizacion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">append_benchmark_results</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">best_epoch</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;best_epoch_mean&quot;</span><span class="p">],</span>
+    <span class="n">val_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span> <span class="n">test_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span>
+    <span class="n">test_miou_std</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_std&quot;</span><span class="p">],</span> <span class="n">test_miou_ci95</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_ci95&quot;</span><span class="p">],</span>
+    <span class="n">test_acc</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;pixel_acc_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_soil</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_soil_mean&quot;</span><span class="p">],</span> <span class="n">iou_bedrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_bedrock_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_sand</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_sand_mean&quot;</span><span class="p">],</span> <span class="n">iou_bigrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_big_rock_mean&quot;</span><span class="p">],</span>
+    <span class="n">params_M</span><span class="o">=</span><span class="n">params_M</span><span class="p">,</span> <span class="n">train_time_s</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;train_time_mean&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">best_model</span><span class="o">=</span><span class="n">build_marsseg</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">ckpt</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checkpoints/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_seed42_best.pth&quot;</span><span class="p">,</span><span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="n">best_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model_state&quot;</span><span class="p">])</span>
+<span class="n">visualize_predictions</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span><span class="n">df_test</span><span class="p">,</span><span class="n">device</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">save_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_predictions.png&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mIoU: </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="marsseg_predictions.png" src="attachment:marsseg_predictions.png" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03b_model_segformer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03b — SegFormer-B2</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03d_model_terseg.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-marsseg">2. Arquitectura MarsSeg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,924 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>03a — DeepLabV3+ (ResNet-50) &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03a_model_deeplabv3plus';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="03b — SegFormer-B2" href="03b_model_segformer.html" />
+    <link rel="prev" title="03 — Revisión del Estado del Arte" href="03_marco_teorico.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">03a — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03b_model_segformer.html">03b — SegFormer-B2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03c_model_marsseg.html">03c — MarsSeg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03d_model_terseg.html">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03e_model_depthformer.html">03e — DepthFormer-RGB (Swin-Tiny + PPM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03a_model_deeplabv3plus.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03a_model_deeplabv3plus.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03a — DeepLabV3+ (ResNet-50)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-e-imports">0. Configuración e Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-dataloaders">1. Dataset y DataLoaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-modelo">2. Definición del Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-de-resultados">4. Guardado de resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-visualizacion">5. Evaluación y Visualización</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="a-deeplabv3-resnet-50">
+<h1>03a — DeepLabV3+ (ResNet-50)<a class="headerlink" href="#a-deeplabv3-resnet-50" title="Permalink to this heading">#</a></h1>
+<p><strong>Paper:</strong> Mohammad et al., iSpaRo 2024. DOI: 10.1109/iSpaRo60631.2024.10687827</p>
+<section id="configuracion-e-imports">
+<h2>0. Configuración e Imports<a class="headerlink" href="#configuracion-e-imports" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mars_utils_fast</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>          <span class="c1"># ← mars_utils_fast</span>
+    <span class="n">set_seed</span><span class="p">,</span> <span class="n">get_or_create_split</span><span class="p">,</span> <span class="n">build_dataloaders</span><span class="p">,</span>
+    <span class="n">run_multi_seed</span><span class="p">,</span> <span class="n">append_benchmark_results</span><span class="p">,</span>
+    <span class="n">visualize_predictions</span><span class="p">,</span> <span class="n">count_parameters</span><span class="p">,</span>
+    <span class="n">FocalDiceLoss</span><span class="p">,</span> <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">IGNORE_INDEX</span><span class="p">,</span> <span class="n">SEED</span>
+<span class="p">)</span>
+
+<span class="n">set_seed</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;deeplabv3plus&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device: cuda
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset-y-dataloaders">
+<h2>1. Dataset y DataLoaders<a class="headerlink" href="#dataset-y-dataloaders" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;processed/manifest_256.csv&quot;</span><span class="p">)</span>  <span class="c1"># ← manifest_256</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">get_or_create_split</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">build_dataloaders</span><span class="p">(</span>
+    <span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span>  <span class="c1"># ← batch 16, workers 4</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batches — train: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2"> val: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span><span class="si">}</span><span class="s2"> test: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Split cargado desde processed\split_indices.pkl
+Train: 16074 {&#39;MSL&#39;: 15901, &#39;MER&#39;: 173}
+Val  :  3443 {&#39;MSL&#39;: 3443}
+Test :  3448 {&#39;MSL&#39;: 3448}
+Batches — train: 1005 val: 216 test: 216
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="definicion-del-modelo">
+<h2>2. Definición del Modelo<a class="headerlink" href="#definicion-del-modelo" title="Permalink to this heading">#</a></h2>
+<p>Backbone ResNet-50 preentrenado en ImageNet. Clasificador adaptado a 4 clases.
+Loss total = CE_main + 0.4 * CE_aux (salida auxiliar de ResNet).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_deeplabv3plus</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">segmentation</span><span class="o">.</span><span class="n">deeplabv3_resnet50</span><span class="p">(</span>
+        <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">weights_backbone</span><span class="o">=</span><span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">ResNet50_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">,</span>
+        <span class="n">aux_loss</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Reemplazar cabeza principal y auxiliar</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>     <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">aux_classifier</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_deeplabv3plus</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">params_M</span> <span class="o">=</span> <span class="n">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parámetros: </span><span class="si">{</span><span class="n">params_M</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">M&quot;</span><span class="p">)</span>
+
+<span class="c1"># Verificar forward pass</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">out</span>   <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output main: </span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">  aux: </span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;aux&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parámetros: 42.00M
+Output main: torch.Size([2, 4, 256, 256])  aux: torch.Size([2, 4, 256, 256])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="entrenamiento-3-seeds">
+<h2>3. Entrenamiento (3 seeds)<a class="headerlink" href="#entrenamiento-3-seeds" title="Permalink to this heading">#</a></h2>
+<p>SGD + PolynomialLR, loss CE con ignore_index=255, aux_weight=0.4</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">criterion_fn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">ignore_index</span><span class="o">=</span><span class="n">IGNORE_INDEX</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optimizer_fn</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scheduler_fn</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">PolynomialLR</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">total_iters</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">run_multi_seed</span><span class="p">(</span>
+    <span class="n">model_fn</span>      <span class="o">=</span> <span class="n">build_deeplabv3plus</span><span class="p">,</span>
+    <span class="n">df_train</span>      <span class="o">=</span> <span class="n">df_train</span><span class="p">,</span>
+    <span class="n">df_val</span>        <span class="o">=</span> <span class="n">df_val</span><span class="p">,</span>
+    <span class="n">df_test</span>       <span class="o">=</span> <span class="n">df_test</span><span class="p">,</span>
+    <span class="n">criterion_fn</span>  <span class="o">=</span> <span class="n">criterion_fn</span><span class="p">,</span>
+    <span class="n">optimizer_fn</span>  <span class="o">=</span> <span class="n">optimizer_fn</span><span class="p">,</span>
+    <span class="n">scheduler_fn</span>  <span class="o">=</span> <span class="n">scheduler_fn</span><span class="p">,</span>
+    <span class="n">model_name</span>    <span class="o">=</span> <span class="n">MODEL_NAME</span><span class="p">,</span>
+    <span class="n">device</span>        <span class="o">=</span> <span class="n">device</span><span class="p">,</span>
+    <span class="n">seeds</span>         <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="n">num_epochs</span>    <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
+    <span class="n">patience</span>      <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">batch_size</span>    <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>          <span class="c1"># ← subido a 16 (AMP lo permite)</span>
+    <span class="n">num_workers</span>   <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">aux_weight</span>    <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">use_amp</span>       <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>        <span class="c1"># ← nuevo parámetro</span>
+    <span class="n">n_per_mission</span> <span class="o">=</span> <span class="mi">700</span><span class="p">,</span>         <span class="c1"># ← subset estratificado ~2100 imágenes train</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>──────────────────────────────────────────────────
+  Seed 42 | deeplabv3plus
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  deeplabv3plus_seed42 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=1.4041 mIoU=0.3016 | val=0.4034 | rock=0.0000
+Ep   2/80 | loss=0.8083 mIoU=0.5146 | val=0.5056 | rock=0.0000
+Ep   3/80 | loss=0.6387 mIoU=0.5704 | val=0.5063 | rock=0.0000
+Ep   4/80 | loss=0.5937 mIoU=0.5742 | val=0.5648 | rock=0.0000
+Ep   5/80 | loss=0.5437 mIoU=0.6035 | val=0.5587 | rock=0.0000
+Ep   6/80 | loss=0.5062 mIoU=0.6125 | val=0.5933 | rock=0.0000
+Ep   7/80 | loss=0.4761 mIoU=0.6231 | val=0.5789 | rock=0.0000
+Ep   8/80 | loss=0.4343 mIoU=0.6409 | val=0.5898 | rock=0.0000
+Ep   9/80 | loss=0.4424 mIoU=0.6298 | val=0.5934 | rock=0.0000
+Ep  10/80 | loss=0.4084 mIoU=0.6486 | val=0.5787 | rock=0.0000
+Ep  11/80 | loss=0.4343 mIoU=0.6351 | val=0.6009 | rock=0.0002
+Ep  12/80 | loss=0.4160 mIoU=0.6523 | val=0.6028 | rock=0.0000
+Ep  13/80 | loss=0.4175 mIoU=0.6544 | val=0.5959 | rock=0.0221
+Ep  14/80 | loss=0.3438 mIoU=0.6839 | val=0.5908 | rock=0.0004
+Ep  15/80 | loss=0.3728 mIoU=0.6957 | val=0.6043 | rock=0.0040
+Ep  16/80 | loss=0.3406 mIoU=0.7153 | val=0.5844 | rock=0.0204
+Ep  17/80 | loss=0.3107 mIoU=0.7270 | val=0.6210 | rock=0.0276
+Ep  18/80 | loss=0.3710 mIoU=0.7355 | val=0.6147 | rock=0.0086
+Ep  19/80 | loss=0.3157 mIoU=0.7703 | val=0.6169 | rock=0.0068
+Ep  20/80 | loss=0.3254 mIoU=0.7535 | val=0.6187 | rock=0.0593
+Ep  21/80 | loss=0.3276 mIoU=0.7400 | val=0.6271 | rock=0.0589
+Ep  22/80 | loss=0.2938 mIoU=0.7912 | val=0.6321 | rock=0.0383
+Ep  23/80 | loss=0.3149 mIoU=0.7934 | val=0.6398 | rock=0.0639
+Ep  24/80 | loss=0.2983 mIoU=0.8033 | val=0.6301 | rock=0.0379
+Ep  25/80 | loss=0.2966 mIoU=0.7848 | val=0.6407 | rock=0.0695
+Ep  26/80 | loss=0.2985 mIoU=0.7775 | val=0.6244 | rock=0.0251
+Ep  27/80 | loss=0.2656 mIoU=0.8308 | val=0.6291 | rock=0.0666
+Ep  28/80 | loss=0.2886 mIoU=0.8046 | val=0.6325 | rock=0.0386
+Ep  29/80 | loss=0.2668 mIoU=0.8189 | val=0.6288 | rock=0.0189
+Ep  30/80 | loss=0.2762 mIoU=0.8284 | val=0.6127 | rock=0.0498
+Ep  31/80 | loss=0.2485 mIoU=0.8485 | val=0.6370 | rock=0.0730
+Ep  32/80 | loss=0.2574 mIoU=0.8286 | val=0.6200 | rock=0.0123
+Ep  33/80 | loss=0.2380 mIoU=0.8325 | val=0.6317 | rock=0.0511
+Ep  34/80 | loss=0.2500 mIoU=0.8468 | val=0.6334 | rock=0.0484
+Ep  35/80 | loss=0.2514 mIoU=0.8374 | val=0.6360 | rock=0.0275
+  Early stopping en epoch 35
+
+  Mejor val mIoU=0.6407 (epoch 25) | 2470s
+  Test mIoU=0.6655
+
+──────────────────────────────────────────────────
+  Seed 123 | deeplabv3plus
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  deeplabv3plus_seed123 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=1.4144 mIoU=0.2744 | val=0.3215 | rock=0.0000
+Ep   2/80 | loss=0.8177 mIoU=0.5108 | val=0.4951 | rock=0.0000
+Ep   3/80 | loss=0.6813 mIoU=0.5470 | val=0.5069 | rock=0.0000
+Ep   4/80 | loss=0.5755 mIoU=0.5971 | val=0.4046 | rock=0.0000
+Ep   5/80 | loss=0.5268 mIoU=0.6053 | val=0.5796 | rock=0.0000
+Ep   6/80 | loss=0.5175 mIoU=0.6111 | val=0.5599 | rock=0.0000
+Ep   7/80 | loss=0.4717 mIoU=0.6274 | val=0.5908 | rock=0.0000
+Ep   8/80 | loss=0.4744 mIoU=0.6249 | val=0.5973 | rock=0.0000
+Ep   9/80 | loss=0.4477 mIoU=0.6394 | val=0.5987 | rock=0.0000
+Ep  10/80 | loss=0.4034 mIoU=0.6516 | val=0.5786 | rock=0.0025
+Ep  11/80 | loss=0.3947 mIoU=0.6517 | val=0.6055 | rock=0.0018
+Ep  12/80 | loss=0.3767 mIoU=0.6680 | val=0.5961 | rock=0.0000
+Ep  13/80 | loss=0.3696 mIoU=0.6877 | val=0.6040 | rock=0.0012
+Ep  14/80 | loss=0.3618 mIoU=0.6932 | val=0.6010 | rock=0.0002
+Ep  15/80 | loss=0.3862 mIoU=0.7080 | val=0.6074 | rock=0.0044
+Ep  16/80 | loss=0.3411 mIoU=0.7411 | val=0.6170 | rock=0.0037
+Ep  17/80 | loss=0.3479 mIoU=0.7619 | val=0.6188 | rock=0.0416
+Ep  18/80 | loss=0.3315 mIoU=0.7605 | val=0.6193 | rock=0.0144
+Ep  19/80 | loss=0.3153 mIoU=0.7855 | val=0.6251 | rock=0.0489
+Ep  20/80 | loss=0.2958 mIoU=0.7926 | val=0.6258 | rock=0.0392
+Ep  21/80 | loss=0.3320 mIoU=0.7845 | val=0.6276 | rock=0.0280
+Ep  22/80 | loss=0.2767 mIoU=0.8089 | val=0.6228 | rock=0.0344
+Ep  23/80 | loss=0.2996 mIoU=0.7898 | val=0.6142 | rock=0.0144
+Ep  24/80 | loss=0.2996 mIoU=0.8037 | val=0.6255 | rock=0.0302
+Ep  25/80 | loss=0.2766 mIoU=0.7925 | val=0.6214 | rock=0.0153
+Ep  26/80 | loss=0.2564 mIoU=0.8218 | val=0.6279 | rock=0.0157
+Ep  27/80 | loss=0.2901 mIoU=0.8224 | val=0.6277 | rock=0.0480
+Ep  28/80 | loss=0.2564 mIoU=0.8269 | val=0.6236 | rock=0.0122
+Ep  29/80 | loss=0.2833 mIoU=0.8319 | val=0.6049 | rock=0.0362
+Ep  30/80 | loss=0.2873 mIoU=0.8441 | val=0.6247 | rock=0.0227
+Ep  31/80 | loss=0.2636 mIoU=0.8560 | val=0.6256 | rock=0.0100
+Ep  32/80 | loss=0.2585 mIoU=0.8356 | val=0.6205 | rock=0.0393
+Ep  33/80 | loss=0.2800 mIoU=0.8364 | val=0.6305 | rock=0.0234
+Ep  34/80 | loss=0.2717 mIoU=0.8473 | val=0.6025 | rock=0.0609
+Ep  35/80 | loss=0.2522 mIoU=0.8356 | val=0.6267 | rock=0.0372
+Ep  36/80 | loss=0.2565 mIoU=0.8657 | val=0.6308 | rock=0.0348
+Ep  37/80 | loss=0.2431 mIoU=0.8553 | val=0.6221 | rock=0.0401
+Ep  38/80 | loss=0.2365 mIoU=0.8302 | val=0.6230 | rock=0.0563
+Ep  39/80 | loss=0.2366 mIoU=0.8832 | val=0.6277 | rock=0.0405
+Ep  40/80 | loss=0.2470 mIoU=0.8782 | val=0.6329 | rock=0.0501
+Ep  41/80 | loss=0.2257 mIoU=0.8505 | val=0.6397 | rock=0.0738
+Ep  42/80 | loss=0.2095 mIoU=0.8753 | val=0.6358 | rock=0.0588
+Ep  43/80 | loss=0.2443 mIoU=0.8527 | val=0.6418 | rock=0.0703
+Ep  44/80 | loss=0.2295 mIoU=0.8658 | val=0.6327 | rock=0.0447
+Ep  45/80 | loss=0.2088 mIoU=0.8827 | val=0.6456 | rock=0.0818
+Ep  46/80 | loss=0.2190 mIoU=0.8769 | val=0.6423 | rock=0.0525
+Ep  47/80 | loss=0.2374 mIoU=0.8535 | val=0.6471 | rock=0.0570
+Ep  48/80 | loss=0.2183 mIoU=0.8784 | val=0.6358 | rock=0.0279
+Ep  49/80 | loss=0.2239 mIoU=0.8789 | val=0.6312 | rock=0.0428
+Ep  50/80 | loss=0.2268 mIoU=0.8594 | val=0.6339 | rock=0.0367
+Ep  51/80 | loss=0.2209 mIoU=0.8803 | val=0.6272 | rock=0.0313
+Ep  52/80 | loss=0.1969 mIoU=0.8901 | val=0.6272 | rock=0.0375
+Ep  53/80 | loss=0.2170 mIoU=0.8802 | val=0.6312 | rock=0.0352
+Ep  54/80 | loss=0.2054 mIoU=0.8653 | val=0.6369 | rock=0.0774
+Ep  55/80 | loss=0.2121 mIoU=0.8887 | val=0.6314 | rock=0.0434
+Ep  56/80 | loss=0.1949 mIoU=0.8917 | val=0.6354 | rock=0.0586
+Ep  57/80 | loss=0.1953 mIoU=0.9051 | val=0.6425 | rock=0.0275
+  Early stopping en epoch 57
+
+  Mejor val mIoU=0.6471 (epoch 47) | 4043s
+  Test mIoU=0.6893
+
+──────────────────────────────────────────────────
+  Seed 7 | deeplabv3plus
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\potot\OneDrive\Documentos\DEEP\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  deeplabv3plus_seed7 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=1.3727 mIoU=0.3141 | val=0.3423 | rock=0.0000
+Ep   2/80 | loss=0.7825 mIoU=0.5195 | val=0.4400 | rock=0.0000
+Ep   3/80 | loss=0.6435 mIoU=0.5554 | val=0.5164 | rock=0.0000
+Ep   4/80 | loss=0.5821 mIoU=0.5849 | val=0.5502 | rock=0.0000
+Ep   5/80 | loss=0.4910 mIoU=0.6196 | val=0.5766 | rock=0.0000
+Ep   6/80 | loss=0.4962 mIoU=0.6142 | val=0.5682 | rock=0.0000
+Ep   7/80 | loss=0.4940 mIoU=0.6258 | val=0.5557 | rock=0.0000
+Ep   8/80 | loss=0.4431 mIoU=0.6361 | val=0.5766 | rock=0.0000
+Ep   9/80 | loss=0.4325 mIoU=0.6348 | val=0.6070 | rock=0.0000
+Ep  10/80 | loss=0.4329 mIoU=0.6403 | val=0.5991 | rock=0.0000
+Ep  11/80 | loss=0.4050 mIoU=0.6412 | val=0.6018 | rock=0.0000
+Ep  12/80 | loss=0.3748 mIoU=0.6550 | val=0.6112 | rock=0.0000
+Ep  13/80 | loss=0.3705 mIoU=0.6579 | val=0.6068 | rock=0.0000
+Ep  14/80 | loss=0.3983 mIoU=0.6532 | val=0.6068 | rock=0.0091
+Ep  15/80 | loss=0.3711 mIoU=0.6858 | val=0.6163 | rock=0.0012
+Ep  16/80 | loss=0.3401 mIoU=0.7163 | val=0.5995 | rock=0.0404
+Ep  17/80 | loss=0.3528 mIoU=0.7145 | val=0.5892 | rock=0.0060
+Ep  18/80 | loss=0.3536 mIoU=0.7372 | val=0.6123 | rock=0.0000
+Ep  19/80 | loss=0.3621 mIoU=0.7440 | val=0.6212 | rock=0.0684
+Ep  20/80 | loss=0.3190 mIoU=0.7567 | val=0.6209 | rock=0.0001
+Ep  21/80 | loss=0.3360 mIoU=0.7683 | val=0.6133 | rock=0.0024
+Ep  22/80 | loss=0.2934 mIoU=0.7943 | val=0.6100 | rock=0.0124
+Ep  23/80 | loss=0.2865 mIoU=0.7623 | val=0.6267 | rock=0.0036
+Ep  24/80 | loss=0.2845 mIoU=0.8126 | val=0.5982 | rock=0.0051
+Ep  25/80 | loss=0.3084 mIoU=0.7914 | val=0.6093 | rock=0.0033
+Ep  26/80 | loss=0.2605 mIoU=0.8263 | val=0.6167 | rock=0.0026
+Ep  27/80 | loss=0.2859 mIoU=0.8321 | val=0.6041 | rock=0.0063
+Ep  28/80 | loss=0.2841 mIoU=0.8175 | val=0.6254 | rock=0.0019
+Ep  29/80 | loss=0.2770 mIoU=0.8381 | val=0.6163 | rock=0.0077
+Ep  30/80 | loss=0.2594 mIoU=0.8309 | val=0.6191 | rock=0.0309
+Ep  31/80 | loss=0.2445 mIoU=0.8199 | val=0.6294 | rock=0.0062
+Ep  32/80 | loss=0.2543 mIoU=0.8063 | val=0.6225 | rock=0.0261
+Ep  33/80 | loss=0.2367 mIoU=0.8376 | val=0.6171 | rock=0.0290
+Ep  34/80 | loss=0.2551 mIoU=0.8388 | val=0.6251 | rock=0.0202
+Ep  35/80 | loss=0.2537 mIoU=0.8378 | val=0.6256 | rock=0.0087
+Ep  36/80 | loss=0.2571 mIoU=0.8134 | val=0.6269 | rock=0.0264
+Ep  37/80 | loss=0.2303 mIoU=0.8635 | val=0.6227 | rock=0.0046
+Ep  38/80 | loss=0.2546 mIoU=0.8460 | val=0.6253 | rock=0.0135
+Ep  39/80 | loss=0.2318 mIoU=0.8663 | val=0.6265 | rock=0.0161
+Ep  40/80 | loss=0.2456 mIoU=0.8450 | val=0.6247 | rock=0.0216
+Ep  41/80 | loss=0.2334 mIoU=0.8363 | val=0.6241 | rock=0.0059
+  Early stopping en epoch 41
+
+  Mejor val mIoU=0.6294 (epoch 31) | 3194s
+  Test mIoU=0.6869
+
+=======================================================
+  deeplabv3plus: mIoU=0.6806±0.0107 IC95=±0.0121
+  IoU(soil)=0.8884±0.0031
+  IoU(bedrock)=0.8907±0.0045
+  IoU(sand)=0.7752±0.0176
+  IoU(big_rock)=0.1680±0.0195
+=======================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="guardado-de-resultados">
+<h2>4. Guardado de resultados<a class="headerlink" href="#guardado-de-resultados" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">append_benchmark_results</span><span class="p">(</span>
+    <span class="n">model_name</span>    <span class="o">=</span> <span class="n">MODEL_NAME</span><span class="p">,</span>
+    <span class="n">best_epoch</span>    <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;best_epoch_mean&quot;</span><span class="p">],</span>
+    <span class="n">val_miou</span>      <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span>
+    <span class="n">test_miou</span>     <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span>
+    <span class="n">test_miou_std</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_std&quot;</span><span class="p">],</span>
+    <span class="n">test_miou_ci95</span><span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_ci95&quot;</span><span class="p">],</span>
+    <span class="n">test_acc</span>      <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;pixel_acc_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_soil</span>      <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_soil_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_bedrock</span>   <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_bedrock_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_sand</span>      <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_sand_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_bigrock</span>   <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_big_rock_mean&quot;</span><span class="p">],</span>
+    <span class="n">params_M</span>      <span class="o">=</span> <span class="n">params_M</span><span class="p">,</span>
+    <span class="n">train_time_s</span>  <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;train_time_mean&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Resultados en results\benchmark_results.csv
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluacion-y-visualizacion">
+<h2>5. Evaluación y Visualización<a class="headerlink" href="#evaluacion-y-visualizacion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cargar mejor modelo (seed 42)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="n">best_model</span> <span class="o">=</span> <span class="n">build_deeplabv3plus</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checkpoints/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_seed42_best.pth&quot;</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="n">best_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model_state&quot;</span><span class="p">])</span>
+
+<span class="n">visualize_predictions</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_predictions.png&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Resumen final:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mIoU : </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;soil&quot;</span><span class="p">,</span><span class="s2">&quot;bedrock&quot;</span><span class="p">,</span><span class="s2">&quot;sand&quot;</span><span class="p">,</span><span class="s2">&quot;big_rock&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  IoU(</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;iou_</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s1">_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;iou_</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s1">_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\potot\AppData\Local\Temp\ipykernel_5256\1434540937.py:4: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don&#39;t have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(f&quot;checkpoints/{MODEL_NAME}_seed42_best.pth&quot;, map_location=device)
+</pre></div>
+</div>
+<img alt="_images/f1305ad72471bbba7f9bc03087f06cbff309677eadebee2d823fd047ec07c9bf.png" src="_images/f1305ad72471bbba7f9bc03087f06cbff309677eadebee2d823fd047ec07c9bf.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ results/deeplabv3plus_predictions.png
+Resumen final:
+  mIoU : 0.6806 ± 0.0107
+  IoU(soil): 0.8884 ± 0.0031
+  IoU(bedrock): 0.8907 ± 0.0045
+  IoU(sand): 0.7752 ± 0.0176
+  IoU(big_rock): 0.1680 ± 0.0195
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_marco_teorico.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03 — Revisión del Estado del Arte</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03b_model_segformer.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">03b — SegFormer-B2</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-e-imports">0. Configuración e Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-dataloaders">1. Dataset y DataLoaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-modelo">2. Definición del Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-de-resultados">4. Guardado de resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-visualizacion">5. Evaluación y Visualización</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

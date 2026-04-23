@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>03d — TerSeg (Dual-Branch CNN + Swin Transformer) &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03d_model_terseg';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="03e — DepthFormer-RGB (Swin-Tiny + PPM)" href="03e_model_depthformer.html" />
+    <link rel="prev" title="03c — MarsSeg" href="03c_model_marsseg.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03a_model_deeplabv3plus.html">03a — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03b_model_segformer.html">03b — SegFormer-B2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03c_model_marsseg.html">03c — MarsSeg</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03e_model_depthformer.html">03e — DepthFormer-RGB (Swin-Tiny + PPM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03d_model_terseg.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03d_model_terseg.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03d — TerSeg (Dual-Branch CNN + Swin Transformer)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-terseg">2. Arquitectura TerSeg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="d-terseg-dual-branch-cnn-swin-transformer">
+<h1>03d — TerSeg (Dual-Branch CNN + Swin Transformer)<a class="headerlink" href="#d-terseg-dual-branch-cnn-swin-transformer" title="Permalink to this heading">#</a></h1>
+<p><strong>Paper:</strong> Fan et al., Expert Systems with Applications 270 (2025) 126397. DOI: 10.1016/j.eswa.2025.126397</p>
+<section id="configuracion">
+<h2>0. Configuración<a class="headerlink" href="#configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="p">;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mars_utils_fast</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">set_seed</span><span class="p">,</span> <span class="n">get_or_create_split</span><span class="p">,</span> <span class="n">build_dataloaders</span><span class="p">,</span>
+    <span class="n">run_multi_seed</span><span class="p">,</span> <span class="n">append_benchmark_results</span><span class="p">,</span>
+    <span class="n">visualize_predictions</span><span class="p">,</span> <span class="n">count_parameters</span><span class="p">,</span>
+    <span class="n">FocalLoss</span><span class="p">,</span> <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">IGNORE_INDEX</span>
+<span class="p">)</span>
+<span class="n">set_seed</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;terseg&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">timm</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;timm </span><span class="si">{</span><span class="n">timm</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> disponible&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;timm no instalado. Ejecuta: pip install timm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device: cuda
+timm 1.0.26 disponible
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset">
+<h2>1. Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;processed/manifest_256.csv&quot;</span><span class="p">)</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">get_or_create_split</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">build_dataloaders</span><span class="p">(</span>
+    <span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Split cargado desde processed\split_indices.pkl
+Train: 16074 {&#39;MSL&#39;: 15901, &#39;MER&#39;: 173}
+Val  :  3443 {&#39;MSL&#39;: 3443}
+Test :  3448 {&#39;MSL&#39;: 3448}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arquitectura-terseg">
+<h2>2. Arquitectura TerSeg<a class="headerlink" href="#arquitectura-terseg" title="Permalink to this heading">#</a></h2>
+<p>Dual-branch: Branch_C (ResNet-34) + Branch_T (Swin-Tiny).
+FL en etapas 1-2 (CNN domina), FG en etapas 3-4 (Transformer domina).
+Decoder FLGA con conv 3×3 final.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tvm</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FusionModule</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;FL o FG: fusión ponderada learnable entre ramas CNN y Transformer.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cnn_ch</span><span class="p">,</span> <span class="n">tr_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">cnn_dominant</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnn_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">cnn_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tr_proj</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">tr_ch</span><span class="p">,</span>  <span class="n">out_ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Pesos learnable inicializados según dominancia</span>
+        <span class="n">init_cnn</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="k">if</span> <span class="n">cnn_dominant</span> <span class="k">else</span> <span class="mf">0.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_cnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">init_cnn</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_tr</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">init_cnn</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="c1"># Alinear resoluciones si difieren</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_cnn</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn_proj</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_tr</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr_proj</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FLGA</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Focus on Local &amp; Global Aggregation: upsampling progresivo + conv 3×3.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ups</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">channels</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+        <span class="c1"># features: [f1, f2, f3, f4] de menor a mayor escala espacial</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">skips</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">up</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">,</span> <span class="n">skips</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">up</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">skip</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">skip</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TerSeg</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dual-branch: Branch_C=ResNet34, Branch_T=Swin-Tiny.</span>
+<span class="sd">    Configuración TC_S: out_ch=64 para las 4 etapas de fusión.</span>
+<span class="sd">    ~22M params, ~26G FLOPs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">out_ch</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Branch C: ResNet-34</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">resnet34</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">tvm</span><span class="o">.</span><span class="n">ResNet34_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_stem</span>  <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">conv1</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">bn1</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span><span class="n">bb</span><span class="o">.</span><span class="n">maxpool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_layer1</span><span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer1</span>   <span class="c1"># 64ch,  /4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_layer2</span><span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer2</span>   <span class="c1"># 128ch, /8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_layer3</span><span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer3</span>   <span class="c1"># 256ch, /16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_layer4</span><span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">layer4</span>   <span class="c1"># 512ch, /32</span>
+
+        <span class="c1"># Branch T: Swin-Tiny via timm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swin</span> <span class="o">=</span> <span class="n">timm</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span>
+            <span class="s1">&#39;swin_tiny_patch4_window7_224&#39;</span><span class="p">,</span>
+            <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">features_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">out_indices</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">swin_chs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swin</span><span class="o">.</span><span class="n">feature_info</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span>  <span class="c1"># [96,192,384,768]</span>
+
+        <span class="c1"># Fusión FL (etapas 1,2 — CNN domina)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fl1</span> <span class="o">=</span> <span class="n">FusionModule</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span>  <span class="n">swin_chs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">cnn_dominant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fl2</span> <span class="o">=</span> <span class="n">FusionModule</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">swin_chs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">cnn_dominant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Fusión FG (etapas 3,4 — Transformer domina)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fg3</span> <span class="o">=</span> <span class="n">FusionModule</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">swin_chs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">cnn_dominant</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fg4</span> <span class="o">=</span> <span class="n">FusionModule</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">swin_chs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">cnn_dominant</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Decoder FLGA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flga</span> <span class="o">=</span> <span class="n">FLGA</span><span class="p">([</span><span class="n">out_ch</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Branch C</span>
+        <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_stem</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_layer1</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_layer2</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+        <span class="n">r3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_layer3</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+        <span class="n">r4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_layer4</span><span class="p">(</span><span class="n">r3</span><span class="p">)</span>
+
+        <span class="c1"># Branch T (Swin espera múltiplo de 32)</span>
+        <span class="n">x_swin</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">t_feats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swin</span><span class="p">(</span><span class="n">x_swin</span><span class="p">)</span>
+        <span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">,</span><span class="n">t3</span><span class="p">,</span><span class="n">t4</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="o">==</span><span class="mi">4</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">t_feats</span><span class="p">]</span>
+
+        <span class="c1"># Fusión</span>
+        <span class="n">f1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl1</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+        <span class="n">f2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl2</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+        <span class="n">f3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg3</span><span class="p">(</span><span class="n">r3</span><span class="p">,</span> <span class="n">t3</span><span class="p">)</span>
+        <span class="n">f4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg4</span><span class="p">(</span><span class="n">r4</span><span class="p">,</span> <span class="n">t4</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flga</span><span class="p">([</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">f4</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_terseg</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">TerSeg</span><span class="p">(</span><span class="n">NUM_CLASSES</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_terseg</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">params_M</span> <span class="o">=</span> <span class="n">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parámetros: </span><span class="si">{</span><span class="n">params_M</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">M&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output: </span><span class="si">{</span><span class="n">model</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parámetros: 49.19M
+Output: torch.Size([2, 4, 256, 256])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="entrenamiento-3-seeds">
+<h2>3. Entrenamiento (3 seeds)<a class="headerlink" href="#entrenamiento-3-seeds" title="Permalink to this heading">#</a></h2>
+<p>Adam + ReduceLROnPlateau, Focal Loss</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">criterion_fn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">FocalLoss</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="n">IGNORE_INDEX</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optimizer_fn</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scheduler_fn</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">run_multi_seed</span><span class="p">(</span>
+    <span class="n">model_fn</span><span class="o">=</span><span class="n">build_terseg</span><span class="p">,</span>
+    <span class="n">df_train</span><span class="o">=</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="o">=</span><span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="o">=</span><span class="n">df_test</span><span class="p">,</span>
+    <span class="n">criterion_fn</span><span class="o">=</span><span class="n">criterion_fn</span><span class="p">,</span> <span class="n">optimizer_fn</span><span class="o">=</span><span class="n">optimizer_fn</span><span class="p">,</span> <span class="n">scheduler_fn</span><span class="o">=</span><span class="n">scheduler_fn</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_per_mission</span><span class="o">=</span><span class="mi">700</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>──────────────────────────────────────────────────
+  Seed 42 | terseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  terseg_seed42 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.0863 mIoU=0.4611 | val=0.5663 | rock=0.0208
+Ep   2/80 | loss=0.0564 mIoU=0.5384 | val=0.6271 | rock=0.0152
+Ep   3/80 | loss=0.0374 mIoU=0.5961 | val=0.6434 | rock=0.0041
+Ep   4/80 | loss=0.0374 mIoU=0.5980 | val=0.6198 | rock=0.0268
+Ep   5/80 | loss=0.0326 mIoU=0.6252 | val=0.7044 | rock=0.2683
+Ep   6/80 | loss=0.0288 mIoU=0.6404 | val=0.6421 | rock=0.0669
+Ep   7/80 | loss=0.0260 mIoU=0.6691 | val=0.7127 | rock=0.4078
+Ep   8/80 | loss=0.0229 mIoU=0.7154 | val=0.7854 | rock=0.5201
+Ep   9/80 | loss=0.0246 mIoU=0.7025 | val=0.6473 | rock=0.0390
+Ep  10/80 | loss=0.0235 mIoU=0.6780 | val=0.7959 | rock=0.5121
+Ep  11/80 | loss=0.0172 mIoU=0.7575 | val=0.7328 | rock=0.2860
+Ep  12/80 | loss=0.0181 mIoU=0.7561 | val=0.8001 | rock=0.5352
+Ep  13/80 | loss=0.0160 mIoU=0.7799 | val=0.8188 | rock=0.5427
+Ep  14/80 | loss=0.0154 mIoU=0.7737 | val=0.7432 | rock=0.3138
+Ep  15/80 | loss=0.0175 mIoU=0.7603 | val=0.7804 | rock=0.5018
+Ep  16/80 | loss=0.0206 mIoU=0.7494 | val=0.7976 | rock=0.5455
+Ep  17/80 | loss=0.0136 mIoU=0.7827 | val=0.7940 | rock=0.5344
+Ep  18/80 | loss=0.0135 mIoU=0.7897 | val=0.7512 | rock=0.4248
+Ep  19/80 | loss=0.0139 mIoU=0.8057 | val=0.8500 | rock=0.6381
+Ep  20/80 | loss=0.0097 mIoU=0.8152 | val=0.7749 | rock=0.5462
+Ep  21/80 | loss=0.0208 mIoU=0.7313 | val=0.8024 | rock=0.5550
+Ep  22/80 | loss=0.0142 mIoU=0.7650 | val=0.8174 | rock=0.5949
+Ep  23/80 | loss=0.0097 mIoU=0.8181 | val=0.8283 | rock=0.5757
+Ep  24/80 | loss=0.0089 mIoU=0.8165 | val=0.8539 | rock=0.6350
+Ep  25/80 | loss=0.0109 mIoU=0.7960 | val=0.8216 | rock=0.5342
+Ep  26/80 | loss=0.0084 mIoU=0.8211 | val=0.8244 | rock=0.5889
+Ep  27/80 | loss=0.0083 mIoU=0.8374 | val=0.8284 | rock=0.5612
+Ep  28/80 | loss=0.0067 mIoU=0.8519 | val=0.8455 | rock=0.6466
+Ep  29/80 | loss=0.0085 mIoU=0.8596 | val=0.6208 | rock=0.5047
+Ep  30/80 | loss=0.0103 mIoU=0.8408 | val=0.8629 | rock=0.6880
+Ep  31/80 | loss=0.0124 mIoU=0.8179 | val=0.7803 | rock=0.4269
+Ep  32/80 | loss=0.0091 mIoU=0.8188 | val=0.8261 | rock=0.5986
+Ep  33/80 | loss=0.0093 mIoU=0.8182 | val=0.7600 | rock=0.3079
+Ep  34/80 | loss=0.0074 mIoU=0.8269 | val=0.8366 | rock=0.5871
+Ep  35/80 | loss=0.0097 mIoU=0.8376 | val=0.7946 | rock=0.4642
+Ep  36/80 | loss=0.0083 mIoU=0.8208 | val=0.7854 | rock=0.5219
+Ep  37/80 | loss=0.0072 mIoU=0.8668 | val=0.8357 | rock=0.5782
+Ep  38/80 | loss=0.0052 mIoU=0.8892 | val=0.8509 | rock=0.6347
+Ep  39/80 | loss=0.0052 mIoU=0.8909 | val=0.8356 | rock=0.6147
+Ep  40/80 | loss=0.0054 mIoU=0.9098 | val=0.8488 | rock=0.6541
+  Early stopping en epoch 40
+
+  Mejor val mIoU=0.8629 (epoch 30) | 570s
+  Test mIoU=0.7476
+
+──────────────────────────────────────────────────
+  Seed 123 | terseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  terseg_seed123 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.0879 mIoU=0.4635 | val=0.6024 | rock=0.0904
+Ep   2/80 | loss=0.0527 mIoU=0.5675 | val=0.7050 | rock=0.3004
+Ep   3/80 | loss=0.0445 mIoU=0.5856 | val=0.6566 | rock=0.0267
+Ep   4/80 | loss=0.0331 mIoU=0.6183 | val=0.6473 | rock=0.1862
+Ep   5/80 | loss=0.0293 mIoU=0.6774 | val=0.6700 | rock=0.0286
+Ep   6/80 | loss=0.0242 mIoU=0.6877 | val=0.7228 | rock=0.1949
+Ep   7/80 | loss=0.0237 mIoU=0.7103 | val=0.6341 | rock=0.0419
+Ep   8/80 | loss=0.0230 mIoU=0.7051 | val=0.7401 | rock=0.3205
+Ep   9/80 | loss=0.0195 mIoU=0.7289 | val=0.8091 | rock=0.5484
+Ep  10/80 | loss=0.0223 mIoU=0.7181 | val=0.7880 | rock=0.4417
+Ep  11/80 | loss=0.0178 mIoU=0.7398 | val=0.7387 | rock=0.2273
+Ep  12/80 | loss=0.0192 mIoU=0.7486 | val=0.6839 | rock=0.2567
+Ep  13/80 | loss=0.0166 mIoU=0.7464 | val=0.7981 | rock=0.4919
+Ep  14/80 | loss=0.0147 mIoU=0.7902 | val=0.7551 | rock=0.3098
+Ep  15/80 | loss=0.0162 mIoU=0.7836 | val=0.8033 | rock=0.5438
+Ep  16/80 | loss=0.0110 mIoU=0.7977 | val=0.8189 | rock=0.5550
+Ep  17/80 | loss=0.0095 mIoU=0.8260 | val=0.8491 | rock=0.6434
+Ep  18/80 | loss=0.0100 mIoU=0.8435 | val=0.8416 | rock=0.6068
+Ep  19/80 | loss=0.0089 mIoU=0.8456 | val=0.8531 | rock=0.6424
+Ep  20/80 | loss=0.0072 mIoU=0.8430 | val=0.8238 | rock=0.5981
+Ep  21/80 | loss=0.0082 mIoU=0.8686 | val=0.8284 | rock=0.6014
+Ep  22/80 | loss=0.0074 mIoU=0.8633 | val=0.8134 | rock=0.5483
+Ep  23/80 | loss=0.0080 mIoU=0.8551 | val=0.8253 | rock=0.5781
+Ep  24/80 | loss=0.0063 mIoU=0.8924 | val=0.8059 | rock=0.5300
+Ep  25/80 | loss=0.0066 mIoU=0.8452 | val=0.8477 | rock=0.6682
+Ep  26/80 | loss=0.0066 mIoU=0.8943 | val=0.8374 | rock=0.6060
+Ep  27/80 | loss=0.0059 mIoU=0.8901 | val=0.8652 | rock=0.6633
+Ep  28/80 | loss=0.0053 mIoU=0.8881 | val=0.8612 | rock=0.6547
+Ep  29/80 | loss=0.0054 mIoU=0.9048 | val=0.8562 | rock=0.6393
+Ep  30/80 | loss=0.0055 mIoU=0.9007 | val=0.8665 | rock=0.6692
+Ep  31/80 | loss=0.0052 mIoU=0.9057 | val=0.8639 | rock=0.6701
+Ep  32/80 | loss=0.0067 mIoU=0.9033 | val=0.8459 | rock=0.6152
+Ep  33/80 | loss=0.0044 mIoU=0.9211 | val=0.8555 | rock=0.6394
+Ep  34/80 | loss=0.0041 mIoU=0.9070 | val=0.8650 | rock=0.6594
+Ep  35/80 | loss=0.0044 mIoU=0.9039 | val=0.8687 | rock=0.6676
+Ep  36/80 | loss=0.0060 mIoU=0.8914 | val=0.8721 | rock=0.6864
+Ep  37/80 | loss=0.0049 mIoU=0.9179 | val=0.8678 | rock=0.6684
+Ep  38/80 | loss=0.0041 mIoU=0.8945 | val=0.8546 | rock=0.6244
+Ep  39/80 | loss=0.0043 mIoU=0.9086 | val=0.8513 | rock=0.5837
+Ep  40/80 | loss=0.0040 mIoU=0.9117 | val=0.8538 | rock=0.6271
+Ep  41/80 | loss=0.0038 mIoU=0.9248 | val=0.8621 | rock=0.6577
+Ep  42/80 | loss=0.0033 mIoU=0.9312 | val=0.8652 | rock=0.6616
+Ep  43/80 | loss=0.0034 mIoU=0.9196 | val=0.8657 | rock=0.6676
+Ep  44/80 | loss=0.0035 mIoU=0.9294 | val=0.8611 | rock=0.6492
+Ep  45/80 | loss=0.0029 mIoU=0.9292 | val=0.8604 | rock=0.6429
+Ep  46/80 | loss=0.0035 mIoU=0.9121 | val=0.8611 | rock=0.6291
+  Early stopping en epoch 46
+
+  Mejor val mIoU=0.8721 (epoch 36) | 688s
+  Test mIoU=0.7617
+
+──────────────────────────────────────────────────
+  Seed 7 | terseg
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+c:\Users\User\Documents\DeepLearning\ai4mars-dataset-merged-0.6\mars_utils_fast.py:139: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  df.groupby(&quot;mission&quot;, group_keys=False)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  terseg_seed7 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.0911 mIoU=0.4638 | val=0.6284 | rock=0.0326
+Ep   2/80 | loss=0.0487 mIoU=0.5772 | val=0.6275 | rock=0.0102
+Ep   3/80 | loss=0.0392 mIoU=0.5959 | val=0.6686 | rock=0.0325
+Ep   4/80 | loss=0.0335 mIoU=0.6253 | val=0.5705 | rock=0.0612
+Ep   5/80 | loss=0.0321 mIoU=0.6281 | val=0.7124 | rock=0.1874
+Ep   6/80 | loss=0.0353 mIoU=0.5957 | val=0.7320 | rock=0.3102
+Ep   7/80 | loss=0.0257 mIoU=0.6705 | val=0.7362 | rock=0.4686
+Ep   8/80 | loss=0.0252 mIoU=0.6676 | val=0.7083 | rock=0.3355
+Ep   9/80 | loss=0.0185 mIoU=0.6967 | val=0.7070 | rock=0.1878
+Ep  10/80 | loss=0.0188 mIoU=0.7337 | val=0.7472 | rock=0.3982
+Ep  11/80 | loss=0.0182 mIoU=0.7421 | val=0.7709 | rock=0.4062
+Ep  12/80 | loss=0.0176 mIoU=0.7119 | val=0.7273 | rock=0.2759
+Ep  13/80 | loss=0.0208 mIoU=0.7320 | val=0.7508 | rock=0.3886
+Ep  14/80 | loss=0.0132 mIoU=0.7769 | val=0.8104 | rock=0.5507
+Ep  15/80 | loss=0.0155 mIoU=0.7801 | val=0.7879 | rock=0.4482
+Ep  16/80 | loss=0.0103 mIoU=0.8287 | val=0.8290 | rock=0.5747
+Ep  17/80 | loss=0.0107 mIoU=0.8101 | val=0.8547 | rock=0.6400
+Ep  18/80 | loss=0.0114 mIoU=0.8098 | val=0.8055 | rock=0.5599
+Ep  19/80 | loss=0.0097 mIoU=0.8137 | val=0.8285 | rock=0.6022
+Ep  20/80 | loss=0.0124 mIoU=0.7973 | val=0.8478 | rock=0.6237
+Ep  21/80 | loss=0.0130 mIoU=0.8076 | val=0.8040 | rock=0.5979
+Ep  22/80 | loss=0.0194 mIoU=0.7595 | val=0.7651 | rock=0.3985
+Ep  23/80 | loss=0.0208 mIoU=0.7495 | val=0.7412 | rock=0.4711
+Ep  24/80 | loss=0.0095 mIoU=0.8552 | val=0.8473 | rock=0.6555
+Ep  25/80 | loss=0.0080 mIoU=0.8412 | val=0.8495 | rock=0.6224
+Ep  26/80 | loss=0.0084 mIoU=0.8539 | val=0.8405 | rock=0.5701
+Ep  27/80 | loss=0.0073 mIoU=0.8665 | val=0.8123 | rock=0.5306
+  Early stopping en epoch 27
+
+  Mejor val mIoU=0.8547 (epoch 17) | 415s
+  Test mIoU=0.7401
+
+=======================================================
+  terseg: mIoU=0.7498±0.0089 IC95=±0.0101
+  IoU(soil)=0.9234±0.0026
+  IoU(bedrock)=0.9307±0.0015
+  IoU(sand)=0.8448±0.0115
+  IoU(big_rock)=0.3003±0.0261
+=======================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="guardado-y-visualizacion">
+<h2>4. Guardado y Visualización<a class="headerlink" href="#guardado-y-visualizacion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">append_benchmark_results</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">best_epoch</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;best_epoch_mean&quot;</span><span class="p">],</span>
+    <span class="n">val_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span> <span class="n">test_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span>
+    <span class="n">test_miou_std</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_std&quot;</span><span class="p">],</span> <span class="n">test_miou_ci95</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_ci95&quot;</span><span class="p">],</span>
+    <span class="n">test_acc</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;pixel_acc_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_soil</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_soil_mean&quot;</span><span class="p">],</span> <span class="n">iou_bedrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_bedrock_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_sand</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_sand_mean&quot;</span><span class="p">],</span> <span class="n">iou_bigrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_big_rock_mean&quot;</span><span class="p">],</span>
+    <span class="n">params_M</span><span class="o">=</span><span class="n">params_M</span><span class="p">,</span> <span class="n">train_time_s</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;train_time_mean&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">best_model</span> <span class="o">=</span> <span class="n">build_terseg</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checkpoints/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_seed42_best.pth&quot;</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="n">best_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model_state&quot;</span><span class="p">])</span>
+<span class="n">visualize_predictions</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_predictions.png&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mIoU: </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="terseg_predictions.png" src="attachment:terseg_predictions.png" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03c_model_marsseg.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03c — MarsSeg</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03e_model_depthformer.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">03e — DepthFormer-RGB (Swin-Tiny + PPM)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-terseg">2. Arquitectura TerSeg</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

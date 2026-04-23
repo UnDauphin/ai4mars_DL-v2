@@ -1,0 +1,876 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>03e — DepthFormer-RGB (Swin-Tiny + PPM) &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03e_model_depthformer';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="04 — Implementación de Modelos Benchmark" href="04_benchmark_models.html" />
+    <link rel="prev" title="03d — TerSeg (Dual-Branch CNN + Swin Transformer)" href="03d_model_terseg.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03a_model_deeplabv3plus.html">03a — DeepLabV3+ (ResNet-50)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03b_model_segformer.html">03b — SegFormer-B2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03c_model_marsseg.html">03c — MarsSeg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03d_model_terseg.html">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">03e — DepthFormer-RGB (Swin-Tiny + PPM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03e_model_depthformer.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03e_model_depthformer.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03e — DepthFormer-RGB (Swin-Tiny + PPM)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-depthformer-rgb">2. Arquitectura DepthFormer-RGB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="e-depthformer-rgb-swin-tiny-ppm">
+<h1>03e — DepthFormer-RGB (Swin-Tiny + PPM)<a class="headerlink" href="#e-depthformer-rgb-swin-tiny-ppm" title="Permalink to this heading">#</a></h1>
+<p><strong>Paper:</strong> Ma et al., Earth and Space Science 12, e2024EA003812 (2025). DOI: 10.1029/2024EA003812</p>
+<p><strong>Variante A:</strong> DepthFormer-RGB (sin canal de profundidad, adaptado a AI4MARS).</p>
+<section id="configuracion">
+<h2>0. Configuración<a class="headerlink" href="#configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="p">;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mars_utils_fast</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">set_seed</span><span class="p">,</span> <span class="n">get_or_create_split</span><span class="p">,</span> <span class="n">build_dataloaders</span><span class="p">,</span>
+    <span class="n">run_multi_seed</span><span class="p">,</span> <span class="n">append_benchmark_results</span><span class="p">,</span>
+    <span class="n">visualize_predictions</span><span class="p">,</span> <span class="n">count_parameters</span><span class="p">,</span>
+    <span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">IGNORE_INDEX</span>
+<span class="p">)</span>
+<span class="n">set_seed</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;depthformer_rgb&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">timm</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;timm </span><span class="si">{</span><span class="n">timm</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> OK&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pip install timm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device: cuda
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\User\miniconda3\envs\pytorch_gpu\lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>timm 1.0.26 OK
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset">
+<h2>1. Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;processed/manifest_256.csv&quot;</span><span class="p">)</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">get_or_create_split</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">build_dataloaders</span><span class="p">(</span>
+    <span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Split cargado desde processed\split_indices.pkl
+Train: 16074 {&#39;MSL&#39;: 15901, &#39;MER&#39;: 173}
+Val  :  3443 {&#39;MSL&#39;: 3443}
+Test :  3448 {&#39;MSL&#39;: 3448}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arquitectura-depthformer-rgb">
+<h2>2. Arquitectura DepthFormer-RGB<a class="headerlink" href="#arquitectura-depthformer-rgb" title="Permalink to this heading">#</a></h2>
+<p>Encoder Swin-Tiny (4 etapas) → PPM bottleneck → Decoder multi-escala con element-wise addition.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PPM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pyramid Pooling Module con pool sizes [1,2,3,6].&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_ch</span><span class="p">,</span> <span class="n">pool_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">]):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">out_ch</span> <span class="o">=</span> <span class="n">in_ch</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">pool_sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">branches</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_ch</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">pool_sizes</span>
+        <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuse</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span> <span class="o">+</span> <span class="n">out_ch</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">pool_sizes</span><span class="p">),</span> <span class="n">in_ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">branches</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuse</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvBnRelu</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="n">p</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">o</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DepthFormerRGB</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encoder: Swin-Tiny (pretrained). Canales: [96,192,384,768].</span>
+<span class="sd">    Bottleneck: PPM sobre features del stage 4.</span>
+<span class="sd">    Decoder: Conv1x1 alineación + upsample×2 + element-wise addition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">timm</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span>
+            <span class="s1">&#39;swin_tiny_patch4_window7_224&#39;</span><span class="p">,</span>
+            <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">features_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">out_indices</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">img_size</span><span class="o">=</span><span class="mi">256</span>  
+        <span class="p">)</span>
+        <span class="n">chs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">feature_info</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span>  <span class="c1"># [96,192,384,768]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ppm</span> <span class="o">=</span> <span class="n">PPM</span><span class="p">(</span><span class="n">chs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+        <span class="c1"># Alineación de canales para el decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">align3</span> <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="n">chs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">chs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">align2</span> <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="n">chs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">chs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">align1</span> <span class="o">=</span> <span class="n">ConvBnRelu</span><span class="p">(</span><span class="n">chs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">chs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+        <span class="c1"># Decode head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decode</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">ConvBnRelu</span><span class="p">(</span><span class="n">chs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">feats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">f3</span><span class="p">,</span><span class="n">f4</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">feat</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span><span class="o">==</span><span class="mi">4</span> <span class="k">else</span> <span class="n">feat</span>
+            <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">feats</span>
+        <span class="p">]</span>
+
+        <span class="n">x4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ppm</span><span class="p">(</span><span class="n">f4</span><span class="p">)</span>
+
+        <span class="c1"># Decoder: upsample + element-wise addition</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">f3</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">x3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">align3</span><span class="p">(</span><span class="n">f3</span><span class="p">)</span>
+
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">f2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">align2</span><span class="p">(</span><span class="n">f2</span><span class="p">)</span>
+
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">f1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">align1</span><span class="p">(</span><span class="n">f1</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_depthformer</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">DepthFormerRGB</span><span class="p">(</span><span class="n">NUM_CLASSES</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_depthformer</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">params_M</span> <span class="o">=</span> <span class="n">count_parameters</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parámetros: </span><span class="si">{</span><span class="n">params_M</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">M&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output: </span><span class="si">{</span><span class="n">model</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parámetros: 31.58M
+Output: torch.Size([2, 4, 256, 256])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="entrenamiento-3-seeds">
+<h2>3. Entrenamiento (3 seeds)<a class="headerlink" href="#entrenamiento-3-seeds" title="Permalink to this heading">#</a></h2>
+<p>AdamW + PolynomialLR, Weighted CE (pesos adaptados a AI4MARS)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+
+<span class="c1"># Pesos inspirados en el paper, adaptados a distribución AI4MARS</span>
+<span class="c1"># soil~36%, bedrock~46%, sand~16%, big_rock~2%</span>
+<span class="n">CLASS_WEIGHTS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">criterion_fn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">CLASS_WEIGHTS</span><span class="p">,</span>
+        <span class="n">ignore_index</span><span class="o">=</span><span class="n">IGNORE_INDEX</span>
+    <span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optimizer_fn</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scheduler_fn</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">PolynomialLR</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">total_iters</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">run_multi_seed</span><span class="p">(</span>
+    <span class="n">model_fn</span><span class="o">=</span><span class="n">build_depthformer</span><span class="p">,</span>
+    <span class="n">df_train</span><span class="o">=</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_val</span><span class="o">=</span><span class="n">df_val</span><span class="p">,</span> <span class="n">df_test</span><span class="o">=</span><span class="n">df_test</span><span class="p">,</span>
+    <span class="n">criterion_fn</span><span class="o">=</span><span class="n">criterion_fn</span><span class="p">,</span> <span class="n">optimizer_fn</span><span class="o">=</span><span class="n">optimizer_fn</span><span class="p">,</span> <span class="n">scheduler_fn</span><span class="o">=</span><span class="n">scheduler_fn</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_per_mission</span><span class="o">=</span><span class="mi">700</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>──────────────────────────────────────────────────
+  Seed 42 | depthformer_rgb
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  depthformer_rgb_seed42 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.5902 mIoU=0.5117 | val=0.7220 | rock=0.3442
+Ep   2/80 | loss=0.3726 mIoU=0.6151 | val=0.6332 | rock=0.1347
+Ep   3/80 | loss=0.3260 mIoU=0.6444 | val=0.7359 | rock=0.2757
+Ep   4/80 | loss=0.2722 mIoU=0.6720 | val=0.7551 | rock=0.4244
+Ep   5/80 | loss=0.2487 mIoU=0.7174 | val=0.7927 | rock=0.4946
+Ep   6/80 | loss=0.2206 mIoU=0.7064 | val=0.6920 | rock=0.2600
+Ep   7/80 | loss=0.2056 mIoU=0.7299 | val=0.7004 | rock=0.2694
+Ep   8/80 | loss=0.2403 mIoU=0.7137 | val=0.7715 | rock=0.4701
+Ep   9/80 | loss=0.1685 mIoU=0.7610 | val=0.7577 | rock=0.3563
+Ep  10/80 | loss=0.1555 mIoU=0.8002 | val=0.8192 | rock=0.5638
+Ep  11/80 | loss=0.1347 mIoU=0.7871 | val=0.8090 | rock=0.4873
+Ep  12/80 | loss=0.1336 mIoU=0.8044 | val=0.7655 | rock=0.3460
+Ep  13/80 | loss=0.1138 mIoU=0.8450 | val=0.7722 | rock=0.3742
+Ep  14/80 | loss=0.1040 mIoU=0.8370 | val=0.7729 | rock=0.4467
+Ep  15/80 | loss=0.1012 mIoU=0.8721 | val=0.8005 | rock=0.4794
+Ep  16/80 | loss=0.0936 mIoU=0.8473 | val=0.7964 | rock=0.5919
+Ep  17/80 | loss=0.1060 mIoU=0.8515 | val=0.8206 | rock=0.6012
+Ep  18/80 | loss=0.0856 mIoU=0.8459 | val=0.8501 | rock=0.6479
+Ep  19/80 | loss=0.0889 mIoU=0.8510 | val=0.7449 | rock=0.4194
+Ep  20/80 | loss=0.0758 mIoU=0.8887 | val=0.8180 | rock=0.5154
+Ep  21/80 | loss=0.0748 mIoU=0.8842 | val=0.8072 | rock=0.5257
+Ep  22/80 | loss=0.0620 mIoU=0.9091 | val=0.8351 | rock=0.5695
+Ep  23/80 | loss=0.0705 mIoU=0.8918 | val=0.8660 | rock=0.6415
+Ep  24/80 | loss=0.0563 mIoU=0.9063 | val=0.8587 | rock=0.6184
+Ep  25/80 | loss=0.0543 mIoU=0.9062 | val=0.8350 | rock=0.5576
+Ep  26/80 | loss=0.0588 mIoU=0.8850 | val=0.7966 | rock=0.4452
+Ep  27/80 | loss=0.0550 mIoU=0.9032 | val=0.8243 | rock=0.5464
+Ep  28/80 | loss=0.0487 mIoU=0.9023 | val=0.8412 | rock=0.5974
+Ep  29/80 | loss=0.0535 mIoU=0.9159 | val=0.8261 | rock=0.5376
+Ep  30/80 | loss=0.0469 mIoU=0.9030 | val=0.8265 | rock=0.5477
+Ep  31/80 | loss=0.0538 mIoU=0.9119 | val=0.8222 | rock=0.5480
+Ep  32/80 | loss=0.0475 mIoU=0.9147 | val=0.8274 | rock=0.5642
+Ep  33/80 | loss=0.0461 mIoU=0.9199 | val=0.8251 | rock=0.5582
+  Early stopping en epoch 33
+
+  Mejor val mIoU=0.8660 (epoch 23) | 784s
+  Test mIoU=0.7777
+
+──────────────────────────────────────────────────
+  Seed 123 | depthformer_rgb
+
+=======================================================
+  depthformer_rgb_seed123 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.5597 mIoU=0.5338 | val=0.6863 | rock=0.2795
+Ep   2/80 | loss=0.4146 mIoU=0.6155 | val=0.5869 | rock=0.4362
+Ep   3/80 | loss=0.3234 mIoU=0.6575 | val=0.6866 | rock=0.2468
+Ep   4/80 | loss=0.2968 mIoU=0.6775 | val=0.8169 | rock=0.5475
+Ep   5/80 | loss=0.2675 mIoU=0.6997 | val=0.7461 | rock=0.2860
+Ep   6/80 | loss=0.2390 mIoU=0.6992 | val=0.7413 | rock=0.3225
+Ep   7/80 | loss=0.1884 mIoU=0.7531 | val=0.7568 | rock=0.3505
+Ep   8/80 | loss=0.1663 mIoU=0.7810 | val=0.8093 | rock=0.5094
+Ep   9/80 | loss=0.1709 mIoU=0.7907 | val=0.7887 | rock=0.4092
+Ep  10/80 | loss=0.1530 mIoU=0.7769 | val=0.8354 | rock=0.5625
+Ep  11/80 | loss=0.1349 mIoU=0.8191 | val=0.8293 | rock=0.5880
+Ep  12/80 | loss=0.1513 mIoU=0.8014 | val=0.8146 | rock=0.5423
+Ep  13/80 | loss=0.1750 mIoU=0.8047 | val=0.8197 | rock=0.5593
+Ep  14/80 | loss=0.1157 mIoU=0.8464 | val=0.8043 | rock=0.5031
+Ep  15/80 | loss=0.0879 mIoU=0.8649 | val=0.8207 | rock=0.5225
+Ep  16/80 | loss=0.1041 mIoU=0.8467 | val=0.8224 | rock=0.5177
+Ep  17/80 | loss=0.0887 mIoU=0.8457 | val=0.8022 | rock=0.4649
+Ep  18/80 | loss=0.0803 mIoU=0.8703 | val=0.7975 | rock=0.4270
+Ep  19/80 | loss=0.0895 mIoU=0.8528 | val=0.8033 | rock=0.4776
+Ep  20/80 | loss=0.0663 mIoU=0.8803 | val=0.8216 | rock=0.5291
+  Early stopping en epoch 20
+
+  Mejor val mIoU=0.8354 (epoch 10) | 501s
+  Test mIoU=0.7564
+
+──────────────────────────────────────────────────
+  Seed 7 | depthformer_rgb
+
+=======================================================
+  depthformer_rgb_seed7 | device=cuda | AMP=True
+=======================================================
+Ep   1/80 | loss=0.6081 mIoU=0.5011 | val=0.5787 | rock=0.1296
+Ep   2/80 | loss=0.3762 mIoU=0.6154 | val=0.7117 | rock=0.3242
+Ep   3/80 | loss=0.3394 mIoU=0.6484 | val=0.7332 | rock=0.3475
+Ep   4/80 | loss=0.2785 mIoU=0.6712 | val=0.7293 | rock=0.4085
+Ep   5/80 | loss=0.2588 mIoU=0.6872 | val=0.8083 | rock=0.5517
+Ep   6/80 | loss=0.1875 mIoU=0.7660 | val=0.6595 | rock=0.1169
+Ep   7/80 | loss=0.1610 mIoU=0.7627 | val=0.8378 | rock=0.5923
+Ep   8/80 | loss=0.1741 mIoU=0.7601 | val=0.8278 | rock=0.6298
+Ep   9/80 | loss=0.1555 mIoU=0.7752 | val=0.7737 | rock=0.4014
+Ep  10/80 | loss=0.1406 mIoU=0.8126 | val=0.7724 | rock=0.5173
+Ep  11/80 | loss=0.2098 mIoU=0.7647 | val=0.7437 | rock=0.2711
+Ep  12/80 | loss=0.1710 mIoU=0.7671 | val=0.8332 | rock=0.6101
+Ep  13/80 | loss=0.1221 mIoU=0.8013 | val=0.8373 | rock=0.5980
+Ep  14/80 | loss=0.1367 mIoU=0.7959 | val=0.7472 | rock=0.2675
+Ep  15/80 | loss=0.1427 mIoU=0.8077 | val=0.7787 | rock=0.3727
+Ep  16/80 | loss=0.1261 mIoU=0.8111 | val=0.8068 | rock=0.5379
+Ep  17/80 | loss=0.0871 mIoU=0.8563 | val=0.8373 | rock=0.5835
+  Early stopping en epoch 17
+
+  Mejor val mIoU=0.8378 (epoch 7) | 432s
+  Test mIoU=0.7485
+
+=======================================================
+  depthformer_rgb: mIoU=0.7609±0.0123 IC95=±0.0140
+  IoU(soil)=0.9177±0.0091
+  IoU(bedrock)=0.9265±0.0087
+  IoU(sand)=0.8386±0.0103
+  IoU(big_rock)=0.3607±0.0218
+=======================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="guardado-y-visualizacion">
+<h2>4. Guardado y Visualización<a class="headerlink" href="#guardado-y-visualizacion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">append_benchmark_results</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">best_epoch</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;best_epoch_mean&quot;</span><span class="p">],</span>
+    <span class="n">val_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span> <span class="n">test_miou</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_mean&quot;</span><span class="p">],</span>
+    <span class="n">test_miou_std</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_std&quot;</span><span class="p">],</span> <span class="n">test_miou_ci95</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;mIoU_ci95&quot;</span><span class="p">],</span>
+    <span class="n">test_acc</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;pixel_acc_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_soil</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_soil_mean&quot;</span><span class="p">],</span> <span class="n">iou_bedrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_bedrock_mean&quot;</span><span class="p">],</span>
+    <span class="n">iou_sand</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_sand_mean&quot;</span><span class="p">],</span> <span class="n">iou_bigrock</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;iou_big_rock_mean&quot;</span><span class="p">],</span>
+    <span class="n">params_M</span><span class="o">=</span><span class="n">params_M</span><span class="p">,</span> <span class="n">train_time_s</span><span class="o">=</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;train_time_mean&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">best_model</span> <span class="o">=</span> <span class="n">build_depthformer</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checkpoints/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_seed42_best.pth&quot;</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+<span class="n">best_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model_state&quot;</span><span class="p">])</span>
+<span class="n">visualize_predictions</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">MODEL_NAME</span><span class="si">}</span><span class="s2">_predictions.png&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mIoU: </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;mIoU_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="depthformer_rgb_predictions.png" src="attachment:depthformer_rgb_predictions.png" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03d_model_terseg.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03d — TerSeg (Dual-Branch CNN + Swin Transformer)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_benchmark_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">04 — Implementación de Modelos Benchmark</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion">0. Configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-depthformer-rgb">2. Arquitectura DepthFormer-RGB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-3-seeds">3. Entrenamiento (3 seeds)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardado-y-visualizacion">4. Guardado y Visualización</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
