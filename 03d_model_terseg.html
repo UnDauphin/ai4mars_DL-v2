@@ -814,8 +814,21 @@ Ep  27/80 | loss=0.0073 mIoU=0.8665 | val=0.8123 | rock=0.5306
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Resultados en results\benchmark_results.csv
+</pre></div>
 </div>
-<p><img alt="terseg_predictions.png" src="attachment:terseg_predictions.png" /></p>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\User\AppData\Local\Temp\ipykernel_12352\3336393090.py:11: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don&#39;t have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(f&quot;checkpoints/{MODEL_NAME}_seed42_best.pth&quot;, map_location=device)
+</pre></div>
+</div>
+<img alt="_images/23ab88b96a707d18b4cd29f24f2a674a62ccf0ec59ad1c351478fa73acafec58.png" src="_images/23ab88b96a707d18b4cd29f24f2a674a62ccf0ec59ad1c351478fa73acafec58.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ results/terseg_predictions.png
+mIoU: 0.7498 ± 0.0089
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 

@@ -386,6 +386,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">Partición del dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de preprocesamiento</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requisitos-de-reproducibilidad-4-3">Requisitos de reproducibilidad (§ 4.3)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-tecnologicas">Limitaciones tecnologicas</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-modelos">4.2 Implementación de Modelos</a><ul class="nav section-nav flex-column">
@@ -442,23 +443,23 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02a</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">03a</span></code></p></td>
 <td><p><strong>DeepLabV3+</strong> (ResNet-50)</p></td>
 <td><p>CNN clásico + ASPP</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">02b</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">03b</span></code></p></td>
 <td><p><strong>SegFormer-B2</strong></p></td>
 <td><p>Transformer puro</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02c</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">03c</span></code></p></td>
 <td><p><strong>MarsSeg</strong></p></td>
 <td><p>CNN híbrido específico para Marte</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">02d</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">03d</span></code></p></td>
 <td><p><strong>TerSeg</strong></p></td>
 <td><p>Dual-branch CNN + Swin Transformer</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02e</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">03e</span></code></p></td>
 <td><p><strong>DepthFormer-RGB</strong></p></td>
 <td><p>Swin Transformer + PPM</p></td>
 </tr>
@@ -525,6 +526,10 @@ document.write(`
 <li><p><strong>Métricas reportadas:</strong> media ± desviación estándar e IC 95 %.</p></li>
 <li><p><strong>Hardware:</strong> NVIDIA GPU con CUDA + AMP (Automatic Mixed Precision) habilitado.</p></li>
 </ul>
+</section>
+<section id="limitaciones-tecnologicas">
+<h3>Limitaciones tecnologicas<a class="headerlink" href="#limitaciones-tecnologicas" title="Permalink to this heading">#</a></h3>
+<p>A pesar de contar con NVIDIA GPU la cual nos permite activar optimizaciones de pytorch de CUDA + AMP, nuestra mejor gpu, la cual es una laptop gpu 4050 50W es considerablemnte mas debil que las usadas en la literatura, por lo cual por limitaciones de hardware argumentamos nuestra decision de preredimensionar las imagenes a 256 x 256</p>
 </section>
 </section>
 <section id="implementacion-de-modelos">
@@ -1679,6 +1684,7 @@ Métrica principal: mIoU sobre conjunto de test | 3 runs independientes | α = 0
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">Partición del dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de preprocesamiento</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requisitos-de-reproducibilidad-4-3">Requisitos de reproducibilidad (§ 4.3)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-tecnologicas">Limitaciones tecnologicas</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-modelos">4.2 Implementación de Modelos</a><ul class="nav section-nav flex-column">

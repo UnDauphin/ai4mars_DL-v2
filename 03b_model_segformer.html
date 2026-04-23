@@ -747,8 +747,23 @@ Ep  46/80 | loss=0.0643 mIoU=0.8939 | val=0.8443 | rock=0.5978
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Resultados en results\benchmark_results.csv
+</pre></div>
 </div>
-<p><img alt="segformer_b2_predictions.png" src="attachment:segformer_b2_predictions.png" /></p>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of SegformerForSemanticSegmentation were not initialized from the model checkpoint at nvidia/mit-b2 and are newly initialized: [&#39;decode_head.batch_norm.bias&#39;, &#39;decode_head.batch_norm.num_batches_tracked&#39;, &#39;decode_head.batch_norm.running_mean&#39;, &#39;decode_head.batch_norm.running_var&#39;, &#39;decode_head.batch_norm.weight&#39;, &#39;decode_head.classifier.bias&#39;, &#39;decode_head.classifier.weight&#39;, &#39;decode_head.linear_c.0.proj.bias&#39;, &#39;decode_head.linear_c.0.proj.weight&#39;, &#39;decode_head.linear_c.1.proj.bias&#39;, &#39;decode_head.linear_c.1.proj.weight&#39;, &#39;decode_head.linear_c.2.proj.bias&#39;, &#39;decode_head.linear_c.2.proj.weight&#39;, &#39;decode_head.linear_c.3.proj.bias&#39;, &#39;decode_head.linear_c.3.proj.weight&#39;, &#39;decode_head.linear_fuse.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+C:\Users\User\AppData\Local\Temp\ipykernel_17716\1771776610.py:11: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don&#39;t have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(f&quot;checkpoints/{MODEL_NAME}_seed42_best.pth&quot;, map_location=device)
+</pre></div>
+</div>
+<img alt="_images/4c6a18bdd44d2ebe48d76f3b9f90db586c3c8c6b5738e24beaf5206014f6878e.png" src="_images/4c6a18bdd44d2ebe48d76f3b9f90db586c3c8c6b5738e24beaf5206014f6878e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ results/segformer_b2_predictions.png
+mIoU: 0.7592 ± 0.0078
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
