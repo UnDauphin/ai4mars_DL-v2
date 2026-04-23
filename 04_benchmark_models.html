@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Sección 4 — Implementación de Modelos Benchmark &#8212; My sample book</title>
+    <title>04 — Implementación de Modelos Benchmark &#8212; My sample book</title>
   
   
   
@@ -67,7 +67,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '04_benchmark_models';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Sección 3: Revisión del Estado del Arte" href="03_marco_teorico.html" />
+    <link rel="next" title="05 — Modelo original — MambaSegNet" href="05_original_model.html" />
+    <link rel="prev" title="03 — Revisión del Estado del Arte" href="03_marco_teorico.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -175,10 +176,11 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 - Preprocesamiento y Definición del Problema y Dataset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 – Análisis Exploratorio de Datos (EDA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">Sección 3: Revisión del Estado del Arte</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sección 4 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
 </ul>
 
     </div>
@@ -364,7 +366,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Sección 4 — Implementación de Modelos Benchmark</h1>
+    <h1>04 — Implementación de Modelos Benchmark</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -424,8 +426,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="seccion-4-implementacion-de-modelos-benchmark">
-<h1>Sección 4 — Implementación de Modelos Benchmark<a class="headerlink" href="#seccion-4-implementacion-de-modelos-benchmark" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="implementacion-de-modelos-benchmark">
+<h1>04 — Implementación de Modelos Benchmark<a class="headerlink" href="#implementacion-de-modelos-benchmark" title="Permalink to this heading">#</a></h1>
 <p>Este notebook presenta la implementación, entrenamiento y evaluación comparativa de los <strong>5 modelos benchmark</strong> seleccionados para segmentación semántica de terreno marciano sobre el dataset <strong>AI4MARS</strong>. Se sigue rigurosamente el diseño experimental unificado exigido en el entregable: misma partición de datos, mismo pipeline de preprocesamiento y mismas métricas para todos los modelos.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1639,8 +1641,17 @@ Métrica principal: mIoU sobre conjunto de test | 3 runs independientes | α = 0
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sección 3: Revisión del Estado del Arte</p>
+        <p class="prev-next-title">03 — Revisión del Estado del Arte</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="05_original_model.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">05 — Modelo original — MambaSegNet</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

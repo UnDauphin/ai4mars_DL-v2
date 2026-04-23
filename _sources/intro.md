@@ -43,7 +43,7 @@ El libro está organizado en los siguientes capítulos:
 | **2. EDA** | Análisis exploratorio de distribución de clases, estadísticas por misión, visualización de imágenes y máscaras representativas. |
 | **3. Estado del Arte** | Revisión sistemática de la literatura (2018–2026). Análisis crítico de 8 modelos top, comparación de tendencias CNN vs. Transformers, identificación de gaps. |
 | **4. Benchmark modelos** | Tabla comparativa con métricas (media ± std, IC 95 %), ranking, análisis estadístico (Friedman + Nemenyi) y discusión crítica. |
-
+| **5. Modelo original** | Discusión sobre elección inicial de modelo original y cómo este nos puede ayudar a mejorar las métricas. |
 ---
 
 ## Entorno Experimental
@@ -64,12 +64,12 @@ Todos los experimentos fueron ejecutados bajo el mismo entorno para garantizar c
 Todo el código es reproducible a partir del repositorio adjunto. El pipeline completo sigue este orden:
 
 ```
-preprocess_resize.py          # Prerredimensionamiento único (ejecutar una vez)
 01_preprocessing_and_dataset  # Limpieza y split
+preprocess_resize.py          # Prerredimensionamiento único (ejecutar una vez)
 02_EDA                        # EDA del dataset
 mars_util_fast.py             # Funciones necesarias para entrenar los modelos
 03a–03e_model_*               # Entrenamiento de cada modelo
-03_benchmark_models           # Análisis estadístico y benchmark final
+04_benchmark_models           # Análisis estadístico y benchmark de los modelos
 ```
 
 Las semillas aleatorias están fijadas globalmente via `set_seed()` en `mars_utils_fast.py`. Los splits train/val/test se persisten en `processed/split_indices.pkl` para garantizar que todos los modelos sean evaluados sobre exactamente la misma partición.

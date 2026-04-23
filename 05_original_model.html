@@ -1,0 +1,899 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>05 — Modelo original — MambaSegNet &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '05_original_model';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="04 — Implementación de Modelos Benchmark" href="04_benchmark_models.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">05 — Modelo original — MambaSegNet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F05_original_model.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/05_original_model.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>05 — Modelo original — MambaSegNet</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-del-modelo-original-y-justificacion">5.1 Selección del Modelo Original y Justificación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-seleccion">Criterios de Selección</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencia-completa">5.2 Referencia Completa</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-detallada-del-modelo-original">5.3 Descripción Detallada del Modelo Original</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-general">5.3.1 Arquitectura General</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-latente-state-space-model">5.3.2 Estado Latente (State Space Model)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bloques-clave">5.3.3 Bloques Clave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supuestos-del-modelo">5.3.4 Supuestos del Modelo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-de-seleccion">5.4 Justificación de Selección</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relevancia-para-el-problema">5.4.1 Relevancia para el Problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impacto-en-la-literatura">5.4.2 Impacto en la Literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#originalidad-para-el-dominio-marciano">5.4.3 Originalidad para el Dominio Marciano</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-con-los-modelos-benchmark-del-proyecto">5.5 Relación con los Modelos Benchmark del Proyecto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similitudes">5.5.1 Similitudes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave">5.5.2 Diferencias Clave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-de-superioridad">5.5.3 Hipótesis de Superioridad</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptacion-a-ai4mars">5.6 Adaptación a AI4MARS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modificaciones-arquitectonicas">Modificaciones Arquitectónicas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-experimental-consistente-con-el-proyecto">Protocolo Experimental (Consistente con el Proyecto)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-de-evaluacion">Métricas de Evaluación</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-critico-del-paper-guia">5.7 Análisis Crítico del Paper Guía</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fortalezas">Fortalezas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-y-riesgos-de-transferencia">Limitaciones y Riesgos de Transferencia</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="modelo-original-mambasegnet">
+<h1>05 — Modelo original — MambaSegNet<a class="headerlink" href="#modelo-original-mambasegnet" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="seleccion-del-modelo-original-y-justificacion">
+<h2>5.1 Selección del Modelo Original y Justificación<a class="headerlink" href="#seleccion-del-modelo-original-y-justificacion" title="Permalink to this heading">#</a></h2>
+<section id="criterios-de-seleccion">
+<h3>Criterios de Selección<a class="headerlink" href="#criterios-de-seleccion" title="Permalink to this heading">#</a></h3>
+<p>Se buscó un paper guía que cumpliera tres condiciones simultáneamente: (1) publicado en revista Q1 de WoS/Scopus con revisión por pares, (2) arquitectura no previamente aplicada al dominio de segmentación de terreno marciano, y (3) dominio de aplicación con características estructurales transferibles a AI4MARS. El modelo seleccionado es <strong>MambaSegNet (Wen et al., 2025)</strong>, publicado en <em>Remote Sensing</em> (MDPI, Q1).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Criterio de selección</p></th>
+<th class="head"><p>Evaluación de MambaSegNet</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Revista Q1 indexada en Scopus/WoS</p></td>
+<td><p><em>Remote Sensing</em>, MDPI</p></td>
+</tr>
+<tr class="row-odd"><td><p>Nunca aplicado a segmentación de terreno marciano</p></td>
+<td><p>Primera aplicación propuesta en este proyecto</p></td>
+</tr>
+<tr class="row-even"><td><p>Dominio con alta analogía estructural a AI4MARS</p></td>
+<td><p>Teledetección satelital: fondos complejos, objetos pequeños dispersos</p></td>
+</tr>
+<tr class="row-odd"><td><p>Arquitectura diferenciada de los benchmarks existentes</p></td>
+<td><p>State Space Model (Mamba) — no usado en ningún benchmark del proyecto</p></td>
+</tr>
+<tr class="row-even"><td><p>Costo computacional compatible con hardware disponible</p></td>
+<td><p>22.43M parámetros, complejidad lineal O(N)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>MambaSegNet</strong> es seleccionado como modelo original. Su dominio de teledetección comparte con AI4MARS las mismas condiciones adversas: fondos complejos y ruidosos, variabilidad de iluminación, presencia de objetos diminutos mal representados (big rocks ~2% del área etiquetada ↔ naves pequeñas en imágenes satelitales), y ausencia de estructura semántica fuerte. La arquitectura Mamba, basada en State Space Models (SSM), no ha sido aplicada previamente a segmentación de terreno marciano, convirtiéndolo en un modelo <strong>genuinamente original</strong> para este dominio.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="referencia-completa">
+<h2>5.2 Referencia Completa<a class="headerlink" href="#referencia-completa" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>Wen, R., Yuan, Y., Xu, X., Yin, S., Chen, Z., Zeng, H., &amp; Wang, Z. (2025). <strong>MambaSegNet: A Fast and Accurate High-Resolution Remote Sensing Imagery Ship Segmentation Network</strong>. <em>Remote Sensing</em>, 17(19), 3328. <a class="reference external" href="https://doi.org/10.3390/rs17193328">https://doi.org/10.3390/rs17193328</a></p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>Revista</strong>: <em>Remote Sensing</em> (MDPI) — indexada en Scopus/WoS, Q1 en teledetección</p></li>
+<li><p><strong>Fecha de publicación</strong>: 29 de septiembre de 2025</p></li>
+<li><p><strong>Acceso al código</strong>: <a class="github reference external" href="https://github.com/wzp8023391/Ship_Segmentation">wzp8023391/Ship_Segmentation</a></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="descripcion-detallada-del-modelo-original">
+<h2>5.3 Descripción Detallada del Modelo Original<a class="headerlink" href="#descripcion-detallada-del-modelo-original" title="Permalink to this heading">#</a></h2>
+<section id="arquitectura-general">
+<h3>5.3.1 Arquitectura General<a class="headerlink" href="#arquitectura-general" title="Permalink to this heading">#</a></h3>
+<p>MambaSegNet es una red de segmentación semántica encoder-decoder ligera construida sobre el paradigma <strong>Mamba (State Space Model, SSM)</strong>, diseñada para procesar imágenes de teledetección de alta resolución. La arquitectura integra dos módulos centrales:</p>
+<ol class="arabic simple">
+<li><p><strong>MambaLayer</strong>: capa de extracción de características mediante secuencias de tokens; aplana y embebe la imagen en parches, los procesa con un Mamba Block que opera en espacio de estados latente.</p></li>
+<li><p><strong>ResMambaBlock</strong>: bloque residual que combina convolución depthwise, normalización por capas y el MambaLayer para extraer representaciones multi-escala con bajo costo computacional.</p></li>
+</ol>
+<p>El flujo de datos sigue el siguiente esquema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Entrada (C × H × W)
+    ↓  [Convolución depthwise inicial]
+    ↓  [Flatten + Embedding → tokens H/4 × W/4 × C]
+    ↓  [Encoder: 4 etapas con ResMambaBlock + Token Merging (downsampling)]
+         H/4×W/4×C → H/8×W/8×2C → H/16×W/16×4C → H/32×W/32×8C
+    ↓  [Bottleneck: 2× ResMambaBlock]
+    ↓  [Decoder: ResUp Blocks + Conv3d + Skip Connections]
+         H/16×W/16×4C → H/8×W/8×2C → H/4×W/4×C
+    ↓  [Convolución final → segmentación]
+Salida (num_classes × H × W)
+</pre></div>
+</div>
+<p>Las <strong>skip connections</strong> conectan cada etapa del encoder con su etapa simétrica del decoder, preservando detalles espaciales de alta frecuencia perdidos durante el submuestreo. Este diseño es análogo al U-Net clásico, pero reemplazando las convoluciones estándar por bloques SSM.</p>
+</section>
+<section id="estado-latente-state-space-model">
+<h3>5.3.2 Estado Latente (State Space Model)<a class="headerlink" href="#estado-latente-state-space-model" title="Permalink to this heading">#</a></h3>
+<p>El núcleo matemático de Mamba modela secuencias mediante ecuaciones diferenciales ordinarias lineales:</p>
+<div class="math notranslate nohighlight">
+\[f'(t) = a \cdot f(t) + b \cdot x(t), \quad g(t) = c \cdot f(t) + d \cdot x(t)\]</div>
+<p>En su versión discreta (discretización Zero-Order Hold con parámetro de escala temporal <span class="math notranslate nohighlight">\(\Delta\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[f_t = \bar{A} f_{k-2} + \bar{B} x_k, \quad g_t = C f_k + D x_k\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\bar{A} = e^{\Delta A}\)</span>, <span class="math notranslate nohighlight">\(\bar{B} \approx \Delta B\)</span> (aproximación de primer orden Taylor). Esta formulación permite que cada token “recuerde” contexto a largo alcance de forma eficiente en <strong>complejidad lineal</strong> O(N), a diferencia del mecanismo de atención Transformer con complejidad O(N²). Para imágenes marcianas con texturas complejas y rocas dispersas en toda la imagen, esta capacidad de modelar dependencias a largo rango sin penalización cuadrática es una ventaja significativa.</p>
+</section>
+<section id="bloques-clave">
+<h3>5.3.3 Bloques Clave<a class="headerlink" href="#bloques-clave" title="Permalink to this heading">#</a></h3>
+<p><strong>ResMambaBlock</strong> (corazón del modelo):</p>
+<ul class="simple">
+<li><p>Entrada → embedding lineal → dos ramas paralelas</p></li>
+<li><p>Rama 1: Norm → DWConv → ReLU → DWConv → Norm → MambaLayer1 → Norm → ReLU → MambaLayer2</p></li>
+<li><p>Rama 2: identidad (residual)</p></li>
+<li><p>Salida: suma element-wise de ambas ramas</p></li>
+<li><p>Elimina el mecanismo de multi-head attention y el MLP del Transformer estándar → más bloques en el mismo presupuesto computacional</p></li>
+</ul>
+<p><strong>ResUp Block</strong> (decoder):</p>
+<ul class="simple">
+<li><p>DWConv + Norm + ReLU → upsampling por interpolación bilineal o ConvTranspose</p></li>
+</ul>
+<p><strong>Función de pérdida combinada</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L} = \alpha \mathcal{L}_{CE} + \beta \mathcal{L}_{IoU}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{CE} = -\frac{1}{N}\sum_{i=1}^{N}\left[y_i \log(p_i) + (1-y_i)\log(1-p_i)\right]\]</div>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{IoU} = 1 - \frac{|P \cap G|}{|P \cup G|}\]</div>
+<p>Con <span class="math notranslate nohighlight">\(\alpha = \beta = 0.5\)</span>. Esta combinación equilibra precisión pixel-a-pixel (CE) con cobertura de regiones (IoU), siendo especialmente relevante para clases raras como <code class="docutils literal notranslate"><span class="pre">big_rock</span></code> (~2% de píxeles en AI4MARS).</p>
+</section>
+<section id="supuestos-del-modelo">
+<h3>5.3.4 Supuestos del Modelo<a class="headerlink" href="#supuestos-del-modelo" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Supuesto de secuencialidad espacial</strong>: los tokens de imagen procesados linealmente capturan dependencias espaciales suficientes; la estructura 2D se aproxima mediante scanning 1D secuencial de parches.</p></li>
+<li><p><strong>Supuesto de transferibilidad de representaciones</strong>: características aprendidas en teledetección satelital (texturas complejas, objetos pequeños en fondos homogéneos) son transferibles al dominio de imágenes HazCam marcianas.</p></li>
+<li><p><strong>Supuesto de escalabilidad</strong>: el modelo funciona con imágenes redimensionadas a 256×256 sin pérdida significativa de información semántica relevante para la navegación.</p></li>
+<li><p><strong>Supuesto de complementariedad de pérdidas</strong>: CE e IoU capturan aspectos ortogonales del error de segmentación; su combinación lineal con igual peso es suficiente sin requerir ajuste adaptativo.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="justificacion-de-seleccion">
+<h2>5.4 Justificación de Selección<a class="headerlink" href="#justificacion-de-seleccion" title="Permalink to this heading">#</a></h2>
+<section id="relevancia-para-el-problema">
+<h3>5.4.1 Relevancia para el Problema<a class="headerlink" href="#relevancia-para-el-problema" title="Permalink to this heading">#</a></h3>
+<p>La segmentación de terreno marciano en AI4MARS comparte con la segmentación de naves en teledetección cuatro características estructurales determinantes:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Característica</p></th>
+<th class="head"><p>AI4MARS (HazCam)</p></th>
+<th class="head"><p>LEVIR_SHIP / DIOR_SHIP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fondo dominante</p></td>
+<td><p>Suelo/roca continua, textura variable</p></td>
+<td><p>Mar/tierra, fondo extenso</p></td>
+</tr>
+<tr class="row-odd"><td><p>Objeto minoritario difícil</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">big_rock</span></code> (~2% píxeles, disperso)</p></td>
+<td><p>Naves pequeñas (&lt;450px perímetro)</p></td>
+</tr>
+<tr class="row-even"><td><p>Ruido e iluminación</p></td>
+<td><p>Distorsión de lente gran angular, sombras</p></td>
+<td><p>Nubes, bruma, destellos solares</p></td>
+</tr>
+<tr class="row-odd"><td><p>Estructura semántica</p></td>
+<td><p>Débil (no hay geometría rígida de escena)</p></td>
+<td><p>Débil (naves en orientaciones libres)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El MambaSegNet demostró <strong>IoU = 0.8208</strong> en DIOR_SHIP y <strong>0.8094</strong> en LEVIR_SHIP superando a SegFormer (0.7791, 0.5603), DeepLabV3+ (0.7923, 0.7789) y SwinTransformer (0.7991, 0.7333), todos ellos modelos benchmark ya evaluados en este proyecto. Esto sugiere capacidad superior para manejar exactamente las condiciones que hacen difícil AI4MARS.</p>
+</section>
+<section id="impacto-en-la-literatura">
+<h3>5.4.2 Impacto en la Literatura<a class="headerlink" href="#impacto-en-la-literatura" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>El modelo supera a <strong>12 arquitecturas mainstream</strong> en datasets de referencia de teledetección de alta resolución</p></li>
+<li><p>Primera aplicación de arquitectura Mamba a segmentación semántica de buques en imágenes satelitales RGB</p></li>
+<li><p>Demuestra que SSMs con skip connections superan a Transformers de ventana (Swin) en escenarios de objetos pequeños con fondo complejo</p></li>
+<li><p>Publicado en <em>Remote Sensing</em> (MDPI) con revisión por pares, indexado en Scopus/WoS</p></li>
+</ul>
+</section>
+<section id="originalidad-para-el-dominio-marciano">
+<h3>5.4.3 Originalidad para el Dominio Marciano<a class="headerlink" href="#originalidad-para-el-dominio-marciano" title="Permalink to this heading">#</a></h3>
+<p>A diferencia de los modelos benchmark implementados en este proyecto (DeepLabV3+, SegFormer, MarsSeg, TerSeg, DepthFormer), <strong>ningún trabajo publicado ha aplicado arquitecturas Mamba (SSM) a segmentación semántica de terreno marciano</strong>. Esto constituye una contribución genuina: si MambaSegNet supera los benchmarks en AI4MARS, cierra un gap real en la literatura.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="relacion-con-los-modelos-benchmark-del-proyecto">
+<h2>5.5 Relación con los Modelos Benchmark del Proyecto<a class="headerlink" href="#relacion-con-los-modelos-benchmark-del-proyecto" title="Permalink to this heading">#</a></h2>
+<section id="similitudes">
+<h3>5.5.1 Similitudes<a class="headerlink" href="#similitudes" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>MambaSegNet vs.</p></th>
+<th class="head"><p>Similitud</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>DeepLabV3+</strong></p></td>
+<td><p>Ambos usan backbone preentrenado en ImageNet; ambos tienen arquitectura encoder-decoder con skip connections</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SegFormer</strong></p></td>
+<td><p>Ambos procesan la imagen en parches/tokens; ambos usan una representación jerarquizada multi-escala; ambos eliminan positional encoding explícito</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TerSeg</strong></p></td>
+<td><p>Ambos integran mecanismos de captura de contexto global más allá de la CNN local; ambos usan skip connections para preservar detalles espaciales</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DepthFormer</strong></p></td>
+<td><p>Ambos usan encoder Transformer-like + decoder con upsample progresivo y conexiones residuales</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MarsSeg</strong></p></td>
+<td><p>Ambos utilizan función de pérdida compuesta (CE + IoU/Dice) para manejar el desbalance de clases raras</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="diferencias-clave">
+<h3>5.5.2 Diferencias Clave<a class="headerlink" href="#diferencias-clave" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dimensión</p></th>
+<th class="head"><p>MambaSegNet</p></th>
+<th class="head"><p>Benchmarks del Proyecto</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mecanismo de contexto global</strong></p></td>
+<td><p>State Space Model (SSM) — complejidad O(N) lineal</p></td>
+<td><p>Atención (SegFormer, TerSeg, DepthFormer): O(N²); Atrous CNN (DeepLabV3+, MarsSeg): receptivo local</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Backbone</strong></p></td>
+<td><p>DWConv inicial + Mamba puro (sin ResNet/MiT)</p></td>
+<td><p>ResNet-50 (DeepLabV3+, MarsSeg), MiT-B2 (SegFormer), ResNet-34+Swin-Tiny (TerSeg), Swin-Tiny (DepthFormer)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Parámetros</strong></p></td>
+<td><p>22.43M — el segundo más ligero después de SegFormer (27.35M)</p></td>
+<td><p>38.61M (MarsSeg), 42.00M (DeepLabV3+), 49.19M (TerSeg), 31.58M (DepthFormer)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Dominio de preentrenamiento</strong></p></td>
+<td><p>Sin preentrenamiento externo en la propuesta original</p></td>
+<td><p>ImageNet-1K (todos los benchmarks)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Loss function</strong></p></td>
+<td><p>CE + IoU (combinación directa, α=β=0.5)</p></td>
+<td><p>CE puro (SegFormer), CE+aux (DeepLabV3+), Focal-Dice (MarsSeg), FocalLoss (TerSeg), CE ponderado (DepthFormer)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Handling de objetos pequeños</strong></p></td>
+<td><p>SSM con scanning secuencial → dependencias globales sin pérdida de resolución local</p></td>
+<td><p>ASPP/multi-scale (MarsSeg, DeepLabV3+), window attention limitada (DepthFormer, TerSeg)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Originalidad para Marte</strong></p></td>
+<td><p><strong>Nunca aplicado</strong> al dominio marciano</p></td>
+<td><p>Todos ya evaluados en AI4MARS o adaptar metodologías previas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="hipotesis-de-superioridad">
+<h3>5.5.3 Hipótesis de Superioridad<a class="headerlink" href="#hipotesis-de-superioridad" title="Permalink to this heading">#</a></h3>
+<p>Se hipotetiza que MambaSegNet puede superar los benchmarks en AI4MARS porque:</p>
+<ol class="arabic simple">
+<li><p><strong>Ventaja en <code class="docutils literal notranslate"><span class="pre">big_rock</span></code></strong>: Los SSMs capturan dependencias de largo rango eficientemente, permitiendo que el modelo relacione una roca aislada con el contexto global de la imagen (algo que ASPP o ventanas de atención locales no hacen bien con una clase que representa solo el 2% del área).</p></li>
+<li><p><strong>Eficiencia computacional</strong>: Con 22.43M parámetros y complejidad lineal, permite mayor batch size y más épocas de entrenamiento bajo las restricciones de la RTX 4050 laptop (6GB VRAM, 45W TGP), potencialmente llevando a mejor convergencia.</p></li>
+<li><p><strong>Robustez a fondos heterogéneos</strong>: El mecanismo SSM fue diseñado explícitamente para manejar fondos complejos en teledetección, condición análoga a la variabilidad de texturas en imágenes HazCam.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="adaptacion-a-ai4mars">
+<h2>5.6 Adaptación a AI4MARS<a class="headerlink" href="#adaptacion-a-ai4mars" title="Permalink to this heading">#</a></h2>
+<p>Para adaptar MambaSegNet al dominio de segmentación de terreno marciano, se realizan las siguientes modificaciones respecto al paper original:</p>
+<section id="modificaciones-arquitectonicas">
+<h3>Modificaciones Arquitectónicas<a class="headerlink" href="#modificaciones-arquitectonicas" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>Paper Original</p></th>
+<th class="head"><p>Adaptación AI4MARS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cabeza de clasificación</p></td>
+<td><p>Binaria (naves vs. fondo)</p></td>
+<td><p>4 clases (soil, bedrock, sand, big_rock) + ignore_index=255</p></td>
+</tr>
+<tr class="row-odd"><td><p>Resolución de entrada</p></td>
+<td><p>800×800 (DIOR), 800×600 (LEVIR)</p></td>
+<td><p>256×256 (prerredimensionado con <code class="docutils literal notranslate"><span class="pre">preprocess_resize.py</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Función de pérdida</p></td>
+<td><p>CE + IoU (α=β=0.5)</p></td>
+<td><p>Weighted CE (pesos: [1.0, 0.8, 2.0, 8.0]) + IoU, o Focal-Dice para enfatizar <code class="docutils literal notranslate"><span class="pre">big_rock</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Preentrenamiento backbone</p></td>
+<td><p>Sin especificar en paper</p></td>
+<td><p>Inicialización aleatoria; opcional: pesos de VMamba preentrenados en ImageNet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="protocolo-experimental-consistente-con-el-proyecto">
+<h3>Protocolo Experimental (Consistente con el Proyecto)<a class="headerlink" href="#protocolo-experimental-consistente-con-el-proyecto" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># Configuración alineada con mars_utils_fast.py
+optimizer    : AdamW(lr=6e-5, weight_decay=0.01)
+scheduler    : CosineAnnealingLR(T_max=30, eta_min=1e-6)
+batch_size   : 8–10  (AMP habilitado)
+num_epochs   : 80 con early stopping (patience=10)
+seeds        : [42, 123, 7]  (3 runs para media ± std)
+n_per_mission: 700 (subset estratificado por misión)
+</pre></div>
+</div>
+</section>
+<section id="metricas-de-evaluacion">
+<h3>Métricas de Evaluación<a class="headerlink" href="#metricas-de-evaluacion" title="Permalink to this heading">#</a></h3>
+<p>Consistentes con el resto del proyecto:</p>
+<ul class="simple">
+<li><p><strong>mIoU</strong> (métrica principal): promedio de IoU sobre las 4 clases válidas</p></li>
+<li><p><strong>IoU por clase</strong>: soil, bedrock, sand, big_rock (especial atención a big_rock)</p></li>
+<li><p><strong>Pixel Accuracy</strong>: proporción de píxeles correctamente clasificados</p></li>
+<li><p><strong>IC 95%</strong>: <span class="math notranslate nohighlight">\(\pm 1.96 \cdot \sigma / \sqrt{3}\)</span> sobre las 3 semillas</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="analisis-critico-del-paper-guia">
+<h2>5.7 Análisis Crítico del Paper Guía<a class="headerlink" href="#analisis-critico-del-paper-guia" title="Permalink to this heading">#</a></h2>
+<section id="fortalezas">
+<h3>Fortalezas<a class="headerlink" href="#fortalezas" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Complejidad lineal en longitud de secuencia</strong>: permite procesar imágenes de mayor resolución que los Transformers estándar con el mismo presupuesto de memoria</p></li>
+<li><p><strong>Diseño residual profundo</strong>: los ResMambaBlocks facilitan el flujo de gradiente en redes profundas, reduciendo el riesgo de vanishing gradient</p></li>
+<li><p><strong>Validación cross-dataset</strong>: demostrado en dos datasets con distribuciones muy diferentes (DIOR: resolución 0.5–30m; LEVIR: 0.2–1m), sugiriendo buena generalización</p></li>
+<li><p><strong>Dataset pequeño</strong>: logra buen desempeño con solo ~1200–1400 imágenes por dataset, comparable al tamaño del conjunto de entrenamiento utilizado en nuestros experimentos (n_per_mission=700 → ~2100 imágenes)</p></li>
+</ul>
+</section>
+<section id="limitaciones-y-riesgos-de-transferencia">
+<h3>Limitaciones y Riesgos de Transferencia<a class="headerlink" href="#limitaciones-y-riesgos-de-transferencia" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Dominio target es binario</strong> (nave vs. fondo), mientras AI4MARS requiere 4 clases con desbalance severo; la función de pérdida CE+IoU uniforme puede no ser óptima para <code class="docutils literal notranslate"><span class="pre">big_rock</span></code></p></li>
+<li><p><strong>Sin preentrenamiento en ImageNet</strong>: a diferencia de los benchmarks del proyecto que usan pesos ImageNet, MambaSegNet en su formulación original parte de cero; esto puede ser una desventaja en datasets pequeños</p></li>
+<li><p><strong>Scanning 1D de imagen 2D</strong>: la aproximación de “leer” la imagen como una secuencia 1D puede perder algunas dependencias espaciales 2D que CNN y ViT 2D capturan naturalmente</p></li>
+<li><p><strong>Hardware</strong>: los experimentos originales usan RTX 3090 Ti; nuestra RTX 4050 laptop (6GB VRAM, 45W TGP) requerirá ajuste de batch size y posiblemente reducción de dimensiones del modelo</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>Paper guía: Wen et al. (2025), Remote Sensing, 17(19), 3328.</em></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_benchmark_models.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">04 — Implementación de Modelos Benchmark</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-del-modelo-original-y-justificacion">5.1 Selección del Modelo Original y Justificación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-seleccion">Criterios de Selección</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencia-completa">5.2 Referencia Completa</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-detallada-del-modelo-original">5.3 Descripción Detallada del Modelo Original</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-general">5.3.1 Arquitectura General</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-latente-state-space-model">5.3.2 Estado Latente (State Space Model)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bloques-clave">5.3.3 Bloques Clave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supuestos-del-modelo">5.3.4 Supuestos del Modelo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-de-seleccion">5.4 Justificación de Selección</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relevancia-para-el-problema">5.4.1 Relevancia para el Problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impacto-en-la-literatura">5.4.2 Impacto en la Literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#originalidad-para-el-dominio-marciano">5.4.3 Originalidad para el Dominio Marciano</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-con-los-modelos-benchmark-del-proyecto">5.5 Relación con los Modelos Benchmark del Proyecto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similitudes">5.5.1 Similitudes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave">5.5.2 Diferencias Clave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-de-superioridad">5.5.3 Hipótesis de Superioridad</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptacion-a-ai4mars">5.6 Adaptación a AI4MARS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modificaciones-arquitectonicas">Modificaciones Arquitectónicas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-experimental-consistente-con-el-proyecto">Protocolo Experimental (Consistente con el Proyecto)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-de-evaluacion">Métricas de Evaluación</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-critico-del-paper-guia">5.7 Análisis Crítico del Paper Guía</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fortalezas">Fortalezas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-y-riesgos-de-transferencia">Limitaciones y Riesgos de Transferencia</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

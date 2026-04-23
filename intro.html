@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="01 - Preprocesamiento y Definición del Problema y Dataset" href="01_preprocessing_and_dataset.html" />
+    <link rel="next" title="01 — Preprocesamiento y Definición del Problema y Dataset" href="01_preprocessing_and_dataset.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -175,10 +175,11 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 - Preprocesamiento y Definición del Problema y Dataset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 – Análisis Exploratorio de Datos (EDA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">Sección 3: Revisión del Estado del Arte</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">Sección 4 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_preprocessing_and_dataset.html">01 — Preprocesamiento y Definición del Problema y Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_EDA.html">02 — Análisis Exploratorio de Datos (EDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_marco_teorico.html">03 — Revisión del Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_benchmark_models.html">04 — Implementación de Modelos Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_original_model.html">05 — Modelo original — MambaSegNet</a></li>
 </ul>
 
     </div>
@@ -458,6 +459,9 @@ document.write(`
 <tr class="row-odd"><td><p><strong>4. Benchmark modelos</strong></p></td>
 <td><p>Tabla comparativa con métricas (media ± std, IC 95 %), ranking, análisis estadístico (Friedman + Nemenyi) y discusión crítica.</p></td>
 </tr>
+<tr class="row-even"><td><p><strong>5. Modelo original</strong></p></td>
+<td><p>Discusión sobre elección inicial de modelo original y cómo este nos puede ayudar a mejorar las métricas.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -479,12 +483,12 @@ document.write(`
 <section id="reproducibilidad">
 <h2>Reproducibilidad<a class="headerlink" href="#reproducibilidad" title="Permalink to this heading">#</a></h2>
 <p>Todo el código es reproducible a partir del repositorio adjunto. El pipeline completo sigue este orden:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preprocess_resize.py          # Prerredimensionamiento único (ejecutar una vez)
-01_preprocessing_and_dataset  # Limpieza y split
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>01_preprocessing_and_dataset  # Limpieza y split
+preprocess_resize.py          # Prerredimensionamiento único (ejecutar una vez)
 02_EDA                        # EDA del dataset
 mars_util_fast.py             # Funciones necesarias para entrenar los modelos
 03a–03e_model_*               # Entrenamiento de cada modelo
-03_benchmark_models           # Análisis estadístico y benchmark final
+04_benchmark_models           # Análisis estadístico y benchmark de los modelos
 </pre></div>
 </div>
 <p>Las semillas aleatorias están fijadas globalmente via <code class="docutils literal notranslate"><span class="pre">set_seed()</span></code> en <code class="docutils literal notranslate"><span class="pre">mars_utils_fast.py</span></code>. Los splits train/val/test se persisten en <code class="docutils literal notranslate"><span class="pre">processed/split_indices.pkl</span></code> para garantizar que todos los modelos sean evaluados sobre exactamente la misma partición.</p>
@@ -530,7 +534,7 @@ mars_util_fast.py             # Funciones necesarias para entrenar los modelos
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">01 - Preprocesamiento y Definición del Problema y Dataset</p>
+        <p class="prev-next-title">01 — Preprocesamiento y Definición del Problema y Dataset</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
