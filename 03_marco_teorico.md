@@ -1,4 +1,4 @@
-# Sección 3: Revisión del Estado del Arte
+# 03 — Revisión del Estado del Arte
 
 ## 3.1 Estrategia de Búsqueda
 
