@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; My sample book</title>
+    <title>Segmentación Semántica de Terreno Marciano con Deep Learning &#8212; My sample book</title>
   
   
   
@@ -159,8 +159,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+    <img src="_static/Wall-e.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/Wall-e.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
   
   
 </a></div>
@@ -170,7 +170,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    <no title>
+                    Segmentación Semántica de Terreno Marciano con Deep Learning
                 </a>
             </li>
         </ul>
@@ -364,11 +364,24 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Segmentación Semántica de Terreno Marciano con Deep Learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrantes-del-grupo">Integrantes del Grupo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivacion">Motivación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-de-investigacion">Pregunta de Investigación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del Libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entorno-experimental">Entorno Experimental</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad">Reproducibilidad</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -378,9 +391,109 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>hola gente, ya descubri que poner aqui</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="segmentacion-semantica-de-terreno-marciano-con-deep-learning">
+<h1>Segmentación Semántica de Terreno Marciano con Deep Learning<a class="headerlink" href="#segmentacion-semantica-de-terreno-marciano-con-deep-learning" title="Permalink to this heading">#</a></h1>
+<p><strong>Entregable 2 — Proyecto de Deep Learning</strong></p>
+<hr class="docutils" />
+<section id="integrantes-del-grupo">
+<h2>Integrantes del Grupo<a class="headerlink" href="#integrantes-del-grupo" title="Permalink to this heading">#</a></h2>
+<!-- Por favor completa los nombres aquí -->
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Nombre</p></th>
+<th class="head"><p>Código</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Alejandro David Moya Nieves</p></td>
+<td><p>200196366</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mateo Jose Gomez Rojas</p></td>
+<td><p>200193297</p></td>
+</tr>
+<tr class="row-even"><td><p>Mateo Andres Molinares Tellez</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>David Alejandro Ibañez Barrios</p></td>
+<td><p>200195861</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="motivacion">
+<h2>Motivación<a class="headerlink" href="#motivacion" title="Permalink to this heading">#</a></h2>
+<p>La exploración autónoma de Marte depende críticamente de la capacidad de los rovers para interpretar su entorno sin intervención humana en tiempo real. La distancia entre la Tierra y Marte introduce latencias de comunicación de entre 4 y 24 minutos, lo que hace imposible el control remoto reactivo frente a obstáculos inesperados. Un error de navegación —como confundir arena profunda con suelo firme— puede dejar al rover irrecuperable, como ocurrió con el Spirit en 2009.</p>
+<p>La segmentación semántica a nivel de píxel es la herramienta que permite al rover “ver” su entorno de forma estructurada: distinguir suelo transitable de roca, arena o acumulaciones peligrosas de piedras sueltas. El avance en modelos de Deep Learning, desde las CNN clásicas hasta los Vision Transformers, ha abierto la posibilidad de dotar a los rovers de percepción visual comparable a la humana, pero en condiciones marcianas extremas: polvo, sombras duras, distorsión de las cámaras de ingeniería (HazCams) y distribuciones de clase altamente desbalanceadas.</p>
+<p>Este proyecto evalúa de forma rigurosa y comparable <strong>cinco modelos de segmentación semántica</strong> sobre el dataset público <strong>AI4MARS</strong> del JPL/NASA, con el objetivo de responder: ¿qué arquitectura ofrece el mejor balance entre precisión, robustez estadística y viabilidad computacional para su eventual despliegue en un sistema de navegación real?</p>
+</section>
+<hr class="docutils" />
+<section id="pregunta-de-investigacion">
+<h2>Pregunta de Investigación<a class="headerlink" href="#pregunta-de-investigacion" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>¿Cuál de los modelos de segmentación semántica benchmarkeados produce diferencias estadísticamente significativas en mIoU sobre el dataset AI4MARS, y qué arquitectura representa el mejor trade-off entre rendimiento y costo computacional?</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="estructura-del-libro">
+<h2>Estructura del Libro<a class="headerlink" href="#estructura-del-libro" title="Permalink to this heading">#</a></h2>
+<p>El libro está organizado en los siguientes capítulos:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Capítulo</p></th>
+<th class="head"><p>Contenido</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>1. Preprocesamiento y Dataset</strong></p></td>
+<td><p>Construcción del manifest, limpieza de máscaras inválidas, split estratificado por misión, rerredimensionamiento a 256×256.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2. EDA</strong></p></td>
+<td><p>Análisis exploratorio de distribución de clases, estadísticas por misión, visualización de imágenes y máscaras representativas.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>3. Estado del Arte</strong></p></td>
+<td><p>Revisión sistemática de la literatura (2018–2026). Análisis crítico de 8 modelos top, comparación de tendencias CNN vs. Transformers, identificación de gaps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>4. Benchmark modelos</strong></p></td>
+<td><p>Tabla comparativa con métricas (media ± std, IC 95 %), ranking, análisis estadístico (Friedman + Nemenyi) y discusión crítica.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="entorno-experimental">
+<h2>Entorno Experimental<a class="headerlink" href="#entorno-experimental" title="Permalink to this heading">#</a></h2>
+<p>Todos los experimentos fueron ejecutados bajo el mismo entorno para garantizar comparabilidad:</p>
+<ul class="simple">
+<li><p><strong>Hardware</strong>: NVIDIA RTX 4050 Laptop (6 GB VRAM)</p></li>
+<li><p><strong>Framework</strong>: PyTorch 2.x con AMP (Automatic Mixed Precision)</p></li>
+<li><p><strong>Dataset</strong>: AI4MARS — 22.965 imágenes válidas (MSL, MER, M2020)</p></li>
+<li><p><strong>Resolución de entrada</strong>: 256 × 256 px (prerredimensionado)</p></li>
+<li><p><strong>Protocolo de evaluación</strong>: 3 seeds independientes por modelo (42, 123, 7); media, desviación estándar e IC 95 % reportados</p></li>
+<li><p><strong>Métricas principales</strong>: mIoU, IoU por clase (soil, bedrock, sand, big_rock), Pixel Accuracy</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="reproducibilidad">
+<h2>Reproducibilidad<a class="headerlink" href="#reproducibilidad" title="Permalink to this heading">#</a></h2>
+<p>Todo el código es reproducible a partir del repositorio adjunto. El pipeline completo sigue este orden:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preprocess_resize.py          # Prerredimensionamiento único (ejecutar una vez)
+01_preprocessing_and_dataset  # Limpieza y split
+02_EDA                        # EDA del dataset
+mars_util_fast.py             # Funciones necesarias para entrenar los modelos
+03a–03e_model_*               # Entrenamiento de cada modelo
+03_benchmark_models           # Análisis estadístico y benchmark final
+</pre></div>
+</div>
+<p>Las semillas aleatorias están fijadas globalmente via <code class="docutils literal notranslate"><span class="pre">set_seed()</span></code> en <code class="docutils literal notranslate"><span class="pre">mars_utils_fast.py</span></code>. Los splits train/val/test se persisten en <code class="docutils literal notranslate"><span class="pre">processed/split_indices.pkl</span></code> para garantizar que todos los modelos sean evaluados sobre exactamente la misma partición.</p>
+<hr class="docutils" />
+<p><strong>Enlace al Dataset:</strong> <a class="reference external" href="https://zenodo.org/records/15995036">Zenodo - AI4MARS</a></p>
+</section>
 <div class="toctree-wrapper compound">
 </div>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -427,6 +540,26 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrantes-del-grupo">Integrantes del Grupo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivacion">Motivación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-de-investigacion">Pregunta de Investigación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del Libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entorno-experimental">Entorno Experimental</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad">Reproducibilidad</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
