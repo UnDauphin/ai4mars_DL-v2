@@ -2,7 +2,9 @@
 
 ## 3.1 Estrategia de Búsqueda
 
-Se realizaron búsquedas exhaustivas en bases de datos académicas Q1 (Scopus, Science Direct, Web of Science, IEEE Xplore, arXiv) durante los últimos 8 años (2018–2026), priorizando publicaciones con alto impacto en segmentación semántica para navegación de rovers marcianos. Palabras clave utilizadas: `"semantic segmentation Mars rover terrain AI4MARS"`, `"deep learning Mars rover navigation"`, `"Vision Transformer planetary rover segmentation"`, `"SegFormer Mars terrain"`, `"DeepLabV3+ AI4MARS"`, `"U-Net Mars rover"`, `"DepthFormer Mars segmentation"`, `"MarsSeg semantic segmentation"`.
+Se realizaron búsquedas exhaustivas en bases de datos académicas Q1 (Scopus, Science Direct, Web of Science, IEEE Xplore, arXiv) durante los últimos 8 años (2018–2026), priorizando publicaciones con alto impacto en segmentación semántica para navegación de rovers marcianos.
+
+Las búsquedas se construyeron combinando términos de dominio y datasets mediante operadores booleanos (AND, OR). Los **términos de dominio** empleados fueron: `semantic segmentation`, `terrain classification`, `Mars rover navigation`, `planetary surface analysis`, `autonomous path planning`.  Los **datasets y benchmarks** de referencia fueron: `AI4MARS`, `Mars-Seg`, `S5Mars`, `NavCam`, `HazCam`. 
 
 Criterios de **inclusión**: uso explícito de Deep Learning (CNN, Transformers), evaluación en AI4MARS o datasets similares (Mars-Seg, S⁵mars), métricas reportadas (mIoU, IoU, Accuracy), reproducibilidad. Criterios de **exclusión**: enfoques no-DL, datasets terrestres sin adaptación marciana, publicaciones pre-2018 o sin métricas cuantitativas.
 
